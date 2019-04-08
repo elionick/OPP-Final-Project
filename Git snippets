@@ -1,0 +1,45 @@
+# Git code
+
+# Initialize
+git init
+
+# Create Remote connection to Repository
+git remote add origin <link>
+
+# Clones a repository and directly adds remote connection
+git clone <link>
+
+# Add file to staging area
+git add <file name>
+## All:
+git add .
+
+# Commit file
+git commit -m "<comment>"
+
+# Push
+git push
+
+# Status
+git status
+
+# Update local repository
+git pull
+
+# Create branch (do not fuck the master branch)
+git branch <branch name>
+
+# Switch to branch
+git checkout <branch name>
+
+# git add . und git commit -m "<comment>"
+
+# Push branch first time --> am Ende wenn gemerged werden soll
+git push --set-upstream origin <branch name>
+
+# Delete local branch
+git branch -d <branch name>
+
+# Merge branches in master
+#!! First move to master branch !!
+git merge <branch name>
