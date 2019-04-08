@@ -4,7 +4,7 @@ import pprint
 
 # BMI
 url_main = "https://gabamnml-health-v1.p.rapidapi.com/bmi?"
-weight = 60
+weight = 120
 height = 1.70
 url = url_main + "weight=" + str(weight) + "&height=" + str(height)
 r = requests.get(url,
