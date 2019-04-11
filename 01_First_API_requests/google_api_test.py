@@ -14,6 +14,7 @@ def getPlace():
 
         url = main_api + urllib.parse.urlencode({"input": place, "key": "AIzaSyCGmcaD0lKJaFYRgU0nyBaHjQ1JX8r3A_o",
                                                  "inputtype": "textquery", "fields": "opening_hours,formatted_address,geometry,user_ratings_total"})
+
         print(url)
 
         json_data = requests.get(url).json()
@@ -26,7 +27,6 @@ def getPlace():
                 print(each["formatted_address"])
                 print("Open now: " + str(each["opening_hours"]["open_now"]))
                 print("----------------------------------------------")
-
 
 def getNearbyPlace():
     main_api = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
@@ -95,8 +95,8 @@ def getDistance():
             print("From "+str(origin)+" to " + str(destination) +
                   "it is %s and takes %s" % (distance, duration))
             print("----------------------------------------------")
-
-
+            
+            
 def getLocation():
     main_api = "https://maps.googleapis.com/maps/api/geocode/json?"
 
