@@ -1,0 +1,1 @@
+mainMenu = ["Recipes", "Fitness", "Shopping"]
