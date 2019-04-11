@@ -75,7 +75,7 @@ for product in products:
     scraper.quit()
 
     # Create a csv file with the output added together!
-    filename = "Migros" + product + ".csv"
+    filename = "Migros " + product + ".csv"
     headers = "sep=,\nbrand, name, price\n"
     f = open(filename, "w")
     f.write(headers)
