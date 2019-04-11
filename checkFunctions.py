@@ -1,10 +1,10 @@
 # checks if user input is possible choice
-def checkChoiceInput(user_input, poss_options, quit_option = True):
+def checkIfChoice(input, poss_options, quit_option = True):
     if quit_option == True:
-        if user_input not in ["q", "Q"]:
+        if input not in ["q", "Q"]:
             try:
-                int(user_input)
-                if int(user_input) in poss_options:
+                int(input)
+                if int(input) in poss_options:
                     return True
                 else: 
                     return False
@@ -14,11 +14,30 @@ def checkChoiceInput(user_input, poss_options, quit_option = True):
             return True
     else:
         try:
-            int(user_input)
-            if int(user_input) in poss_options:
+            int(input)
+            if int(input) in poss_options:
                 return True
             else: 
                 return False
         except ValueError:
             return False
+
+def checkStringIsInt(input):
+    try: 
+        if input.isdigit() == True:
+            return True
+        else:
+            return False
+    except ValueError:
+        return False
+
+def checkIfAge(input):
+    if checkStringIsInt(input) == True:
+        input = int(input)
+        if input > 0 and input < 99:
+            return True
+        else:
+            return False
+    else:
+        return False
         

@@ -7,6 +7,7 @@ def getChoiceInput(user_input):
 
 def getErrorMessage(error_code, custom_message = ''):
     errorMessages = {
-    "choice" : "\nError! Please enter a valid option:"
+    "choice" : "Error! Please enter a valid option.",
+    "age" : "Error! Please enter a valid age (1-99)."
     }
     return errorMessages[error_code]
