@@ -69,7 +69,7 @@ def uiMenu(menu_elements_list, menu_title = None, user_instruction = None,  nOpt
         
 
 if __name__ == "__main__":
-#    displayMenu(["Recipes", "Fitness", "Shopping"], menu_title = "Main Menu")
-#    displayMenu(["Recipes", "Fitness", "Shopping"], menu_title = "Main Menu", user_instruction="What would you like to do?")
-#    displayMenu(["Recipes", "Fitness", "Shopping"], menu_title = "Main Menu", quit_option = False, user_instruction="What would you like to do?")
-    displayMenu(createUserProfil, menu_title = "Create User Profile", error_keys = [None, "age"], input_type="questions", questions_check_functions = [None, checkIfAge])
+#    uiMenu(["Recipes", "Fitness", "Shopping"], menu_title = "Main Menu")
+#    uiMenu(["Recipes", "Fitness", "Shopping"], menu_title = "Main Menu", user_instruction="What would you like to do?")
+#    uiMenu(["Recipes", "Fitness", "Shopping"], menu_title = "Main Menu", quit_option = False, user_instruction="What would you like to do?")
+    uiMenu(createUserProfil, menu_title = "Create User Profile", error_keys = [None, "age"], input_type="questions", questions_check_functions = [None, checkIfAge])

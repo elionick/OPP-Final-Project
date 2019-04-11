@@ -34,7 +34,7 @@ def checkStringIsInt(input):
 def checkIfAge(input):
     if checkStringIsInt(input) == True:
         input = int(input)
-        if input > 0 and input < 99:
+        if input > 0 and input < 100:
             return True
         else:
             return False
