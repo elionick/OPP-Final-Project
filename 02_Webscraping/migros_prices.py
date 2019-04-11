@@ -9,15 +9,22 @@ import os
 class MigrosScraper(object):
     def __init__(self, product):
         self.product = product
-        self.url = "https://www.leshop.ch/de/search?query=" + product
+        self.url = f"https://www.leshop.ch/de/search?query={self.product}"
 
         # Open a new connection. Alternatively use "webdriver.Firefox()"
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Firefox()
         self.delay = 4
 
     def load_Migros_url(self):
         # Navigate to the website of Migros
         self.driver.get(self.url)
+        try:
+            # Wait until the element which contains the products is loaded.
+            wait = WebDriverWait(self.driver, self.delay)
+            wait.until(ec.presence_of_element_located((By.CLASS_NAME, "subcat")))
+            print("Page is ready!")
+        except TimeoutException:
+            print("Loading took too long!")
 
     def extract_product_name(self):
         all_products = self.driver.find_elements_by_class_name("desc")
@@ -53,7 +60,7 @@ os.chdir(dname)
 
 
 # Different products which prices we want!
-products = ["M-Budget Chips", "Hackfleisch", "Milch", "Butter"]
+products = ["Chips", "Hackfleisch", "Milch", "Butter"]
 
 # Loop through the products with the respective functions and save the returned lists!
 for product in products:
@@ -68,7 +75,7 @@ for product in products:
     scraper.quit()
 
     # Create a csv file with the output added together!
-    filename = product + ".csv"
+    filename = "Migros" + product + ".csv"
     headers = "sep=,\nbrand, name, price\n"
     f = open(filename, "w")
     f.write(headers)
