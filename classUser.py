@@ -19,7 +19,7 @@ class user():
         setattr(self, "nAllergies", len(allergies))
 
 if __name__ == "__main__":
-    Eddie = user("Eddie", "Alexander", "Guenther", 70, 1.83, "Eddie", 2403, "eddie.guenther@yahoo.de")
+    Eddie = user("Eddie", "Alexander", "Guenther", 70, 1.83, "Eddie", 2403, "eddie.guenther@yahoo.de", "24.3.1996")
     print(Eddie.bmi)
     Eddie.setAllergies("Fruits", "Milk")
     print(Eddie.nAllergies)
