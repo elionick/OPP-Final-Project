@@ -1,6 +1,6 @@
 from apiBMI import *
 class user():
-    def __init__(self, first_name, middle_names, last_name, weight, height, username, password, e_mail):
+    def __init__(self, first_name, middle_names, last_name, weight, height, username, password, e_mail, birthday):
         self.firstName = first_name
         self.middleNames = middle_names
         self.lastName = last_name
@@ -11,6 +11,7 @@ class user():
         self.eMail = e_mail
         self.bmi = getBMI(weight, height)
         self.statusBMI  = getBMIstatus(weight, height)
+        self.birthday = birthday
     
     def setAllergies(self, *allergies):
         for index, allergy in enumerate(allergies):
