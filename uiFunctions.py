@@ -4,11 +4,13 @@ from checkFunctions import *
 from getFunctions import *
 from menuElements import *
 
+
 # displays a menu and returns an input
 def uiMenu(menu_elements_list, menu_title = None, sub_title = None, user_instruction = None,  
             nOptions = None, header = "logo", input_type = "choice", error_keys = ["choice"], 
             clear = True, quit_option = True, initial_error = False, 
-            questions_check_functions = None):
+            questions_check_functions = None,
+            questions_special_input_func = None):
     error_status = initial_error
     if input_type == "questions":
         answers = []
@@ -44,7 +46,7 @@ def uiMenu(menu_elements_list, menu_title = None, sub_title = None, user_instruc
             user_input = input()
             if nOptions == None:
                 nOptions = len(menu_elements_list)
-            if checkIfChoice(user_input, range(1, nOptions), quit_option = quit_option)  == False:
+            if checkIfChoice(user_input, range(1, nOptions + 1), quit_option = quit_option)  == False:
                 error_status = True
             else:
                 choice = getChoiceInput(user_input)
@@ -55,7 +57,10 @@ def uiMenu(menu_elements_list, menu_title = None, sub_title = None, user_instruc
                 print("")
             if error_status == True:
                 print(getErrorMessage(error_keys[len(answers)]))
-            user_input = input(menu_elements_list[len(answers)] + ": ")
+            if questions_special_input_func[len(answers)] == None:
+                user_input = input(menu_elements_list[len(answers)] + ": ")
+            else:
+                user_input = questions_special_input_func[len(answers)](menu_elements_list[len(answers)] + ": ")
             if questions_check_functions != None:
                 if questions_check_functions[len(answers)] != None:
                     if questions_check_functions[len(answers)](user_input) == False:
