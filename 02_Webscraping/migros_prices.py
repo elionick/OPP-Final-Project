@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 import os
+import dbFunctions_Test_2
 
 
 class MigrosScraper(object):
@@ -22,7 +23,7 @@ class MigrosScraper(object):
             # Wait until the element which contains the products is loaded.
             wait = WebDriverWait(self.driver, self.delay)
             wait.until(ec.presence_of_element_located((By.CLASS_NAME, "subcat")))
-            print("Page is ready!")
+            print(self.product + "Page is ready!")
         except TimeoutException:
             print("Loading took too long!")
 
@@ -38,14 +39,30 @@ class MigrosScraper(object):
         all_products = self.driver.find_elements_by_class_name("name")
         product_brand_list = []
         for product in all_products:
-            product_brand_list.append(product.text)
+            if product.text == "":
+                brand = "Fresh product"
+            else:
+                brand = product.text
+            product_brand_list.append(brand)
         return product_brand_list
 
     def extract_product_price(self):
         all_products = self.driver.find_elements_by_class_name("listMode-priceUnit")
+        all_products_prices = self.driver.find_elements_by_class_name("listMode-price")
         product_price_list = []
+        product_price_list_2 = []
+
         for product in all_products:
             product_price_list.append(product.text)
+
+        for product in all_products_prices:
+            price = product.text.replace("\n", " ")
+            product_price_list_2.append(price)
+
+        for i in range(len(product_price_list)):
+            if product_price_list[i] == "":
+                product_price_list[i] = product_price_list_2[i]
+
         return product_price_list
 
     def quit(self):
@@ -60,7 +77,7 @@ os.chdir(dname)
 
 
 # Different products which prices we want!
-products = ["Chips", "Hackfleisch", "Milch", "Butter"]
+products = ["Gurke"]
 
 # Loop through the products with the respective functions and save the returned lists!
 for product in products:
@@ -74,13 +91,20 @@ for product in products:
 
     scraper.quit()
 
-    # Create a csv file with the output added together!
-    filename = "Migros " + product + ".csv"
-    headers = "sep=,\nbrand, name, price\n"
-    f = open(filename, "w")
-    f.write(headers)
+    # # Create a csv file with the output added together!
+    # filename = "Migros " + product + ".csv"
+    # headers = "sep=,\nbrand, name, price\n"
+    # f = open(filename, "w")
+    # f.write(headers)
+    #
+    # for i in range(len(brand)):
+    #     f.write(brand[i] + "," + name[i].replace(",", "-") + "," + price[i] + "\n")
+    #
+    # f.close()
 
-    for i in range(len(brand)):
-        f.write(brand[i] + "," + name[i].replace(",", "-") + "," + price[i] + "\n")
+DBEntry = []
+for i in range(len(brand)):
+    DBEntry.append(brand[i] + "," + name[i].replace(",", "-") + "," + price[i])
 
-    f.close()
+
+dbFunctions_Test_2.addnewMigrosPrice(DBEntry)
