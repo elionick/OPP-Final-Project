@@ -1,5 +1,4 @@
 logInMenu = ["Login", "Sign Up"]
-logIn = ["Username", "Password"]
 mainMenu = ["Recipes", "Fitness", "Shopping", "Logout"]
 createUserProfil = ["What is your first name?", 
                     "What is your middle name?",

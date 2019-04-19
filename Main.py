@@ -49,6 +49,7 @@ while choice not in ["q", "Q"]:
             )
         createUser(user_data[7], password = user_data[8], first_name = user_data[0], middle_name = user_data[1], last_name = user_data[2], height = user_data[3], weight = user_data[4], birthdate = user_data[6], email = user_data[5])
         break
+
 # Main Menu
 while choice not in ["q", "Q"]:
     choice = uiMenu(mainMenu, menu_title = "Main Menu", user_instruction="What would you like to do?")

@@ -80,5 +80,5 @@ def createUser(username, password = None, first_name = None, middle_name = None,
             setValueForUserInField(username, sql_field_names[index], inputs[index])
 
 if __name__ == "__main__":
-    createUser("test32", first_name= "Edward", password="eddie")
+    pass
     
