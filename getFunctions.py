@@ -12,8 +12,9 @@ def getErrorMessage(error_code, custom_message = ''):
     "height" : "Error! Please enter a valid height in meter (1m - 2.5m).",
     "weight" : "Error! Please enter a valid weight (40kg - 350 kg).",
     "email" : "Error! Please enter a valid email.",
-    "birth" : "Error! Please enter a valid birthday (format: dd.mm.yyyy).",
-    "username" : "Error! Please enter a valid username."
+    "birth" : "Error! Please enter a valid birthday (format: yyyy-mm-dd).",
+    "username" : "Error! Please enter a valid username.",
+    "password" : "Error! Please enter a valid password."
     }
     return errorMessages[error_code]
 

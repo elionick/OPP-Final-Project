@@ -10,6 +10,7 @@ def uiMenu(menu_elements_list, menu_title = None, sub_title = None, user_instruc
             nOptions = None, header = "logo", input_type = "choice", error_keys = ["choice"], 
             clear = True, quit_option = True, initial_error = False, 
             questions_check_functions = None,
+            questions_check_functions_additional_args = None,
             questions_special_input_func = None):
     error_status = initial_error
     if input_type == "questions":
@@ -57,12 +58,20 @@ def uiMenu(menu_elements_list, menu_title = None, sub_title = None, user_instruc
                 print("")
             if error_status == True:
                 print(getErrorMessage(error_keys[len(answers)]))
-            if questions_special_input_func[len(answers)] == None:
+            if questions_special_input_func == None or questions_special_input_func[len(answers)] == None:
                 user_input = input(menu_elements_list[len(answers)] + ": ")
             else:
                 user_input = questions_special_input_func[len(answers)](menu_elements_list[len(answers)] + ": ")
-            if questions_check_functions != None:
-                if questions_check_functions[len(answers)] != None:
+            if questions_check_functions != None and questions_check_functions[len(answers)] != None:
+                if questions_check_functions_additional_args != None and questions_check_functions_additional_args[len(answers)] != None:
+                    if questions_check_functions[len(answers)](user_input, *questions_check_functions_additional_args[len(answers)]) == False:
+                        error_status = True
+                    else:
+                        answers.append(user_input)
+                        error_status = False
+                        if len(menu_elements_list) == len(answers):
+                            return answers
+                else:    
                     if questions_check_functions[len(answers)](user_input) == False:
                         error_status = True
                     else:
@@ -70,14 +79,11 @@ def uiMenu(menu_elements_list, menu_title = None, sub_title = None, user_instruc
                         error_status = False
                         if len(menu_elements_list) == len(answers):
                             return answers
-                else:
-                    answers.append(user_input)
-                    error_status = False
-                    if len(menu_elements_list) == len(answers):
-                        return answers
+            else:
+                answers.append(user_input)
+                error_status = False
+                if len(menu_elements_list) == len(answers):
+                    return answers
 
 if __name__ == "__main__":
-#    uiMenu(["Recipes", "Fitness", "Shopping"], menu_title = "Main Menu")
-#    uiMenu(["Recipes", "Fitness", "Shopping"], menu_title = "Main Menu", user_instruction="What would you like to do?")
-#    uiMenu(["Recipes", "Fitness", "Shopping"], menu_title = "Main Menu", quit_option = False, user_instruction="What would you like to do?")
-    uiMenu(createUserProfil, menu_title = "Create User Profile", error_keys = [None, "age"], input_type="questions", questions_check_functions = [None, checkIfAge])
+    pass
