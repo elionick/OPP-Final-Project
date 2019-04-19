@@ -3,7 +3,7 @@ import time
 from designElements import *
 from menuElements import *
 from getpass import getpass
-
+from userDao import *
 # Show Welcome
 showWelcome()
 time.sleep(2)
@@ -13,12 +13,14 @@ choice = ''
 
 # Log in
 while choice not in ["q", "Q"]:
-    choice = uiMenu(logIn, menu_title = "Login", user_instruction="What would you like to do?")
+    choice = uiMenu(logInMenu, menu_title = "Login", user_instruction="What would you like to do?")
     if choice == 1:
-        pass
+        username = uiMenu(["Username"], menu_title = "Login", error_keys = ["username"],
+        input_type = "questions", questions_check_functions = [checkUsernameExists])
+        uiMenu(["Password"], menu_title = "Login", error_keys = ["password"],
+        input_type = "questions", questions_check_functions = [ checkValidPassword], questions_check_functions_additional_args = [username], questions_special_input_func = [getpass])
+        break
     if choice == 2:
-        # to fix:
-        # - username and password have to be unique
         user_data = uiMenu(
             createUserProfil, 
             menu_title = "Create User Profile", 
@@ -41,12 +43,12 @@ while choice not in ["q", "Q"]:
                 checkWeight,
                 checkEmail,
                 checkValidYearOfBirth,
-                checkIfStringLenNeqZero,
+                checkUsernameNotAssigned,
                 checkIfStringLenNeqZero],
             questions_special_input_func = [None, None, None, None, None, None, None, None, getpass]
             )
+        createUser(user_data[7], password = user_data[8], first_name = user_data[0], middle_name = user_data[1], last_name = user_data[2], height = user_data[3], weight = user_data[4], birthdate = user_data[6], email = user_data[5])
         break
-
 # Main Menu
 while choice not in ["q", "Q"]:
     choice = uiMenu(mainMenu, menu_title = "Main Menu", user_instruction="What would you like to do?")

@@ -1,4 +1,5 @@
 from validate_email import validate_email
+from userDao import *
 import datetime
 
 # checks if user input is possible choice
@@ -76,13 +77,17 @@ def checkEmail(input):
 # Check valid year of birth
 def checkValidYearOfBirth(input):
     try:
-        birthday = datetime.datetime.strptime(input, "%d.%m.%Y").date()
+        birthday = datetime.datetime.strptime(input, "%Y-%m-%d").date()
         if birthday > datetime.date.today():
             return False
         else:
             return True
     except:
         return False
+
+# Check Username Input 
+def checkUsernameNotAssigned(input):
+    return not checkUsernameExists(input)
 
 if __name__ == "__main__":
     pass

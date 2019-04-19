@@ -17,7 +17,7 @@ def checkUsernameExists(username):
         cursor.close()
 
 # Check password for unique username
-def checkPasswordValid(username, password):
+def checkValidPassword(username, password):
     try:
         with connection.cursor() as cursor:
             sql = "select COUNT(LOGIN_NAME) FROM USER WHERE LOGIN_NAME = %s and PASSWORD_HASH = cast(aes_encrypt(%s, 'key123') as char(100))"
@@ -63,7 +63,7 @@ def getUserID(username):
 
 # Create a new user
 def createUser(username, password = None, first_name = None, middle_name = None, last_name = None,
-        height = None, weight = None, birthdate = None, diet = None, intolerance = None):
+        height = None, weight = None, birthdate = None, diet = None, intolerance = None, email = None):
     try:
         with connection.cursor() as cursor:
             sql = "insert into USER (LOGIN_NAME) value (%s)"
@@ -73,12 +73,12 @@ def createUser(username, password = None, first_name = None, middle_name = None,
         cursor.close()
     if password != None:
         setValueForUserInField(username, "PASSWORD_HASH", password, is_password = True)
-    inputs = [first_name, middle_name, last_name, height, weight, birthdate, diet, intolerance]
-    sql_field_names = ["FIRST_NAME", "MIDDLE_NAME", "LAST_NAME", "HEIGHT", "WEIGHT", "BIRTHDATE", "DIET", "INTOLERANCE"]
+    inputs = [first_name, middle_name, last_name, height, weight, birthdate, diet, intolerance, email]
+    sql_field_names = ["FIRST_NAME", "MIDDLE_NAME", "LAST_NAME", "HEIGHT", "WEIGHT", "BIRTHDATE", "DIET", "INTOLERANCE", "E_MAIL"]
     for index, element in enumerate(inputs):
         if element != None:
             setValueForUserInField(username, sql_field_names[index], inputs[index])
 
 if __name__ == "__main__":
     createUser("test32", first_name= "Edward", password="eddie")
-    print(checkPasswordValid("test32", "eddie"))
+    
