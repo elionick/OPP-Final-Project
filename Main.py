@@ -60,40 +60,7 @@ while choice not in ["q", "Q"]:
     if choice == 3:
         pass
     if choice == 4:
-        while True:
-            choice = uiMenu(logIn, menu_title = "Login", user_instruction="What would you like to do?")
-            if choice == 1:
-                pass
-            if choice == 2:
-                # to fix:
-                # - username and password have to be unique
-                user_data = uiMenu(
-                    createUserProfil, 
-                    menu_title = "Create User Profile", 
-                    error_keys = [
-                        "name", 
-                        None, 
-                        "name", 
-                        "height", 
-                        "weight", 
-                        "email",
-                        "birth",
-                        "username",
-                        "password"], 
-                    input_type="questions", 
-                    questions_check_functions = [
-                        checkIfStringLenNeqZero, 
-                        None, 
-                        checkIfStringLenNeqZero, 
-                        checkHeight,
-                        checkWeight,
-                        checkEmail,
-                        checkValidYearOfBirth,
-                        checkIfStringLenNeqZero,
-                        checkIfStringLenNeqZero],
-                    questions_special_input_func = [None, None, None, None, None, None, None, None, getpass]
-                    )
-                break
+        pass
 
 # Show Quit
 showQuit()
