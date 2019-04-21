@@ -64,13 +64,22 @@ def uiMenu(menu_elements_list, menu_title = None, sub_title = None, user_instruc
                 user_input = questions_special_input_func[len(answers)](menu_elements_list[len(answers)] + ": ")
             if questions_check_functions != None and questions_check_functions[len(answers)] != None:
                 if questions_check_functions_additional_args != None and questions_check_functions_additional_args[len(answers)] != None:
-                    if questions_check_functions[len(answers)](user_input, *questions_check_functions_additional_args[len(answers)]) == False:
-                        error_status = True
+                    if isinstance(questions_check_functions_additional_args[len(answers)], list):
+                        if questions_check_functions[len(answers)](user_input, *questions_check_functions_additional_args[len(answers)]) == False:
+                            error_status = True
+                        else:
+                            answers.append(user_input)
+                            error_status = False
+                            if len(menu_elements_list) == len(answers):
+                                return answers
                     else:
-                        answers.append(user_input)
-                        error_status = False
-                        if len(menu_elements_list) == len(answers):
-                            return answers
+                        if questions_check_functions[len(answers)](user_input, questions_check_functions_additional_args[len(answers)]) == False:
+                            error_status = True
+                        else:
+                            answers.append(user_input)
+                            error_status = False
+                            if len(menu_elements_list) == len(answers):
+                                return answers
                 else:    
                     if questions_check_functions[len(answers)](user_input) == False:
                         error_status = True
@@ -84,6 +93,7 @@ def uiMenu(menu_elements_list, menu_title = None, sub_title = None, user_instruc
                 error_status = False
                 if len(menu_elements_list) == len(answers):
                     return answers
+
 
 if __name__ == "__main__":
     pass

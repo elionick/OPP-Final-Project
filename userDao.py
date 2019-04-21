@@ -17,7 +17,7 @@ def checkUsernameExists(username):
         cursor.close()
 
 # Check password for unique username
-def checkValidPassword(username, password):
+def checkValidPassword(password, username):
     try:
         with connection.cursor() as cursor:
             sql = "select COUNT(LOGIN_NAME) FROM USER WHERE LOGIN_NAME = %s and PASSWORD_HASH = cast(aes_encrypt(%s, 'key123') as char(100))"
