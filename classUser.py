@@ -13,6 +13,7 @@ class user():
         self.birthday = birthday
         self.diet = diet
         self.intolerances = intolerances
+        # Create user if user not exists
         if userDao.checkUsernameExists(username) == False:
             # create user in database
             userDao.createUserFromList(first_name, middle_name, last_name, height, weight, e_mail, birthday, diet, intolerances, username, password)
