@@ -1,0 +1,2 @@
+class workout():
+    pass
