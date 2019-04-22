@@ -88,7 +88,7 @@ def checkValidYearOfBirth(input):
 
 # Check Username Input 
 def checkUsernameNotAssigned(input):
-    return not checkUsernameExists(input)
+    return not userDao.checkUsernameExists(input)
 
 # Check diet knonw
 def checkDiet(input):
