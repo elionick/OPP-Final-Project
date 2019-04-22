@@ -1,7 +1,7 @@
 from dbFunctions import *
 class userDao:
     @staticmethod
-    # 
+    # Get user attributes from database as list
     def getUserAttributesAsList(username):
         user_id = userDao.getUserID(username)
         try:

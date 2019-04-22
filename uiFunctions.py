@@ -28,8 +28,7 @@ def uiMenu(menu_elements_list, menu_title = None, sub_title = None, user_instruc
             print("")
         if menu_title != None:
             print("*** " + menu_title + " ***")
-            if sub_title == None:
-                print("")
+            print("")
         if sub_title != None:
             print(sub_title)
             print("")

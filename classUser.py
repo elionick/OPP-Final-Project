@@ -10,7 +10,7 @@ class user():
         self.username = username
         self.password = password
         self.eMail = e_mail
-        self.bmi = apiBMI.getBMI(weight, height)
+        self.valueBMI = apiBMI.getBMI(weight, height)
         self.statusBMI  = apiBMI.getBMIstatus(weight, height)
         self.birthday = birthday
         self.diet = diet

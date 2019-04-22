@@ -54,13 +54,12 @@ while choice not in ["q", "Q"]:
                 checkIfStringLenNeqZero],
             questions_special_input_func = [None, None, None, None, None, None, None, None, None, None, getpass]
             )
-        userDao.createUserFromList(user_data)
         active_user = user.from_list(user_data)
         break
 
 # Main Menu
 while choice not in ["q", "Q"]:
-    choice = uiMenu(mainMenu, menu_title = "Main Menu", sub_title = "Hello " + active_user.firstName,user_instruction="What would you like to do?")
+    choice = uiMenu(mainMenu, menu_title = "Main Menu", sub_title = "Hello %s! Your BMI is %.2f (%s)" % (active_user.firstName, active_user.valueBMI,active_user.statusBMI),user_instruction="What would you like to do?")
     if choice == 1:
         pass
     if choice == 2:
