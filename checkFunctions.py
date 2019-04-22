@@ -1,5 +1,6 @@
 from validate_email import validate_email
 from userDao import *
+from classFoodNutritionsDao import *
 import datetime
 
 # checks if user input is possible choice
@@ -96,5 +97,18 @@ def checkDiet(input):
     else:
         return False
 
+# Check Intolerances
+def checkIntolerances(input):
+    if input == "":
+        return True
+    else:
+        intolerances = input.split(',')
+        for intolerance in intolerances:
+            if FoodNutritionsDao.checkFoodInApi(intolerance) == False:
+                return False
+    return True
+
+
+
 if __name__ == "__main__":
-    pass
+    print(checkIntolerances("milg"))
