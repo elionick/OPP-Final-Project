@@ -1,6 +1,6 @@
 import apiBMI 
 class user():
-    def __init__(self, first_name, middle_name, last_name, weight, height, username, password, e_mail, birthday, diet, intolerances):
+    def __init__(self, first_name, middle_name, last_name, weight, height, username, password, e_mail, birthday, diet = None, intolerances = None):
         self.firstName = first_name
         self.middleName = middle_name
         self.lastName = last_name

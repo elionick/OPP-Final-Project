@@ -89,5 +89,12 @@ def checkValidYearOfBirth(input):
 def checkUsernameNotAssigned(input):
     return not checkUsernameExists(input)
 
+# Check diet knonw
+def checkDiet(input):
+    if input in ["regular", "vegetarian", "vegan", "frutarian"]:
+        return True
+    else:
+        return False
+
 if __name__ == "__main__":
     pass

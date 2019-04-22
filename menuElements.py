@@ -7,6 +7,8 @@ createUserProfil = ["What is your first name?",
                     "What is your weight (in kilogram)?",
                     "What is your email?",
                     "When is your birthday (format: yyyy-mm-dd)?",
+                    "What is your diet (regular, vegetarian, vegan, frutarian)?",
+                    "Do you have intolerances (please enter comma delimited)?",
                     "Create Username",
                     "Create Password"
                    ]

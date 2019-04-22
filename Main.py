@@ -32,6 +32,8 @@ while choice not in ["q", "Q"]:
                 "weight", 
                 "email",
                 "birth",
+                None,
+                None,
                 "username",
                 "password"], 
             input_type="questions", 
@@ -43,9 +45,11 @@ while choice not in ["q", "Q"]:
                 checkWeight,
                 checkEmail,
                 checkValidYearOfBirth,
+                checkDiet,
+                None,
                 checkUsernameNotAssigned,
                 checkIfStringLenNeqZero],
-            questions_special_input_func = [None, None, None, None, None, None, None, None, getpass]
+            questions_special_input_func = [None, None, None, None, None, None, None, None, None, None, getpass]
             )
         createUser(user_data[7], password = user_data[8], first_name = user_data[0], middle_name = user_data[1], last_name = user_data[2], height = user_data[3], weight = user_data[4], birthdate = user_data[6], email = user_data[5])
         break

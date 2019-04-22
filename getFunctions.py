@@ -14,7 +14,8 @@ def getErrorMessage(error_code, custom_message = ''):
     "email" : "Error! Please enter a valid email.",
     "birth" : "Error! Please enter a valid birthday (format: yyyy-mm-dd).",
     "username" : "Error! Please enter a valid username.",
-    "password" : "Error! Please enter a valid password."
+    "password" : "Error! Please enter a valid password.",
+    "diet" : "Error! Please enter a valid diet."
     }
     return errorMessages[error_code]
 
