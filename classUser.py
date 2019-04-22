@@ -10,11 +10,18 @@ class user():
         self.username = username
         self.password = password
         self.eMail = e_mail
-        self.valueBMI = apiBMI.getBMI(weight, height)
-        self.statusBMI  = apiBMI.getBMIstatus(weight, height)
         self.birthday = birthday
         self.diet = diet
         self.intolerances = intolerances
+        if userDao.checkUsernameExists(username) == False:
+            # create user in database
+            userDao.createUserFromList(first_name, middle_name, last_name, height, weight, e_mail, birthday, diet, intolerances, username, password)
+            # update bmi in database
+            userDao.setValueForUserInField(username, "BMI", apiBMI.getBMI(weight, height))
+            userDao.setValueForUserInField(username, "BMI_STATUS", apiBMI.getBMIstatus(weight, height))
+        self.userID = userDao.getUserID(username)
+        self.valueBMI = userDao.getValueOfUserInField(username, "BMI")
+        self.statusBMI  = userDao.getValueOfUserInField(username, "BMI_STATUS")
 
     @classmethod
     # Construct from list

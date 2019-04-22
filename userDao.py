@@ -65,6 +65,28 @@ class userDao:
             finally:
                 cursor.close()
     @staticmethod
+    # Set a user field
+    def getValueOfUserInField(username, field_name, is_password = False):
+        user_id = userDao.getUserID(username)
+        if is_password == False:
+            try:
+                with connection.cursor() as cursor:
+                    sql = "SELECT " + field_name + " from USER where USER_ID = " + str(user_id)
+                    cursor.execute(sql)
+                    info = cursor.fetchone()
+                    return list(info.values())[0]
+            finally:
+                cursor.close()
+        elif is_password == True:
+            try:
+                with connection.cursor() as cursor:
+                    sql = "SELECT AES_DECRYPT(" + field_name + ",'key123') from USER where USER_ID = " + str(user_id)
+                    cursor.execute(sql)
+                    info = cursor.fetchone()
+                    return list(info.values())[0]
+            finally:
+                cursor.close()
+    @staticmethod
     def getUserID(username):
         try:
             with connection.cursor() as cursor:
@@ -76,9 +98,8 @@ class userDao:
         return int(info['USER_ID'])
     
     @staticmethod
-    # Create a new user
-    def createUserFromList(arg_list):
-        first_name, middle_name, last_name, height, weight, e_mail, birthday, diet, intolerances, username, password = arg_list
+    # Create a new user 
+    def createUserFromList(first_name, middle_name, last_name, height, weight, e_mail, birthday, diet, intolerances, username, password):
         try:
             with connection.cursor() as cursor:
                 sql = "insert into USER (LOGIN_NAME) value (%s)"
@@ -95,5 +116,5 @@ class userDao:
                 userDao.setValueForUserInField(username, sql_field_names[index], inputs[index])
 
 if __name__ == "__main__":
-    pass
+    print(userDao.getValueOfUserInField("Eddie", "PASSWORD_HASH", True))
     
