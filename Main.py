@@ -61,8 +61,40 @@ while choice not in ["q", "Q"]:
 while choice not in ["q", "Q"]:
     choice = uiMenu(mainMenu, menu_title = "Main Menu", sub_title = "Hello %s! Your BMI is %.2f (%s)" % (active_user.firstName, active_user.valueBMI,active_user.statusBMI),user_instruction="What would you like to do?")
     if choice == 1:
-        pass
+        # Update profile information
+        choice = uiMenu(updateProfileInformationMenu, menu_title = "Update Profile Information",user_instruction = "What information would you like to update?")
+        if choice == 1:
+            # Update first name
+            new_first_name = uiMenu(["Enter new first name:"], menu_title = "Update First Name", input_type="questions", error_keys="name", questions_check_functions=checkIfStringLenNeqZero)[0]
+            active_user.updateAttribute("firstName", new_first_name, "FIRST_NAME")
+            break
+        if choice == 2:
+            pass
+        if choice == 3:
+            pass
+        if choice == 4:
+            pass
+        if choice == 5:
+            pass
+        if choice == 6:
+            pass
+        if choice == 7:
+            pass
+        if choice == 8:
+            pass
+        if choice == 9:
+            pass
+        if choice == 10:
+            pass
+        if choice == 11:
+            pass
+        if choice == 12:
+            # Go back to main menu
+            break
     if choice == 2:
+        pass
+    if choice == 3:
+        # Fitness
         choice = uiMenu(fitnessMenu, menu_title = "Fitness",user_instruction="What would you like to do?")
         if choice == 1:
             pass
@@ -71,9 +103,10 @@ while choice not in ["q", "Q"]:
         if choice == 3:
             # Go back to main menu
             break
-    if choice == 3:
-        pass
     if choice == 4:
+        pass
+    if choice == 5:
+        # Logout
         while choice not in ["q", "Q"]:
             choice = uiMenu(logInMenu, menu_title = "Login", user_instruction="What would you like to do?")
             if choice == 1:
