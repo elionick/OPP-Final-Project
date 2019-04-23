@@ -2,7 +2,7 @@ from dbFunctions import *
 class userDao:
     @staticmethod
     # Get user attributes from database as list
-    def getUserAttributesAsList(username):
+    def getUserAtxtributesAsList(username):
         user_id = userDao.getUserID(username)
         try:
             with connection.cursor() as cursor:
