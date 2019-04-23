@@ -23,6 +23,24 @@ class user():
         self.userID = userDao.getUserID(username)
         self.valueBMI = userDao.getValueOfUserInField(username, "BMI")
         self.statusBMI  = userDao.getValueOfUserInField(username, "BMI_STATUS")
+    
+    
+    
+    def updateWeight(self, new_weight):
+        self.weight = new_weight
+        userDao.setValueForUserInField(self.username, "WEIGHT", self.weight)
+        self.updateBMI()
+
+    def updateHeight(self, new_height):
+        self.height = new_height
+        userDao.setValueForUserInField(self.username, "HEIGHT", self.height)
+        self.updateBMI()
+
+    def updateBMI(self):
+        self.valueBMI =  apiBMI.getBMI(self.weight, self.height)
+        self.statusBMI = apiBMI.getBMIstatus(self.weight, self.height)
+        userDao.setValueForUserInField(self.username, "BMI", self.valueBMI)
+        userDao.setValueForUserInField(self.username, "BMI_STATUS", self.statusBMI)
 
     @classmethod
     # Construct from list

@@ -68,6 +68,8 @@ while choice not in ["q", "Q"]:
             pass
         if choice == 2:
             pass
+        if choice == 3:
+            break
     if choice == 3:
         pass
     if choice == 4:

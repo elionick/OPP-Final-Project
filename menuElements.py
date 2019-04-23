@@ -12,4 +12,4 @@ createUserProfil = ["What is your first name?",
                     "Create Username",
                     "Create Password"
                    ]
-fitnessMenu = ["Create new Workout", "Workout Plan"]
+fitnessMenu = ["Create new workout", "Workout plan", "Go back to main menu"]
