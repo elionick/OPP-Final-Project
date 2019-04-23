@@ -69,6 +69,7 @@ while choice not in ["q", "Q"]:
         if choice == 2:
             pass
         if choice == 3:
+            # Go back to main menu
             break
     if choice == 3:
         pass
