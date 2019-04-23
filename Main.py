@@ -65,29 +65,57 @@ while choice not in ["q", "Q"]:
         choice = uiMenu(updateProfileInformationMenu, menu_title = "Update Profile Information",user_instruction = "What information would you like to update?")
         if choice == 1:
             # Update first name
-            new_first_name = uiMenu(["Enter new first name:"], menu_title = "Update First Name", input_type="questions", error_keys="name", questions_check_functions=checkIfStringLenNeqZero)[0]
+            new_first_name = uiMenu(["Enter new first name"], menu_title = "Update First Name", input_type="questions", error_keys="name", questions_check_functions=checkIfStringLenNeqZero)[0]
             active_user.updateAttribute("firstName", new_first_name, "FIRST_NAME")
             break
         if choice == 2:
-            pass
+            # Update middle name
+            new_middle_name = uiMenu(["Enter new middle name"], menu_title = "Update Middle Name", input_type="questions")[0]
+            active_user.updateAttribute("middleName", new_middle_name, "MIDDLE_NAME")
+            break
         if choice == 3:
-            pass
+            # Update last name
+            new_last_name = uiMenu(["Enter new last name"], menu_title = "Update Last Name", input_type="questions",error_keys="name", questions_check_functions=checkIfStringLenNeqZero)[0]
+            active_user.updateAttribute("lastName", new_last_name, "LAST_NAME")
+            break
         if choice == 4:
-            pass
+            # Update height
+            new_height = uiMenu(["Enter new height (in meter)"], menu_title = "Update Height", input_type="questions",error_keys="height", questions_check_functions=checkHeight)[0]
+            active_user.updateAttribute("height", new_height, "HEIGHT")
+            break
         if choice == 5:
-            pass
+            # Update weight
+            new_weight = uiMenu(["Enter new weight (in kilogram)"], menu_title = "Update Weight", input_type="questions",error_keys="weight", questions_check_functions=checkWeight)[0]
+            active_user.updateAttribute("height", new_weight, "WEIGHT")
+            break
         if choice == 6:
-            pass
+            # Update email
+            new_email = uiMenu(["Enter new email"], menu_title = "Update Email", input_type="questions",error_keys="email", questions_check_functions=checkEmail)[0]
+            active_user.updateAttribute("eMail", new_email, "EMAIL")
+            break
         if choice == 7:
-            pass
+            # Update birthday
+            new_birthday = uiMenu(["Enter new birthday"], menu_title = "Update Birthday", input_type="questions",error_keys="birth", questions_check_functions=checkValidYearOfBirth)[0]
+            active_user.updateAttribute("birthday", new_birthday, "BIRTHDATE")
+            break
         if choice == 8:
-            pass
+            # Update diet
+            new_diet = uiMenu(["Enter new diet"], menu_title = "Update Diet", input_type="questions",error_keys="diet", questions_check_functions=checkDiet)[0]
+            active_user.updateAttribute("diet", new_diet, "DIET")
+            break
         if choice == 9:
+            # to do: Intolerance Add and Delete Option?
             pass
         if choice == 10:
-            pass
+            # Update username
+            new_username = uiMenu(["Enter new username"], menu_title = "Update Username", input_type="questions", error_keys="username", questions_check_functions=checkUsernameNotAssigned)[0]
+            active_user.updateAttribute("username", new_username, "LOGIN_NAME")
+            break
         if choice == 11:
-            pass
+            # Update password
+            new_password = uiMenu(["Enter new password"], menu_title = "Update Password", input_type="questions", error_keys="password", questions_check_functions=checkIfStringLenNeqZero, questions_special_input_func = getpass)[0]
+            active_user.updateAttribute("username", new_username, "PASSWORD_HASH", is_password = True)
+            break
         if choice == 12:
             # Go back to main menu
             break
