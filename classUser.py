@@ -24,8 +24,10 @@ class user():
         self.valueBMI = userDao.getValueOfUserInField(username, "BMI")
         self.statusBMI  = userDao.getValueOfUserInField(username, "BMI_STATUS")
     
-    
-    
+    def updateAttribute(self, attribute, new_value, dao_fieldname):
+        setattr(self, attribute, new_value)
+        userDao.setValueForUserInField(self.username, dao_fieldname, getattr(self, attribute))
+
     def updateWeight(self, new_weight):
         self.weight = new_weight
         userDao.setValueForUserInField(self.username, "WEIGHT", self.weight)
