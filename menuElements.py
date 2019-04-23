@@ -12,3 +12,4 @@ createUserProfil = ["What is your first name?",
                     "Create Username",
                     "Create Password"
                    ]
+fitnessMenu = ["Create new Workout", "Workout Plan"]
