@@ -1,5 +1,5 @@
 logInMenu = ["Login", "Sign Up"]
-mainMenu = ["Recipes", "Fitness", "Shopping", "Logout"]
+mainMenu = ["Update profile information","Recipes", "Fitness", "Shopping", "Logout"]
 createUserProfil = ["What is your first name?", 
                     "What is your middle name?",
                     "What is your last name?",
@@ -12,3 +12,5 @@ createUserProfil = ["What is your first name?",
                     "Create Username",
                     "Create Password"
                    ]
+fitnessMenu = ["Create new workout", "Workout plan", "Go back to main menu"]
+updateProfileInformationMenu = ["First name", "Middle Name", "Last name", "Height", "Weight", "Email", "Birthday", "Diet", "Intolerances", "Username", "Password", "Go back to main menu"]

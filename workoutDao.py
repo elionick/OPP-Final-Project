@@ -8,7 +8,7 @@ class workoutDao:
                 cursor.execute(sql, (starttime, weekday, user_id))
                 connection.commit()
         finally:
-            cursor.close()
+            cursor.close()    
     def getWorkoutId(self, starttime, weekday, user_id):
         try:
             with connection.cursor() as cursor:
@@ -18,7 +18,6 @@ class workoutDao:
         finally:
             cursor.close()
         return int(info['WORKOUT_ID'])
-
 
 if __name__ == "__main__":
     workoutDao.setWorkout(workoutDao, "12:30", "MON", 24)

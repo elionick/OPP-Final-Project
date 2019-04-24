@@ -8,6 +8,14 @@ class exerciseDao:
                 connection.commit()
         finally:
             cursor.close()
+    def deleteExercise(self, name):
+        try:
+            with connection.cursor() as cursor:
+                sql = f"delete from EXERCISES where NAME = {name}"
+                cursor.execute(sql)
+                connection.commit()
+        finally:
+            cursor.close()
     def getExerciseDic(self, workout_id):
         try:
             with connection.cursor() as cursor:
@@ -19,4 +27,4 @@ class exerciseDao:
         return info
 
 if __name__ == "__main__":
-    print(exerciseDao.getExercises(exerciseDao, 12))
+    pass

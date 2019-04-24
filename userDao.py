@@ -46,8 +46,7 @@ class userDao:
             cursor.close()
     @staticmethod
     # Set a user field
-    def setValueForUserInField(username, field_name, value, is_password = False):
-        user_id = userDao.getUserID(username)
+    def setValueForUserInField(user_id, field_name, value, is_password = False):
         if is_password == False:
             try:
                 with connection.cursor() as cursor:
@@ -66,8 +65,7 @@ class userDao:
                 cursor.close()
     @staticmethod
     # Set a user field
-    def getValueOfUserInField(username, field_name, is_password = False):
-        user_id = userDao.getUserID(username)
+    def getValueOfUserInField(user_id, field_name, is_password = False):
         if is_password == False:
             try:
                 with connection.cursor() as cursor:
@@ -107,14 +105,15 @@ class userDao:
                 connection.commit()
         finally:
             cursor.close()
+        user_id = userDao.getUserID(username)
         if password != None:
-            userDao.setValueForUserInField(username, "PASSWORD_HASH", password, is_password = True)
+            userDao.setValueForUserInField(user_id, "PASSWORD_HASH", password, is_password = True)
         inputs = [first_name, middle_name, last_name, height, weight, birthday, diet, intolerances, e_mail]
         sql_field_names = ["FIRST_NAME", "MIDDLE_NAME", "LAST_NAME", "HEIGHT", "WEIGHT", "BIRTHDATE", "DIET", "INTOLERANCE", "E_MAIL"]
         for index, element in enumerate(inputs):
             if element != None:
-                userDao.setValueForUserInField(username, sql_field_names[index], inputs[index])
+                userDao.setValueForUserInField(user_id, sql_field_names[index], inputs[index])
 
 if __name__ == "__main__":
-    print(userDao.getValueOfUserInField("Eddie", "PASSWORD_HASH", True))
+    pass
     

@@ -17,12 +17,33 @@ class user():
         if userDao.checkUsernameExists(username) == False:
             # create user in database
             userDao.createUserFromList(first_name, middle_name, last_name, height, weight, e_mail, birthday, diet, intolerances, username, password)
-            # update bmi in database
-            userDao.setValueForUserInField(username, "BMI", apiBMI.getBMI(weight, height))
-            userDao.setValueForUserInField(username, "BMI_STATUS", apiBMI.getBMIstatus(weight, height))
         self.userID = userDao.getUserID(username)
-        self.valueBMI = userDao.getValueOfUserInField(username, "BMI")
-        self.statusBMI  = userDao.getValueOfUserInField(username, "BMI_STATUS")
+        if userDao.checkUsernameExists(username) == False:
+            # update bmi in database
+            userDao.setValueForUserInField(self.userID, "BMI", apiBMI.getBMI(weight, height))
+            userDao.setValueForUserInField(self.userID, "BMI_STATUS", apiBMI.getBMIstatus(weight, height))
+        self.valueBMI = userDao.getValueOfUserInField(self.userID, "BMI")
+        self.statusBMI  = userDao.getValueOfUserInField(self.userID, "BMI_STATUS")
+    
+    def updateAttribute(self, attribute, new_value, dao_fieldname, is_password = False):
+        setattr(self, attribute, new_value)
+        userDao.setValueForUserInField(self.userID, dao_fieldname, getattr(self, attribute), is_password = is_password)
+
+    def updateWeight(self, new_weight):
+        self.weight = new_weight
+        userDao.setValueForUserInField(self.userID, "WEIGHT", self.weight)
+        self.updateBMI()
+
+    def updateHeight(self, new_height):
+        self.height = new_height
+        userDao.setValueForUserInField(self.userID, "HEIGHT", self.height)
+        self.updateBMI()
+
+    def updateBMI(self):
+        self.valueBMI =  apiBMI.getBMI(self.weight, self.height)
+        self.statusBMI = apiBMI.getBMIstatus(self.weight, self.height)
+        userDao.setValueForUserInField(self.userID, "BMI", self.valueBMI)
+        userDao.setValueForUserInField(self.userID, "BMI_STATUS", self.statusBMI)
 
     @classmethod
     # Construct from list
