@@ -60,7 +60,7 @@ while choice not in ["q", "Q"]:
 
 # Main Menu
 while choice not in ["q", "Q"]:
-    choice = uiMenu(mainMenu, menu_title = "Main Menu", sub_title = "Hello %s! Your BMI is %.2f (%s)" % (active_user.firstName, active_user.valueBMI,active_user.statusBMI),user_instruction="What would you like to do?")
+    choice = uiMenu(mainMenu, menu_title = "Main Menu", sub_title = "Hello %s! Your BMI is %.2f (%s). Your Body Fat is %.2f%%." % (active_user.firstName, active_user.valueBMI,active_user.statusBMI, active_user.bodyFat),user_instruction="What would you like to do?")
     if choice == 1:
         while choice not in ["q", "Q"]:
             # Update profile information

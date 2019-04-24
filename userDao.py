@@ -6,7 +6,7 @@ class userDao:
         user_id = userDao.getUserID(username)
         try:
             with connection.cursor() as cursor:
-                sql = "select FIRST_NAME, MIDDLE_NAME, LAST_NAME, GENDER, HEIGHT, WEIGHT, BIRTHDATE, DIET, INTOLERANCE, E_MAIL, LOGIN_NAME, PASSWORD_HASH FROM USER WHERE USER_ID = %s"
+                sql = "select FIRST_NAME, MIDDLE_NAME, LAST_NAME, GENDER, HEIGHT, WEIGHT, E_MAIL, BIRTHDATE, DIET, INTOLERANCE, LOGIN_NAME, PASSWORD_HASH FROM USER WHERE USER_ID = %s"
                 cursor.execute(sql, user_id)
                 info = cursor.fetchone()
                 retv = [v for v in info.values()]
@@ -109,7 +109,7 @@ class userDao:
         if password != None:
             userDao.setValueForUserInField(user_id, "PASSWORD_HASH", password, is_password = True)
         inputs = [first_name, middle_name, last_name, gender, height, weight, birthday, diet, intolerances, e_mail]
-        sql_field_names = ["FIRST_NAME", "MIDDLE_NAME", "LAST_NAME", "GENDER", "HEIGHT", "WEIGHT", "BIRTHDATE", "DIET", "INTOLERANCE", "E_MAIL"]
+        sql_field_names = ["FIRST_NAME", "MIDDLE_NAME", "LAST_NAME", "GENDER", "HEIGHT", "WEIGHT", "E_MAIL", "BIRTHDATE", "DIET", "INTOLERANCE"]
         for index, element in enumerate(inputs):
             if element != None:
                 userDao.setValueForUserInField(user_id, sql_field_names[index], inputs[index])
