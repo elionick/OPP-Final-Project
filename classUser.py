@@ -1,10 +1,11 @@
 import apiBMI 
 from userDao import *
 class user():
-    def __init__(self, first_name, middle_name, last_name, height, weight, e_mail, birthday, diet, intolerances, username, password):
+    def __init__(self, first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password):
         self.firstName = first_name
         self.middleName = middle_name
         self.lastName = last_name
+        self.gender = gender
         self.weight = weight
         self.height = height
         self.username = username
@@ -16,12 +17,14 @@ class user():
         # Create user if user not exists
         if userDao.checkUsernameExists(username) == False:
             # create user in database
-            userDao.createUserFromList(first_name, middle_name, last_name, height, weight, e_mail, birthday, diet, intolerances, username, password)
+            self.user_created = True
+            userDao.createUserFromList(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password)
         self.userID = userDao.getUserID(username)
-        if userDao.checkUsernameExists(username) == False:
+        if self.user_created == True:
             # update bmi in database
             userDao.setValueForUserInField(self.userID, "BMI", apiBMI.getBMI(weight, height))
             userDao.setValueForUserInField(self.userID, "BMI_STATUS", apiBMI.getBMIstatus(weight, height))
+            delattr(self, "user_created")
         self.valueBMI = userDao.getValueOfUserInField(self.userID, "BMI")
         self.statusBMI  = userDao.getValueOfUserInField(self.userID, "BMI_STATUS")
     
@@ -48,14 +51,14 @@ class user():
     @classmethod
     # Construct from list
     def from_list(cls, arg_list):
-        first_name, middle_name, last_name, height, weight, e_mail, birthday, diet, intolerances, username, password = arg_list
-        return cls(first_name, middle_name, last_name, height, weight, e_mail, birthday, diet, intolerances, username, password)
+        first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password = arg_list
+        return cls(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password)
     @classmethod
     # Construct from database
     def from_username(cls, username):
         arg_list = userDao.getUserAttributesAsList(username)
-        first_name, middle_name, last_name, height, weight, e_mail, birthday, diet, intolerances, username, password = arg_list
-        return cls(first_name, middle_name, last_name, height, weight, e_mail, birthday, diet, intolerances, username, password)
+        first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password = arg_list
+        return cls(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password)
 
 if __name__ == "__main__":
     pass

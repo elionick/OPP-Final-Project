@@ -87,8 +87,11 @@ def checkValidYearOfBirth(input):
         return False
 
 # Check Username Input 
-def checkUsernameNotAssigned(input):
-    return not userDao.checkUsernameExists(input)
+def checkNewUsername(input):
+    if checkIfStringLenNeqZero == False:
+        return False
+    else:
+        return not userDao.checkUsernameExists(input)
 
 # Check diet knonw
 def checkDiet(input):
@@ -108,6 +111,10 @@ def checkIntolerances(input):
                 return False
     return True
 
+def checkGender(input):
+    if input in ["m", "f"]:
+        return True
+    return False
 
 
 if __name__ == "__main__":

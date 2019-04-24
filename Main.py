@@ -4,7 +4,6 @@ from userDao import *
 from designElements import *
 from menuElements import *
 from getpass import getpass
-from userDao import *
 from classUser import *
 # Show Welcome
 showWelcome()
@@ -31,6 +30,7 @@ while choice not in ["q", "Q"]:
                 "name", 
                 None, 
                 "name", 
+                "gender",
                 "height", 
                 "weight", 
                 "email",
@@ -44,15 +44,16 @@ while choice not in ["q", "Q"]:
                 checkIfStringLenNeqZero, 
                 None, 
                 checkIfStringLenNeqZero, 
+                checkGender,
                 checkHeight,
                 checkWeight,
                 checkEmail,
                 checkValidYearOfBirth,
                 checkDiet,
                 checkIntolerances,
-                checkUsernameNotAssigned,
+                checkNewUsername,
                 checkIfStringLenNeqZero],
-            questions_special_input_func = [None, None, None, None, None, None, None, None, None, None, getpass]
+            questions_special_input_func = [None, None, None, None, None, None, None, None, None, None, None, getpass]
             )
         active_user = user.from_list(user_data)
         break
@@ -101,7 +102,7 @@ while choice not in ["q", "Q"]:
                 pass
             if choice == 10:
                 # Update username
-                new_username = uiMenu(["Enter new username"], menu_title = "Update Username", input_type="questions", error_keys=["username"], questions_check_functions=[checkUsernameNotAssigned])[0]
+                new_username = uiMenu(["Enter new username"], menu_title = "Update Username", input_type="questions", error_keys=["username"], questions_check_functions=[checkNewUsername])[0]
                 active_user.updateAttribute("username", new_username, "LOGIN_NAME")
             if choice == 11:
                 # Update password
@@ -144,6 +145,7 @@ while choice not in ["q", "Q"]:
                         "name", 
                         None, 
                         "name", 
+                        "gender",
                         "height", 
                         "weight", 
                         "email",
@@ -156,16 +158,17 @@ while choice not in ["q", "Q"]:
                     questions_check_functions = [
                         checkIfStringLenNeqZero, 
                         None, 
-                        checkIfStringLenNeqZero, 
+                        checkIfStringLenNeqZero,
+                        checkGender, 
                         checkHeight,
                         checkWeight,
                         checkEmail,
                         checkValidYearOfBirth,
                         checkDiet,
                         checkIntolerances,
-                        checkUsernameNotAssigned,
+                        checkNewUsername,
                         checkIfStringLenNeqZero],
-                    questions_special_input_func = [None, None, None, None, None, None, None, None, None, None, getpass]
+                    questions_special_input_func = [None, None, None, None, None, None, None, None, None, None, None, getpass]
                     )
                 active_user = user.from_list(user_data)
                 break
