@@ -19,12 +19,14 @@ class user():
             # create user in database
             self.user_created = True
             userDao.createUserFromList(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password)
+        else: 
+            self.user_created = False
         self.userID = userDao.getUserID(username)
         if self.user_created == True:
             # update bmi in database
             userDao.setValueForUserInField(self.userID, "BMI", apiBMI.getBMI(weight, height))
             userDao.setValueForUserInField(self.userID, "BMI_STATUS", apiBMI.getBMIstatus(weight, height))
-            delattr(self, "user_created")
+        delattr(self, "user_created")
         self.valueBMI = userDao.getValueOfUserInField(self.userID, "BMI")
         self.statusBMI  = userDao.getValueOfUserInField(self.userID, "BMI_STATUS")
     
