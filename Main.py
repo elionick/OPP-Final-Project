@@ -5,6 +5,8 @@ from designElements import *
 from menuElements import *
 from getpass import getpass
 from classUser import *
+from classWorkout import workout
+from classExercise import exercise
 # Show Welcome
 showWelcome()
 time.sleep(2)
@@ -121,9 +123,24 @@ while choice not in ["q", "Q"]:
             # Fitness
             choice = uiMenu(fitnessMenu, menu_title = "Fitness",user_instruction="What would you like to do?")
             if choice == 1:
-                pass
+                workout_data = uiMenu(createNewWorkout, menu_title="Create New Workout", input_type="questions", error_keys=["day", "time"], questions_check_functions=[checkDayValid, checkTimeValid])
+                new_workout = workout(active_user.userID, workout_data[1], workout_data[0])
+                # Menu to add exercises to workout
+                while choice not in ["q", "Q"]:
+                    choice = uiMenu(specifyWorkout, menu_title = "Specify Workout", sub_title = "Workout's exercises:", sub_sub_title = "Eddie",user_instruction="What would you like to do?")
+                    if choice == 1:
+                        exercise_data = uiMenu(["Enter exercise"], menu_title="Add Exercise", input_type="questions", error_keys=["exercise"], questions_check_functions=[checkExerciseValid])
+                        new_exercise = exercise(new_workout.workoutID, exercise_data[0])
+                        new_workout.updateExercises()
+                        active_user.updateWorkouts()
+                    if choice == 2:
+                        break
+                # Loop für Exercises
+                # Update Workouts self.exercises
+                # Update User self.workouts
+                # get functions error
             if choice == 2:
-                print(active_user.workouts)
+                pass
             if choice == 3:
                 # Go back to main menu
                 break

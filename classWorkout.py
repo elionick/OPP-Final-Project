@@ -6,6 +6,14 @@ class workout(workoutDao):
         self.workoutID = self.getWorkoutId()
         self.exercises = exercise.createListOfExerciseObjects(self.workoutID)
     
+    def printExercises(self):
+        for exercise in self.exercises:
+            exercise.printExercise()
+    
+    def updateExercises(self):
+        self.exercises = exercise.createListOfExerciseObjects(self.workoutID)
+
+
     @classmethod
     def createListOfWorkoutObjects(cls, user_id):
         dao_workout_list = workoutDao.getWorkoutList(user_id)
@@ -15,4 +23,7 @@ class workout(workoutDao):
         return workout_list
 
 if __name__ == "__main__":
-    pass
+    new_workout = workout(35, "13:30", "MON")
+    new_exercise = exercise(new_workout.workoutID, "20km running")
+    new_workout.updateExercises()
+    new_workout.printExercises()

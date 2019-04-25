@@ -23,7 +23,7 @@ class exerciseDao:
     def createExercise(self):
         try:
             with connection.cursor() as cursor:
-                sql = "insert into EXERCISES (USER_QUERY, NAME, DURATION, CALORIES, MET, FK_WORKOUT_ID) values (%s, %s, %s, %s)"
+                sql = "insert into EXERCISES (EXERCISE_QUERY, NAME, DURATION, CALORIES, MET, FK_WORKOUT_ID) values (%s, %s, %s, %s, %s, %s)"
                 cursor.execute(sql, (self.exerciseQuery, self.exerciseName, self.duration, self.calories, self.met, self.workoutID))
                 connection.commit()
         finally:

@@ -17,7 +17,10 @@ def getErrorMessage(error_code, custom_message = ''):
     "password" : "Error! Please enter a valid password.",
     "diet" : "Error! Please enter a valid diet.",
     "intolerance" : "Error! Please enter a valid intolerance(s).",
-    "gender": "Error! Please enter a valid gender."
+    "gender": "Error! Please enter a valid gender.",
+    "day": "Error! Please enter a valid day.",
+    "time": "Error! Please enter a valid time.",
+    "exercise": "Error! Please enter a valid exercise."
     }
     return errorMessages[error_code]
 

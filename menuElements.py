@@ -15,3 +15,5 @@ createUserProfil = ["What is your first name?",
                    ]
 fitnessMenu = ["Create new workout", "Workout plan", "Go back to main menu"]
 updateProfileInformationMenu = ["First name", "Middle Name", "Last name", "Gender", "Height", "Weight", "Email", "Birthday", "Diet", "Intolerances", "Username", "Password", "Go back to main menu"]
+createNewWorkout = ["Day (MON, TUE, WED, THU, FRI, SAT, SUN)", "Time"]
+specifyWorkout = ["Add exercise to workout", "Save Workout"]

@@ -25,11 +25,14 @@ class user():
         if userDao.checkUsernameExists(username) == False:
             # create user in database
             userDao.createUserFromList(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password)
-        
         self.userID = userDao.getUserID(username)
         self.setBMI()
         self.setBodyFat()
         self.workouts = workout.createListOfWorkoutObjects(self.userID)
+
+    def updateWorkouts(self):
+        self.workouts = workout.createListOfWorkoutObjects(self.userID)
+    
     
     # Estimate Body Fat Percentage
     def setBodyFat(self):
