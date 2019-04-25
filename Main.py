@@ -6,6 +6,7 @@ from menuElements import *
 from getpass import getpass
 from userDao import *
 from classUser import *
+from apiRecipe import *
 # Show Welcome
 showWelcome()
 time.sleep(2)
@@ -111,7 +112,18 @@ while choice not in ["q", "Q"]:
                 # Go back to main menu
                 break
     if choice == 2:
-        pass
+        while choice not in ["q", "Q"]:
+            # Recipes
+            choice = uiMenu(fitnessMenu, menu_title = "Recipes",user_instruction="What would you like to do?")
+            if choice == 1:
+                #getRecipeByIngredients(USER_ID)
+                pass
+            if choice == 2:
+                #getRecipeByMeal(USER_ID, INTOLERANCE, DIET)
+                pass
+            if choice == 3:
+                # Go back to main menu
+                break
     if choice == 3:
         while choice not in ["q", "Q"]:
             # Fitness
