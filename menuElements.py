@@ -14,3 +14,4 @@ createUserProfil = ["What is your first name?",
                    ]
 fitnessMenu = ["Create new workout", "Workout plan", "Go back to main menu"]
 updateProfileInformationMenu = ["First name", "Middle Name", "Last name", "Height", "Weight", "Email", "Birthday", "Diet", "Intolerances", "Username", "Password", "Go back to main menu"]
+recipesMenu = ["Search meal by ingredients", "Search for meal", "Go back to main menu"]
