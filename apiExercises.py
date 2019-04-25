@@ -30,7 +30,14 @@ def getDurationByExercise(query, gender = None, weight_kg = None, height_cm = No
     retv = {exercise : r.json()["exercises"][index]["duration_min"] for index, exercise in enumerate(getExerciseName_s(query, gender = gender, weight_kg = weight_kg, height_cm = height_cm, age = age))}
     return retv
 
+# Function to get calories burned by exercise (returns dictionary)
+def getMetByExercise(query, gender = None, weight_kg = None, height_cm = None, age = None):
+    r = getExerciseDataFromQuery(query, gender = gender, weight_kg = weight_kg, height_cm = height_cm, age = age)
+    retv = {exercise : r.json()["exercises"][index]["met"] for index, exercise in enumerate(getExerciseName_s(query, gender = gender, weight_kg = weight_kg, height_cm = height_cm, age = age))}
+    return retv
+
 if __name__ == "__main__":
     print(getExerciseName_s("ran 3 km and swam 200m"))
     print(getCaloriesBurnedByExercise("ran 3 km and swam 200m"))
     print(getDurationByExercise("ran 3 km and swam 200m"))
+    print(getExerciseDataFromQuery("ran 3 km and swam 200m").json())

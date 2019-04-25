@@ -4,9 +4,12 @@ from userDao import *
 from designElements import *
 from menuElements import *
 from getpass import getpass
-from userDao import *
 from classUser import *
+from classWorkout import workout
+from classExercise import exercise
+
 from apiRecipe import *
+
 # Show Welcome
 showWelcome()
 time.sleep(2)
@@ -32,6 +35,7 @@ while choice not in ["q", "Q"]:
                 "name", 
                 None, 
                 "name", 
+                "gender",
                 "height", 
                 "weight", 
                 "email",
@@ -45,22 +49,23 @@ while choice not in ["q", "Q"]:
                 checkIfStringLenNeqZero, 
                 None, 
                 checkIfStringLenNeqZero, 
+                checkGender,
                 checkHeight,
                 checkWeight,
                 checkEmail,
                 checkValidYearOfBirth,
                 checkDiet,
                 checkIntolerances,
-                checkUsernameNotAssigned,
+                checkNewUsername,
                 checkIfStringLenNeqZero],
-            questions_special_input_func = [None, None, None, None, None, None, None, None, None, None, getpass]
+            questions_special_input_func = [None, None, None, None, None, None, None, None, None, None, None, getpass]
             )
         active_user = user.from_list(user_data)
         break
 
 # Main Menu
 while choice not in ["q", "Q"]:
-    choice = uiMenu(mainMenu, menu_title = "Main Menu", sub_title = "Hello %s! Your BMI is %.2f (%s)" % (active_user.firstName, active_user.valueBMI,active_user.statusBMI),user_instruction="What would you like to do?")
+    choice = uiMenu(mainMenu, menu_title = "Main Menu", sub_title = "Hello %s! Your BMI is %.2f (%s). Your Body Fat is %.2f%%." % (active_user.firstName, active_user.valueBMI,active_user.statusBMI, active_user.bodyFat),user_instruction="What would you like to do?")
     if choice == 1:
         while choice not in ["q", "Q"]:
             # Update profile information
@@ -78,37 +83,40 @@ while choice not in ["q", "Q"]:
                 new_last_name = uiMenu(["Enter new last name"], menu_title = "Update Last Name", input_type="questions",error_keys=["name"], questions_check_functions=[checkIfStringLenNeqZero])[0]
                 active_user.updateAttribute("lastName", new_last_name, "LAST_NAME")
             if choice == 4:
+                new_gender = uiMenu(["Enter new gender"], menu_title = "Update Gender", input_type="questions",error_keys=["gender"], questions_check_functions=[checkGender])[0]
+                active_user.updateAttribute("gender", new_gender, "GENDER")
+            if choice == 5:
                 # Update height
                 new_height = uiMenu(["Enter new height (in meter)"], menu_title = "Update Height", input_type="questions",error_keys=["height"], questions_check_functions=[checkHeight])[0]
                 active_user.updateHeight(new_height)
-            if choice == 5:
+            if choice == 6:
                 # Update weight
                 new_weight = uiMenu(["Enter new weight (in kilogram)"], menu_title = "Update Weight", input_type="questions",error_keys="weight", questions_check_functions=[checkWeight])[0]
                 active_user.updateWeight(new_weight)
-            if choice == 6:
+            if choice == 7:
                 # Update email
                 new_email = uiMenu(["Enter new email"], menu_title = "Update Email", input_type="questions",error_keys=["email"], questions_check_functions=[checkEmail])[0]
                 active_user.updateAttribute("eMail", new_email, "E_MAIL")
-            if choice == 7:
+            if choice == 8:
                 # Update birthday
                 new_birthday = uiMenu(["Enter new birthday"], menu_title = "Update Birthday", input_type="questions",error_keys=["birth"], questions_check_functions=[checkValidYearOfBirth])[0]
                 active_user.updateAttribute("birthday", new_birthday, "BIRTHDATE")
-            if choice == 8:
+            if choice == 9:
                 # Update diet
                 new_diet = uiMenu(["Enter new diet"], menu_title = "Update Diet", input_type="questions",error_keys=["diet"], questions_check_functions=[checkDiet])[0]
                 active_user.updateAttribute("diet", new_diet, "DIET")
-            if choice == 9:
+            if choice == 10:
                 # to do: Intolerance Add and Delete Option
                 pass
-            if choice == 10:
-                # Update username
-                new_username = uiMenu(["Enter new username"], menu_title = "Update Username", input_type="questions", error_keys=["username"], questions_check_functions=[checkUsernameNotAssigned])[0]
-                active_user.updateAttribute("username", new_username, "LOGIN_NAME")
             if choice == 11:
+                # Update username
+                new_username = uiMenu(["Enter new username"], menu_title = "Update Username", input_type="questions", error_keys=["username"], questions_check_functions=[checkNewUsername])[0]
+                active_user.updateAttribute("username", new_username, "LOGIN_NAME")
+            if choice == 12:
                 # Update password
                 new_password = uiMenu(["Enter new password"], menu_title = "Update Password", input_type="questions", error_keys=["password"], questions_check_functions=[checkIfStringLenNeqZero], questions_special_input_func = [getpass])[0]
                 active_user.updateAttribute("password", new_password, "PASSWORD_HASH", is_password = True)
-            if choice == 12:
+            if choice == 13:
                 # Go back to main menu
                 break
     if choice == 2:
@@ -129,7 +137,22 @@ while choice not in ["q", "Q"]:
             # Fitness
             choice = uiMenu(fitnessMenu, menu_title = "Fitness",user_instruction="What would you like to do?")
             if choice == 1:
-                pass
+                workout_data = uiMenu(createNewWorkout, menu_title="Create New Workout", input_type="questions", error_keys=["day", "time"], questions_check_functions=[checkDayValid, checkTimeValid])
+                new_workout = workout(active_user.userID, workout_data[1], workout_data[0])
+                # Menu to add exercises to workout
+                while choice not in ["q", "Q"]:
+                    choice = uiMenu(specifyWorkout, menu_title = "Specify Workout", sub_title = "Workout's exercises:", sub_sub_title = "Eddie",user_instruction="What would you like to do?")
+                    if choice == 1:
+                        exercise_data = uiMenu(["Enter exercise"], menu_title="Add Exercise", input_type="questions", error_keys=["exercise"], questions_check_functions=[checkExerciseValid])
+                        new_exercise = exercise(new_workout.workoutID, exercise_data[0])
+                        new_workout.updateExercises()
+                        active_user.updateWorkouts()
+                    if choice == 2:
+                        break
+                # Loop für Exercises
+                # Update Workouts self.exercises
+                # Update User self.workouts
+                # get functions error
             if choice == 2:
                 pass
             if choice == 3:
@@ -156,6 +179,7 @@ while choice not in ["q", "Q"]:
                         "name", 
                         None, 
                         "name", 
+                        "gender",
                         "height", 
                         "weight", 
                         "email",
@@ -168,16 +192,17 @@ while choice not in ["q", "Q"]:
                     questions_check_functions = [
                         checkIfStringLenNeqZero, 
                         None, 
-                        checkIfStringLenNeqZero, 
+                        checkIfStringLenNeqZero,
+                        checkGender, 
                         checkHeight,
                         checkWeight,
                         checkEmail,
                         checkValidYearOfBirth,
                         checkDiet,
                         checkIntolerances,
-                        checkUsernameNotAssigned,
+                        checkNewUsername,
                         checkIfStringLenNeqZero],
-                    questions_special_input_func = [None, None, None, None, None, None, None, None, None, None, getpass]
+                    questions_special_input_func = [None, None, None, None, None, None, None, None, None, None, None, getpass]
                     )
                 active_user = user.from_list(user_data)
                 break

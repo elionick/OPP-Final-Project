@@ -3,10 +3,10 @@ from designElements import *
 from checkFunctions import *
 from getFunctions import *
 from menuElements import *
-
+from inspect import isfunction
 
 # displays a menu and returns an input
-def uiMenu(menu_elements_list, menu_title = None, sub_title = None, user_instruction = None,  
+def uiMenu(menu_elements_list, menu_title = None, sub_title = None, sub_sub_title = None, user_instruction = None,  
             nOptions = None, header = "logo", input_type = "choice", error_keys = ["choice"], 
             clear = True, quit_option = True, initial_error = False, 
             questions_check_functions = None,
@@ -27,11 +27,23 @@ def uiMenu(menu_elements_list, menu_title = None, sub_title = None, user_instruc
             design_elements[header]()
             print("")
         if menu_title != None:
-            print("*** " + menu_title + " ***")
-            print("")
+            if isinstance(menu_title, str) == False:
+                menu_title
+            else:
+                print("*** " + menu_title + " ***")
+                print("")
         if sub_title != None:
-            print(sub_title)
-            print("")
+            if isinstance(sub_title, str) == False:
+                sub_title
+            else:
+                print(sub_title)
+                print("")
+        if sub_sub_title != None:
+            if isinstance(sub_sub_title, str) == False:
+                sub_sub_title
+            else:
+                print(sub_sub_title)
+                print("")
         if input_type == "choice":
             for index, element in enumerate(menu_elements_list):
                 print(str(index + 1) + ":\t" + element)

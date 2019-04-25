@@ -3,6 +3,7 @@ mainMenu = ["Update profile information","Recipes", "Fitness", "Shopping", "Logo
 createUserProfil = ["What is your first name?", 
                     "What is your middle name?",
                     "What is your last name?",
+                    "What is your gender (m or f)?",
                     "What is your height (in meter)?",
                     "What is your weight (in kilogram)?",
                     "What is your email?",
@@ -13,5 +14,10 @@ createUserProfil = ["What is your first name?",
                     "Create Password"
                    ]
 fitnessMenu = ["Create new workout", "Workout plan", "Go back to main menu"]
-updateProfileInformationMenu = ["First name", "Middle Name", "Last name", "Height", "Weight", "Email", "Birthday", "Diet", "Intolerances", "Username", "Password", "Go back to main menu"]
+
+updateProfileInformationMenu = ["First name", "Middle Name", "Last name", "Gender", "Height", "Weight", "Email", "Birthday", "Diet", "Intolerances", "Username", "Password", "Go back to main menu"]
+createNewWorkout = ["Day (MON, TUE, WED, THU, FRI, SAT, SUN)", "Time"]
+specifyWorkout = ["Add exercise to workout", "Save Workout"]
+
 recipesMenu = ["Search meal by ingredients", "Search for meal", "Go back to main menu"]
+

@@ -2,6 +2,7 @@ from validate_email import validate_email
 from userDao import *
 from classFoodNutritionsDao import *
 import datetime
+from apiExercises import *
 
 # checks if user input is possible choice
 def checkIfChoice(input, poss_options, quit_option = True):
@@ -87,8 +88,11 @@ def checkValidYearOfBirth(input):
         return False
 
 # Check Username Input 
-def checkUsernameNotAssigned(input):
-    return not userDao.checkUsernameExists(input)
+def checkNewUsername(input):
+    if checkIfStringLenNeqZero == False:
+        return False
+    else:
+        return not userDao.checkUsernameExists(input)
 
 # Check diet knonw
 def checkDiet(input):
@@ -108,7 +112,35 @@ def checkIntolerances(input):
                 return False
     return True
 
+def checkGender(input):
+    if input in ["m", "f"]:
+        return True
+    return False
 
+# Check day
+def checkDayValid(input):
+    if input in ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]:
+        return True
+    else:
+        return False
+
+# Chek valid time
+def checkTimeValid(input):
+    try:
+        datetime.datetime.strptime(input, "%H:%M").time()
+        return True
+    except:
+        return False
+
+# Check if exercise
+def checkExerciseValid(input):
+    try:
+        if len(getExerciseDataFromQuery(input).json()['exercises']) == 1:
+            return True
+        else:
+            return False
+    except:
+        return False
 
 if __name__ == "__main__":
-    print(checkIntolerances("milg"))
+    pass
