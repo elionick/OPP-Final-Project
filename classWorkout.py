@@ -1,15 +1,18 @@
 from workoutDao import workoutDao
+from classExercise import exercise
 class workout(workoutDao):
-    def createNewWorkout(self):
-        self.setWorkout()    
+    def __init__(self, user_id, start_time, week_day, from_database = False):
+        super().__init__(user_id, start_time, week_day, from_database)
+        self.workoutID = self.getWorkoutId()
+        self.exercises = exercise.createListOfExerciseObjects(self.workoutID)
     
     @classmethod
     def createListOfWorkoutObjects(cls, user_id):
         dao_workout_list = workoutDao.getWorkoutList(user_id)
         workout_list = []
         for workout in dao_workout_list:
-            workout_list.append(cls(user_id, workout['TIME'], workout['WEEKDAY']))
+            workout_list.append(cls(user_id, workout['TIME'], workout['WEEKDAY'], from_database = True))
         return workout_list
 
 if __name__ == "__main__":
-    w_list = workout.createListOfWorkoutObjects(24)
+    pass

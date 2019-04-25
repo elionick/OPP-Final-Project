@@ -123,7 +123,7 @@ while choice not in ["q", "Q"]:
             if choice == 1:
                 pass
             if choice == 2:
-                pass
+                print(active_user.workouts)
             if choice == 3:
                 # Go back to main menu
                 break

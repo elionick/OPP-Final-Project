@@ -1,6 +1,7 @@
 import apiBMI 
 from userDao import *
 from datetime import date
+from classWorkout import workout
 class user():
     def __init__(self, first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password):
         self.firstName = first_name
@@ -28,6 +29,7 @@ class user():
         self.userID = userDao.getUserID(username)
         self.setBMI()
         self.setBodyFat()
+        self.workouts = workout.createListOfWorkoutObjects(self.userID)
     
     # Estimate Body Fat Percentage
     def setBodyFat(self):
