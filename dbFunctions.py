@@ -48,7 +48,7 @@ def createNewPriceTable(tablename, column1, column2, column3, column4, column5):
         cursor.close()
 
 
-def addnewMigrosPrice(product, productEntries):
+def addNewPrice(product, productEntries):
 
     for i in range(len(productEntries)):
         productEntries[i] = productEntries[i].split(",")
