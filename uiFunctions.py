@@ -1,4 +1,5 @@
-import os
+import platform    # For getting the operating system name
+import subprocess
 from designElements import *
 from checkFunctions import *
 from getFunctions import *
@@ -22,25 +23,28 @@ def uiMenu(menu_elements_list, menu_title = None, sub_title = None, sub_sub_titl
     }
     while True:
         if clear == True:
-            os.system('clear')
+            clear_screen()
         if header == "logo":
             design_elements[header]()
             print("")
         if menu_title != None:
             if isinstance(menu_title, str) == False:
-                menu_title
+                menu_title()
+                print("")
             else:
                 print("*** " + menu_title + " ***")
                 print("")
         if sub_title != None:
             if isinstance(sub_title, str) == False:
-                sub_title
+                sub_title()
+                print("")
             else:
                 print(sub_title)
                 print("")
         if sub_sub_title != None:
             if isinstance(sub_sub_title, str) == False:
-                sub_sub_title
+                sub_sub_title()
+                print("")
             else:
                 print(sub_sub_title)
                 print("")
@@ -104,7 +108,11 @@ def uiMenu(menu_elements_list, menu_title = None, sub_title = None, sub_sub_titl
                 error_status = False
                 if len(menu_elements_list) == len(answers):
                     return answers
+        
 
+def clear_screen():
+    command = "cls" if platform.system().lower()=="windows" else "clear"
+    return subprocess.call(command) == 0
 
 if __name__ == "__main__":
     pass

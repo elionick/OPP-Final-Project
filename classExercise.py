@@ -9,8 +9,8 @@ class exercise(exerciseDao):
             self.calories = calories
             self.met = met
     
-    def printExercise(self):
-        print([self.exerciseQuery, self.exerciseName, self.duration, self.calories, self.met])
+    def getExerciseAttrAsList(self):
+        return [self.exerciseQuery, self.exerciseName, self.duration, self.calories, self.met]
 
 
     @classmethod

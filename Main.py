@@ -141,7 +141,7 @@ while choice not in ["q", "Q"]:
                 new_workout = workout(active_user.userID, workout_data[1], workout_data[0])
                 # Menu to add exercises to workout
                 while choice not in ["q", "Q"]:
-                    choice = uiMenu(specifyWorkout, menu_title = "Specify Workout", sub_title = "Workout's exercises:", sub_sub_title = "Eddie",user_instruction="What would you like to do?")
+                    choice = uiMenu(specifyWorkout, menu_title = "Specify Workout", sub_title = "Workout's exercises:", sub_sub_title = new_workout.printExercises,user_instruction="What would you like to do?")
                     if choice == 1:
                         exercise_data = uiMenu(["Enter exercise"], menu_title="Add Exercise", input_type="questions", error_keys=["exercise"], questions_check_functions=[checkExerciseValid])
                         new_exercise = exercise(new_workout.workoutID, exercise_data[0])
