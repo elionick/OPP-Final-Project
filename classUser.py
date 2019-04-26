@@ -56,6 +56,7 @@ class user():
         self.height = new_height
         userDao.setValueForUserInField(self.userID, "HEIGHT", self.height)
         self.setBMI()
+        self.setBodyFat()
 
     def setBMI(self):
         self.valueBMI =  apiBMI.getBMI(self.weight, self.height)
