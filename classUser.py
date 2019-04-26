@@ -33,7 +33,6 @@ class user():
     def updateWorkouts(self):
         self.workouts = workout.createListOfWorkoutObjects(self.userID)
     
-    
     # Estimate Body Fat Percentage
     def setBodyFat(self):
         self.bodyFat = 1.39 * self.valueBMI + 0.16 * self.age - 10.34 * self.genderBinary - 9

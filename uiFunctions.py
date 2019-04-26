@@ -50,7 +50,8 @@ def uiMenu(menu_elements_list, menu_title = None, sub_title = None, sub_sub_titl
                 print("")
         if input_type == "choice":
             for index, element in enumerate(menu_elements_list):
-                print(str(index + 1) + ":\t" + element)
+                print(str(index + 1) + ":\t", end = "") 
+                print(element)
             if quit_option == True:
                 print("q:\tQuit")
             print("")

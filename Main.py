@@ -148,11 +148,7 @@ while choice not in ["q", "Q"]:
                         new_workout.updateExercises()
                         active_user.updateWorkouts()
                     if choice == 2:
-                        break
-                # Loop für Exercises
-                # Update Workouts self.exercises
-                # Update User self.workouts
-                # get functions error
+                        choice = uiMenu([active_user.wo])
             if choice == 2:
                 pass
             if choice == 3:

@@ -13,9 +13,11 @@ class workout(workoutDao):
         for exercise in exercisesList:
             print(exercise)
     
+    def getListofWorkoutAttr(self):
+        [self.weekday, self.startTime]
+
     def updateExercises(self):
         self.exercises = exercise.createListOfExerciseObjects(self.workoutID)
-
 
     @classmethod
     def createListOfWorkoutObjects(cls, user_id):
