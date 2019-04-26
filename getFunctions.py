@@ -1,3 +1,4 @@
+import datetime
 # gets a choice input
 def getChoiceInput(user_input):
     if user_input not in ["q", "Q"]:
@@ -24,5 +25,20 @@ def getErrorMessage(error_code, custom_message = ''):
     }
     return errorMessages[error_code]
 
+def getTimeAsStringFromTimedelta(timedelta):
+    days, seconds = timedelta.days, timedelta.seconds
+    hours = days * 24 + seconds // 3600
+    minutes = (seconds % 3600) // 60
+    seconds = (seconds % 60)
+    if minutes < 10:
+        retv = '{}:0{}'.format(hours, minutes)
+    else:
+        retv = '{}:{}'.format(hours, minutes)
+    return retv
+
+def getWeekdayNumber(weekday):
+    weekdays_order = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
+    return weekdays_order.index(weekday)
+
 if __name__ == "__main__":
-    b = input('T: ')
+    pass

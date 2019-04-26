@@ -2,6 +2,7 @@ import apiBMI
 from userDao import *
 from datetime import date
 from classWorkout import workout
+from getFunctions import *
 class user():
     def __init__(self, first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password):
         self.firstName = first_name
@@ -28,10 +29,21 @@ class user():
         self.userID = userDao.getUserID(username)
         self.setBMI()
         self.setBodyFat()
-        self.workouts = workout.createListOfWorkoutObjects(self.userID)
+        self.setWorkoutsAndWoorkoutsData()
+        
+        
 
-    def updateWorkouts(self):
+    def setWorkoutsAndWoorkoutsData(self):
         self.workouts = workout.createListOfWorkoutObjects(self.userID)
+        self.workouts = sorted(self.workouts, key=lambda x: (getWeekdayNumber(getattr(x, "weekday")), getTimeAsStringFromTimedelta(getattr(x, "startTime"))))
+        self.workoutsData = sorted(self.getListWithWorkoutDayAndTime(), key=lambda x: (getWeekdayNumber(x[0]), x[1]))
+    
+    def getListWithWorkoutDayAndTime(self):
+        retl = []
+        for workout in self.workouts:
+            retl.append([getattr(workout, "weekday"), getTimeAsStringFromTimedelta(getattr(workout, "startTime"))])
+        return retl
+    
     
     # Estimate Body Fat Percentage
     def setBodyFat(self):
@@ -72,6 +84,8 @@ class user():
         arg_list = userDao.getUserAttributesAsList(username)
         first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password = arg_list
         return cls(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password)
+
+
 
 if __name__ == "__main__":
     pass
