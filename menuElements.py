@@ -19,5 +19,5 @@ updateProfileInformationMenu = ["First name", "Middle Name", "Last name", "Gende
 createNewWorkout = ["Day (MON, TUE, WED, THU, FRI, SAT, SUN)", "Time"]
 specifyWorkout = ["Add exercise to workout", "Save Workout"]
 
-recipesMenu = ["Search meal by ingredients", "Search for meal", "Go back to main menu"]
+recipesMenu = ["Search recipe by ingredients", "Search recipe by meal", "Look at your favourite recipes","Go back to main menu"]
 
