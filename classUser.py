@@ -30,8 +30,6 @@ class user():
         self.setBMI()
         self.setBodyFat()
         self.setWorkoutsAndWoorkoutsData()
-        
-        
 
     def setWorkoutsAndWoorkoutsData(self):
         self.workouts = workout.createListOfWorkoutObjects(self.userID)
@@ -43,8 +41,6 @@ class user():
         for workout in self.workouts:
             retl.append([getattr(workout, "weekday"), getTimeAsStringFromTimedelta(getattr(workout, "startTime"))])
         return retl
-    
-    
     # Estimate Body Fat Percentage
     def setBodyFat(self):
         self.bodyFat = 1.39 * self.valueBMI + 0.16 * self.age - 10.34 * self.genderBinary - 9
