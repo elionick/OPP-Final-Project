@@ -151,7 +151,8 @@ while choice not in ["q", "Q"]:
                         choice = ''
                         break
             if choice == 2:
-                while choice not in ["q", "Q"]:    
+                while choice not in ["q", "Q"]:
+                    # Workout Plan 
                     choice = uiMenu(active_user.workoutsData + ["Go back to Fitness Menu"], menu_title = "Weekly Workouts", user_instruction="Choose a workout to see details:")
                     if choice == len(active_user.workoutsData + ["Go back to Fitness Menu"]):
                         choice = ''
@@ -159,18 +160,29 @@ while choice not in ["q", "Q"]:
                     elif choice in ["q", "Q"]:
                         break
                     else:
-                        workout_choosen = active_user.workouts[choice - 1]
+                        workout_chosen = active_user.workouts[choice - 1]
                         while choice not in ["q", "Q"]:
-                            choice = uiMenu(["Add exercise", "Delete Exercise", "Go back to weekly workouts menu"], menu_title = "Exercises", sub_title = "Exercises of this workout:", sub_sub_title =getattr(workout_choosen, "printExercises"),user_instruction="What would you like to do?")
+                            choice = uiMenu(["Add exercise", "Delete Exercise", "Go back to weekly workouts menu"], menu_title = "Exercises", sub_title = "Exercises of this workout:", sub_sub_title =getattr(workout_chosen, "printExercises"),user_instruction="What would you like to do?")
                             if choice == 1:
                                 exercise_data = uiMenu(["Enter exercise"], menu_title="Add Exercise", input_type="questions", error_keys=["exercise"], questions_check_functions=[checkExerciseValid])
-                                new_exercise = exercise(workout_choosen.workoutID, exercise_data[0])
-                                workout_choosen.updateExercises()
+                                new_exercise = exercise(workout_chosen.workoutID, exercise_data[0])
+                                workout_chosen.updateExercises()
                                 active_user.setWorkoutsAndWoorkoutsData()
+                            if choice == 2:
+                                while choice not in ["q", "Q"]:
+                                    choice = uiMenu(workout_chosen.exercises + ["Go back to Exercises"], menu_title = "Delete Exercises", user_instruction="Which exercise do you want to delete?:")
+                                    if choice == len(workout_chosen.exercises) + 1:
+                                        break
+                                    elif choice in ["q", "Q"]:
+                                        break
+                                    else:
+                                        exercise_chosen = workout_chosen.exercises[choice - 1]
+                                        exercise_chosen.deleteExercise()
+                                        workout_chosen.updateExercises()
+                                        active_user.setWorkoutsAndWoorkoutsData()
                             if choice == 3:
                                 choice = ''
                                 break
-
             if choice == 3:
                 choice = ''
                 # Go back to main menu
