@@ -8,6 +8,7 @@ from classUser import *
 from classWorkout import workout
 from classExercise import exercise
 from apiRecipe import *
+from recipeDao import *
 
 # Show Welcome
 showWelcome()
@@ -20,10 +21,11 @@ choice = ''
 while choice not in ["q", "Q"]:
     choice = uiMenu(logInMenu, menu_title = "Login", user_instruction="What would you like to do?")
     if choice == 1:
+        global username
         username = uiMenu(["Username"], menu_title = "Login", error_keys = ["username"],
         input_type = "questions", questions_check_functions = [userDao.checkUsernameExists])
         uiMenu(["Password"], menu_title = "Login", error_keys = ["password"],
-        input_type = "questions", questions_check_functions = [ userDao.checkValidPassword], questions_check_functions_additional_args = [username], questions_special_input_func = [getpass])
+        input_type = "questions", questions_check_functions = [userDao.checkValidPassword], questions_check_functions_additional_args = [username], questions_special_input_func = [getpass])
         active_user = user.from_username(username)
         break
     if choice == 2:
@@ -121,14 +123,19 @@ while choice not in ["q", "Q"]:
     if choice == 2:
         while choice not in ["q", "Q"]:
             # Recipes
-            choice = uiMenu(fitnessMenu, menu_title = "Recipes",user_instruction="What would you like to do?")
+            choice = uiMenu(recipesMenu, menu_title = "Recipes",user_instruction="What would you like to do?")
+            info = userDao.getUserAttributesAsList(username)
+            User_ID = userDao.getUserID(username)
             if choice == 1:
-                #getRecipeByIngredients(USER_ID)
+                getRecipeByIngredients(User_ID)
                 pass
             if choice == 2:
-                #getRecipeByMeal(USER_ID, INTOLERANCE, DIET)
+                getRecipeByMeal(User_ID, info[10], info[9])
                 pass
             if choice == 3:
+                print(getRecipeList(User_ID))
+                break
+            if choice == 4:
                 # Go back to main menu
                 break
     if choice == 3:
