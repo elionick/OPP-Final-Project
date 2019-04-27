@@ -31,6 +31,9 @@ class user():
         self.setBodyFat()
         self.setWorkouts()
 
+    def __str__(self):
+        return str([self.firstName, self.middleName, self.lastName])
+    
     def setWorkouts(self):
         self.workouts = workout.createListOfWorkoutObjects(self.userID)
         self.workouts = sorted(self.workouts, key=lambda x: (getWeekdayNumber(getattr(x, "weekday")), getTimeAsStringFromTimedelta(getattr(x, "startTime"))))
