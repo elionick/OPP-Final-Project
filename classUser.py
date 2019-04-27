@@ -29,12 +29,11 @@ class user():
         self.userID = userDao.getUserID(username)
         self.setBMI()
         self.setBodyFat()
-        self.setWorkoutsAndWoorkoutsData()
+        self.setWorkouts()
 
-    def setWorkoutsAndWoorkoutsData(self):
+    def setWorkouts(self):
         self.workouts = workout.createListOfWorkoutObjects(self.userID)
         self.workouts = sorted(self.workouts, key=lambda x: (getWeekdayNumber(getattr(x, "weekday")), getTimeAsStringFromTimedelta(getattr(x, "startTime"))))
-        self.workoutsData = sorted(self.getListWithWorkoutDayAndTime(), key=lambda x: (getWeekdayNumber(x[0]), x[1]))
     
     def getListWithWorkoutDayAndTime(self):
         retl = []

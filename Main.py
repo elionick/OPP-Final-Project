@@ -153,8 +153,8 @@ while choice not in ["q", "Q"]:
             if choice == 2:
                 while choice not in ["q", "Q"]:
                     # Workout Plan 
-                    choice = uiMenu(active_user.workoutsData + ["Go back to Fitness Menu"], menu_title = "Weekly Workouts", user_instruction="Choose a workout to see details:")
-                    if choice == len(active_user.workoutsData + ["Go back to Fitness Menu"]):
+                    choice = uiMenu(active_user.workouts + ["Go back to Fitness Menu"], menu_title = "Weekly Workouts", user_instruction="Choose a workout to see details:")
+                    if choice == len(active_user.workouts + ["Go back to Fitness Menu"]):
                         choice = ''
                         break
                     elif choice in ["q", "Q"]:
@@ -167,7 +167,7 @@ while choice not in ["q", "Q"]:
                                 exercise_data = uiMenu(["Enter exercise"], menu_title="Add Exercise", input_type="questions", error_keys=["exercise"], questions_check_functions=[checkExerciseValid])
                                 new_exercise = exercise(workout_chosen.workoutID, exercise_data[0])
                                 workout_chosen.updateExercises()
-                                active_user.setWorkoutsAndWoorkoutsData()
+                                active_user.setWorkouts()
                             if choice == 2:
                                 while choice not in ["q", "Q"]:
                                     choice = uiMenu(workout_chosen.exercises + ["Go back to Exercises"], menu_title = "Delete Exercises", user_instruction="Which exercise do you want to delete?:")
@@ -179,7 +179,7 @@ while choice not in ["q", "Q"]:
                                         exercise_chosen = workout_chosen.exercises[choice - 1]
                                         exercise_chosen.deleteExercise()
                                         workout_chosen.updateExercises()
-                                        active_user.setWorkoutsAndWoorkoutsData()
+                                        active_user.setWorkouts()
                             if choice == 3:
                                 choice = ''
                                 break
