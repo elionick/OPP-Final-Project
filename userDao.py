@@ -108,7 +108,7 @@ class userDao:
         user_id = userDao.getUserID(username)
         if password != None:
             userDao.setValueForUserInField(user_id, "PASSWORD_HASH", password, is_password = True)
-        inputs = [first_name, middle_name, last_name, gender, height, weight, birthday, diet, intolerances, e_mail]
+        inputs = [first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances]
         sql_field_names = ["FIRST_NAME", "MIDDLE_NAME", "LAST_NAME", "GENDER", "HEIGHT", "WEIGHT", "E_MAIL", "BIRTHDATE", "DIET", "INTOLERANCE"]
         for index, element in enumerate(inputs):
             if element != None:

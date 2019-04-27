@@ -7,7 +7,6 @@ from getpass import getpass
 from classUser import *
 from classWorkout import workout
 from classExercise import exercise
-
 from apiRecipe import *
 
 # Show Welcome
@@ -141,21 +140,39 @@ while choice not in ["q", "Q"]:
                 new_workout = workout(active_user.userID, workout_data[1], workout_data[0])
                 # Menu to add exercises to workout
                 while choice not in ["q", "Q"]:
-                    choice = uiMenu(specifyWorkout, menu_title = "Specify Workout", sub_title = "Workout's exercises:", sub_sub_title = "Eddie",user_instruction="What would you like to do?")
+                    choice = uiMenu(specifyWorkout, menu_title = "Specify Workout", sub_title = "Workout's exercises:", sub_sub_title = new_workout.printExercises,user_instruction="What would you like to do?")
                     if choice == 1:
                         exercise_data = uiMenu(["Enter exercise"], menu_title="Add Exercise", input_type="questions", error_keys=["exercise"], questions_check_functions=[checkExerciseValid])
                         new_exercise = exercise(new_workout.workoutID, exercise_data[0])
                         new_workout.updateExercises()
-                        active_user.updateWorkouts()
+                        active_user.setWorkoutsAndWoorkoutsData()
                     if choice == 2:
+                        active_user.setWorkoutsAndWoorkoutsData()
+                        choice = ''
                         break
-                # Loop für Exercises
-                # Update Workouts self.exercises
-                # Update User self.workouts
-                # get functions error
             if choice == 2:
-                pass
+                while choice not in ["q", "Q"]:    
+                    choice = uiMenu(active_user.workoutsData + ["Go back to Fitness Menu"], menu_title = "Weekly Workouts", user_instruction="Choose a workout to see details:")
+                    if choice == len(active_user.workoutsData + ["Go back to Fitness Menu"]):
+                        choice = ''
+                        break
+                    elif choice in ["q", "Q"]:
+                        break
+                    else:
+                        workout_choosen = active_user.workouts[choice - 1]
+                        while choice not in ["q", "Q"]:
+                            choice = uiMenu(["Add exercise", "Delete Exercise", "Go back to weekly workouts menu"], menu_title = "Exercises", sub_title = "Exercises of this workout:", sub_sub_title =getattr(workout_choosen, "printExercises"),user_instruction="What would you like to do?")
+                            if choice == 1:
+                                exercise_data = uiMenu(["Enter exercise"], menu_title="Add Exercise", input_type="questions", error_keys=["exercise"], questions_check_functions=[checkExerciseValid])
+                                new_exercise = exercise(workout_choosen.workoutID, exercise_data[0])
+                                workout_choosen.updateExercises()
+                                active_user.setWorkoutsAndWoorkoutsData()
+                            if choice == 3:
+                                choice = ''
+                                break
+
             if choice == 3:
+                choice = ''
                 # Go back to main menu
                 break
     if choice == 4:
