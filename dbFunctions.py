@@ -59,7 +59,6 @@ def addNewPrice(product, productEntries):
     try:
         with connection.cursor() as cursor:
             for i in range(len(productEntries)):
-
                 sql = "INSERT INTO "+product + \
                     " (brand, product, price, date) VALUES (%s, %s, %s, %s)"
                 print(sql)
