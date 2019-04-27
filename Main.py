@@ -145,16 +145,16 @@ while choice not in ["q", "Q"]:
                         exercise_data = uiMenu(["Enter exercise"], menu_title="Add Exercise", input_type="questions", error_keys=["exercise"], questions_check_functions=[checkExerciseValid])
                         new_exercise = exercise(new_workout.workoutID, exercise_data[0])
                         new_workout.updateExercises()
-                        active_user.setWorkoutsAndWoorkoutsData()
+                        active_user.setWorkouts()
                     if choice == 2:
-                        active_user.setWorkoutsAndWoorkoutsData()
+                        active_user.setWorkouts()
                         choice = ''
                         break
             if choice == 2:
                 while choice not in ["q", "Q"]:
                     # Workout Plan 
                     choice = uiMenu(active_user.workouts + ["Go back to Fitness Menu"], menu_title = "Weekly Workouts", user_instruction="Choose a workout to see details:")
-                    if choice == len(active_user.workouts + ["Go back to Fitness Menu"]):
+                    if choice == len(active_user.workouts) + 1:
                         choice = ''
                         break
                     elif choice in ["q", "Q"]:
@@ -172,6 +172,7 @@ while choice not in ["q", "Q"]:
                                 while choice not in ["q", "Q"]:
                                     choice = uiMenu(workout_chosen.exercises + ["Go back to Exercises"], menu_title = "Delete Exercises", user_instruction="Which exercise do you want to delete?:")
                                     if choice == len(workout_chosen.exercises) + 1:
+                                        choice = ''
                                         break
                                     elif choice in ["q", "Q"]:
                                         break
@@ -184,6 +185,18 @@ while choice not in ["q", "Q"]:
                                 choice = ''
                                 break
             if choice == 3:
+                # Delete Workout
+                choice = uiMenu(active_user.workouts + ["Go back to Fitness Menu"], menu_title = "Weekly Workouts", user_instruction="Choose a workout to delete:")    
+                if choice == len(active_user.workouts) + 1:
+                    choice = ''
+                    break
+                elif choice in ["q", "Q"]:
+                    break
+                else:
+                    workout_chosen = active_user.workouts[choice - 1]
+                    workout_chosen.deleteWorkout()
+                    active_user.setWorkouts()
+            if choice == 4:
                 choice = ''
                 # Go back to main menu
                 break
