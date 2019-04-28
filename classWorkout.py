@@ -6,7 +6,12 @@ class workout(workoutDao):
         super().__init__(user_id, start_time, week_day, from_database)
         self.workoutID = self.getWorkoutId()
         self.exercises = exercise.createListOfExerciseObjects(self.workoutID)
+        self.setCalorieBurningAndDuration()
+        
     
+    def setCalorieBurningAndDuration(self):
+        self.calorieBurning = sum(exercise.calories for exercise in self.exercises)
+        self.duration = sum(exercise.duration for exercise in self.exercises)
     def printExercises(self):
         exercisesList = []
         for exercise in self.exercises:
@@ -19,6 +24,7 @@ class workout(workoutDao):
 
     def updateExercises(self):
         self.exercises = exercise.createListOfExerciseObjects(self.workoutID)
+        self.setCalorieBurningAndDuration()
 
     @classmethod
     def createListOfWorkoutObjects(cls, user_id):

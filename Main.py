@@ -64,7 +64,7 @@ while choice not in ["q", "Q"]:
 
 # Main Menu
 while choice not in ["q", "Q"]:
-    choice = uiMenu(mainMenu, menu_title = "Main Menu", sub_title = "Hello %s! Your BMI is %.2f (%s). Your Body Fat is %.2f%%." % (active_user.firstName, active_user.valueBMI,active_user.statusBMI, active_user.bodyFat),user_instruction="What would you like to do?")
+    choice = uiMenu(mainMenu, menu_title = "Main Menu", sub_title = "Hello %s! Your BMI is %.2f (%s). Your Body Fat is %.2f%%.\n\nNext workout at:\t\t%s %s\nWorkout Duration:\t\t%.2f minutes\nWorkout calorie burning:\t%.2f\n\nCalorie consumption today:\t%.2f\nTotal workout duration today:\t%.2f minutes" % (active_user.firstName, active_user.valueBMI,active_user.statusBMI, active_user.bodyFat, str(active_user.nextWorkout.startTime).split(":")[0] + ":" + str(active_user.nextWorkout.startTime).split(":")[1] if active_user.nextWorkout != False else "--", active_user.nextWorkout.weekday if active_user.nextWorkout != False else "",active_user.nextWorkout.duration if active_user.nextWorkout != False else 0, active_user.nextWorkout.calorieBurning if active_user.nextWorkout != False else 0, active_user.todaysCalorieBurning, active_user.todaysDuration),user_instruction="What would you like to do?")
     if choice == 1:
         while choice not in ["q", "Q"]:
             # Update profile information
@@ -145,9 +145,9 @@ while choice not in ["q", "Q"]:
                         exercise_data = uiMenu(["Enter exercise"], menu_title="Add Exercise", input_type="questions", error_keys=["exercise"], questions_check_functions=[checkExerciseValid])
                         new_exercise = exercise(new_workout.workoutID, exercise_data[0])
                         new_workout.updateExercises()
-                        active_user.setWorkouts()
+                        active_user.updateWorkouts()
                     if choice == 2:
-                        active_user.setWorkouts()
+                        active_user.updateWorkouts()
                         choice = ''
                         break
             if choice == 2:
@@ -167,7 +167,7 @@ while choice not in ["q", "Q"]:
                                 exercise_data = uiMenu(["Enter exercise"], menu_title="Add Exercise", input_type="questions", error_keys=["exercise"], questions_check_functions=[checkExerciseValid])
                                 new_exercise = exercise(workout_chosen.workoutID, exercise_data[0])
                                 workout_chosen.updateExercises()
-                                active_user.setWorkouts()
+                                active_user.updateWorkouts()
                             if choice == 2:
                                 while choice not in ["q", "Q"]:
                                     choice = uiMenu(workout_chosen.exercises + ["Go back to Exercises"], menu_title = "Delete Exercises", user_instruction="Which exercise do you want to delete?:")
@@ -180,7 +180,7 @@ while choice not in ["q", "Q"]:
                                         exercise_chosen = workout_chosen.exercises[choice - 1]
                                         exercise_chosen.deleteExercise()
                                         workout_chosen.updateExercises()
-                                        active_user.setWorkouts()
+                                        active_user.updateWorkouts()
                             if choice == 3:
                                 choice = ''
                                 break
@@ -195,7 +195,7 @@ while choice not in ["q", "Q"]:
                 else:
                     workout_chosen = active_user.workouts[choice - 1]
                     workout_chosen.deleteWorkout()
-                    active_user.setWorkouts()
+                    active_user.updateWorkouts()
             if choice == 4:
                 choice = ''
                 # Go back to main menu
