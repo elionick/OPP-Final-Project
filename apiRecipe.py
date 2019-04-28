@@ -2,6 +2,7 @@ import requests
 import pprint
 import pymysql
 from Food_Nutrition import *
+from classFoodNutritionsDao import *
 
 
 connection = pymysql.connect(host='sql7.freemysqlhosting.net',
@@ -66,6 +67,7 @@ def getRecipeByMeal(USER_ID, INTOLERANCE, DIET):
         global INGREDIENTS
         INGREDIENTS = Ingredients_list[Recipe1 - 1]
         INGREDIENTS = INGREDIENTS[1:-1]
+        INGREDIENTS = INGREDIENTS.replace("\'", " ")
         INGREDIENTS = INGREDIENTS.replace("', '", ",")
         INGREDIENTS = INGREDIENTS.split(",")
         #print(INGREDIENTS)
@@ -88,12 +90,13 @@ def getRecipeByMeal(USER_ID, INTOLERANCE, DIET):
         test_fav = input("Do you wanna save the recipe in your favourites? yes/no")
         if (test_fav == "yes"):
             dbNewFav(connection, Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, INGREDIENTS,CALORIES)
+            pass
         else:
             choice2 = input("Do you want to search for another recipe? yes/no")
             if (choice2 == "yes"):
-                getRecipeByIngredients()
+                getRecipeByMeal(USER_ID,INTOLERANCE,DIET)
             else:
-                exit()
+                pass
 
 
 def getRecipeByIngredients(USER_ID):
@@ -158,15 +161,22 @@ def getRecipeByIngredients(USER_ID):
     global RECIPE
     RECIPE = getRecipeInformation(Recipe_ID)
 
+    i = 0
+    ing = list()
+    while (i < (len(INGREDIENTS))):
+        ing.append(FoodNutritionsDao.checkFoodInApi(INGREDIENTS[i]))
+        i += 1
+    print(ing)
+
     test_fav = input("Do you wanna save the recipe in your favourites? yes/no")
     if (test_fav == "yes"):
         dbNewFav(connection, Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, INGREDIENTS, CALORIES)
     else:
         choice2 = input("Do you want to search for another recipe? yes/no")
         if (choice2 == "yes"):
-            getRecipeByIngredients()
+            getRecipeByIngredients(USER_ID)
         else:
-            exit()
+            pass
 
 def getRecipeIngedients(Recipe_ID):
     #api to get recipe ingredients
@@ -188,7 +198,7 @@ def getRecipeIngedients(Recipe_ID):
         #print(ingredients1)
         return str(ingredients1)
     except Exception:
-        print ("Sorry we couldn't find the Ingredients")
+        #print ("Sorry we couldn't find the Ingredients")
         return ("No ingredients found")
 
 def getRecipeInformation(Recipe_ID):
@@ -205,12 +215,13 @@ def getRecipeInformation(Recipe_ID):
         pprint.pprint(Recipe2['instructions'])
         return str(Recipe2['instructions'])
     except Exception:
-        print("Sorry we couldn't find the recipe")
+        #print("Sorry we couldn't find the recipe")
         return "Sorry we couldn't find the recipe"  #change later
 
 
 def dbNewFav(connection, Recipe_ID, RECIPE_NAME, RECIPE,USER_ID, INGREDIENTS, CALORIES):
     #adds new entry to the FAV_RECIPE table
+    #add test Fav_Recipe DB entry exist User_ID and Reciep_ID
     try:
         with connection.cursor() as cursor:
            # CALORIES = input("CALORIES")
