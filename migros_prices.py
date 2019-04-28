@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 
+
 class MigrosScraper(object):
     def __init__(self, product):
         self.product = product
@@ -77,7 +78,7 @@ class MigrosScraper(object):
 
     # print(f"One moment please. Trying to get the price for {product}...")
     #scraper = MigrosScraper(product)
-    #scraper.load_Migros_url()
+    # scraper.load_Migros_url()
 
     # Save the three lists
     #    brand = scraper.extract_product_brand()
@@ -98,7 +99,7 @@ class MigrosScraper(object):
     # f.close()
 
     #  DBEntry = []
-    #for i in range(len(brand)):
+    # for i in range(len(brand)):
     # DBEntry.append(brand[i] + "," + name[i].replace(",", "-") + "," + price[i])
 
 #  print(DBEntry)
