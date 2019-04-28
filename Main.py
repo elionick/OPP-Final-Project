@@ -130,11 +130,11 @@ while choice not in ["q", "Q"]:
                 getRecipeByIngredients(User_ID)
                 pass
             if choice == 2:
-                getRecipeByMeal(User_ID, info[10], info[9])
+                getRecipeByMeal(User_ID, info[9], info[8])
                 pass
             if choice == 3:
-                print(getRecipeList(User_ID))
-                break
+                chooseRecipe(User_ID)
+                pass
             if choice == 4:
                 # Go back to main menu
                 break

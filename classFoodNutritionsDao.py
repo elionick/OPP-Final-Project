@@ -11,7 +11,8 @@ class FoodNutritionsDao:
         params = {"query" : food}
         r = requests.post(FoodNutritionsDao.url, headers = FoodNutritionsDao.headers, json = params).json()
         if 'foods' in r:
-            return True
+            #return True
+            return r['foods'][0]['food_name']
         else:
             return False
 
