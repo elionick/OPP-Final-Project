@@ -3,6 +3,7 @@ from userDao import *
 from datetime import date
 from classWorkout import workout
 from getFunctions import *
+import datetime
 class user():
     def __init__(self, first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password):
         self.firstName = first_name
@@ -29,18 +30,58 @@ class user():
         self.userID = userDao.getUserID(username)
         self.setBMI()
         self.setBodyFat()
-        self.setWorkoutsAndWoorkoutsData()
-
-    def setWorkoutsAndWoorkoutsData(self):
-        self.workouts = workout.createListOfWorkoutObjects(self.userID)
-        self.workouts = sorted(self.workouts, key=lambda x: (getWeekdayNumber(getattr(x, "weekday")), getTimeAsStringFromTimedelta(getattr(x, "startTime"))))
-        self.workoutsData = sorted(self.getListWithWorkoutDayAndTime(), key=lambda x: (getWeekdayNumber(x[0]), x[1]))
+        self.updateWorkouts()
+        
     
-    def getListWithWorkoutDayAndTime(self):
-        retl = []
-        for workout in self.workouts:
-            retl.append([getattr(workout, "weekday"), getTimeAsStringFromTimedelta(getattr(workout, "startTime"))])
-        return retl
+    def updateWorkouts(self):
+        self.setWorkouts()
+        self.setTodaysCalorieBurningAndDuration()
+        self.setNextWorkout()
+
+    def __str__(self):
+        return str([self.firstName, self.middleName, self.lastName])
+    
+    def setNextWorkout(self):
+        workouts_weekdays = [getWeekdayNumber(workout.weekday) for workout in self.workouts]
+        workouts_time = [(datetime.datetime.min + workout.startTime).time() for workout in self.workouts]
+        todays_day = datetime.datetime.today().weekday()
+        current_time = datetime.datetime.now().time()
+        possible_workouts = []
+        for next_weekday, next_time, next_workout in zip(workouts_weekdays,workouts_time, self.workouts):
+            if next_weekday == todays_day and next_time >= current_time:
+                possible_workouts.append(next_workout)
+        if len(possible_workouts) != 0:
+            self.nextWorkout = possible_workouts[0]
+        else:
+            for next_weekday, next_workout in zip(workouts_weekdays, self.workouts):
+                if next_weekday > todays_day:
+                    possible_workouts.append(next_workout)
+            if len(possible_workouts) != 0:
+                self.nextWorkout = possible_workouts[0]
+            else:
+                for next_weekday, next_workout in zip(workouts_weekdays, self.workouts):
+                    if next_weekday < todays_day:
+                        possible_workouts.append(next_workout)
+                if len(possible_workouts) != 0:
+                    self.nextWorkout = possible_workouts[0]
+                else:
+                    for next_weekday, next_workout in zip(workouts_weekdays, self.workouts):
+                        if next_weekday == todays_day:
+                            possible_workouts.append(next_workout)
+                    if len(possible_workouts) != 0:
+                        self.nextWorkout = possible_workouts[0]
+                    else:
+                        self.nextWorkout = False
+        
+    def setTodaysCalorieBurningAndDuration(self):
+        self.todaysCalorieBurning = sum(workout.calorieBurning for workout in self.workouts if getWeekdayNumber(workout.weekday) == datetime.datetime.today().weekday())
+        self.todaysDuration = sum(workout.duration for workout in self.workouts if getWeekdayNumber(workout.weekday) == datetime.datetime.today().weekday())
+
+    def setWorkouts(self):
+        self.workouts = workout.createListOfWorkoutObjects(self.userID)
+        self.workouts = sorted(self.workouts, key=lambda x: (getTimeAsStringFromTimedelta(getattr(x, "startTime"))), reverse = True)
+        self.workouts = sorted(self.workouts, key=lambda x: (getWeekdayNumber(getattr(x, "weekday"))))
+    
     # Estimate Body Fat Percentage
     def setBodyFat(self):
         self.bodyFat = 1.39 * self.valueBMI + 0.16 * self.age - 10.34 * self.genderBinary - 9

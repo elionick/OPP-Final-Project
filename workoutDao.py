@@ -27,6 +27,19 @@ class workoutDao():
             cursor.close()
         return int(info['WORKOUT_ID'])
     
+    def deleteWorkout(self):
+        try:
+            with connection.cursor() as cursor:
+                sql = "delete from EXERCISES where FK_WORKOUT_ID = %s"
+                cursor.execute(sql, self.getWorkoutId())
+                connection.commit()
+                sql = "delete from WORKOUTS where WORKOUT_ID = %s"
+                cursor.execute(sql, self.getWorkoutId())
+                connection.commit()
+        finally:
+            cursor.close()
+        
+
     @staticmethod
     def getWorkoutList(user_id):
         try:

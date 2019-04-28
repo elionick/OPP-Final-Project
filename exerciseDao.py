@@ -32,8 +32,8 @@ class exerciseDao:
     def deleteExercise(self):
         try:
             with connection.cursor() as cursor:
-                sql = f"delete from EXERCISES where NAME = {self.exerciseName} and WORKOUT_ID = {self.workoutID}"
-                cursor.execute(sql)
+                sql = "delete from EXERCISES where EXERCISE_QUERY = %s and FK_WORKOUT_ID = %s"
+                cursor.execute(sql, (self.exerciseQuery, self.workoutID))
                 connection.commit()
         finally:
             cursor.close()
