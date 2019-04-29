@@ -1,17 +1,9 @@
 import requests
 import pprint
 import pymysql
-from Food_Nutrition import *
 from classFoodNutritionsDao import *
+from dbFunctions import *
 
-
-connection = pymysql.connect(host='sql7.freemysqlhosting.net',
-                             port=3306,
-                             user='sql7288305',
-                             password='rEGuleh6A7',
-                             db='sql7288305',
-                             charset='latin1',
-                             cursorclass=pymysql.cursors.DictCursor)
 
 def getRecipeByMeal(USER_ID, INTOLERANCE, DIET):
     query = input("Search for meal")
@@ -79,7 +71,7 @@ def getRecipeByMeal(USER_ID, INTOLERANCE, DIET):
         calories = list()
         while (i < (len(INGREDIENTS))):
             #print(INGREDIENTS[i])
-            calories_1 = food_nutrition(INGREDIENTS[i])
+            calories_1 = FoodNutritionsDao.getCalories(INGREDIENTS[i])
             calories.append(calories_1)
             i += 1
         CALORIES = int(sum(calories))
@@ -89,8 +81,12 @@ def getRecipeByMeal(USER_ID, INTOLERANCE, DIET):
 
         test_fav = input("Do you wanna save the recipe in your favourites? yes/no")
         if (test_fav == "yes"):
-            dbNewFav(connection, Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, INGREDIENTS,CALORIES)
-            pass
+            if checkRecipeExist(USER_ID, Recipe_ID) == True:
+                print("Recipe already saved as favourite. Check your favourites")
+                pass
+            else:
+                dbNewFavRecipe(Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, str(INGREDIENTS), CALORIES)
+                pass
         else:
             choice2 = input("Do you want to search for another recipe? yes/no")
             if (choice2 == "yes"):
@@ -153,7 +149,7 @@ def getRecipeByIngredients(USER_ID):
     i = 0
     calories = list()
     while (i < (len(INGREDIENTS))):
-        calories_1 = food_nutrition(INGREDIENTS[i])
+        calories_1 = FoodNutritionsDao.getCalories(INGREDIENTS[i])
         calories.append((int(calories_1)))
         i += 1
     CALORIES = int(sum(calories))
@@ -170,7 +166,12 @@ def getRecipeByIngredients(USER_ID):
 
     test_fav = input("Do you wanna save the recipe in your favourites? yes/no")
     if (test_fav == "yes"):
-        dbNewFav(connection, Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, INGREDIENTS, CALORIES)
+        if checkRecipeExist(USER_ID,Recipe_ID) == True:
+            print("Recipe already saved as favourite. Check your favourites")
+            pass
+        else:
+            dbNewFavRecipe(Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, str(INGREDIENTS), CALORIES)
+            pass
     else:
         choice2 = input("Do you want to search for another recipe? yes/no")
         if (choice2 == "yes"):
@@ -219,32 +220,13 @@ def getRecipeInformation(Recipe_ID):
         return "Sorry we couldn't find the recipe"  #change later
 
 
-def dbNewFav(connection, Recipe_ID, RECIPE_NAME, RECIPE,USER_ID, INGREDIENTS, CALORIES):
-    #adds new entry to the FAV_RECIPE table
-    #add test Fav_Recipe DB entry exist User_ID and Reciep_ID
-    try:
-        with connection.cursor() as cursor:
-           # CALORIES = input("CALORIES")
-            #PRICE = input("PRICE")
-            #ALLEGIES = input("ALLEGIES")
-            #INTOLERANCE = input("INTOLERANCE")
-            sql = "INSERT INTO FAV_RECIPE (RECIPE_ID,RECIPE_NAME,RECIPE,USER_ID, INGREDIENTS, CALORIES)"\
-             + "VALUES (%s,%s,%s,%s,%s,%s)"
-            cursor.execute(sql, (Recipe_ID,RECIPE_NAME,RECIPE,USER_ID,str(INGREDIENTS),CALORIES))
-            connection.commit()
-            print("insert successful") #what to do if Recipe_ID already exists
-
-    finally:
-        cursor.close()
-
-
 
 if __name__ == '__main__':
-    pass
+    #pass
     #dbLogin()
     #getRecipeIngedients("849492")
     #connection.close()
     #getRecipeInformation("849492")
-    #getRecipeByMeal(1,"tomato","no")
+    getRecipeByMeal(1,"tomato","regular")
     #getRecipeByIngredients(1)
     #food_nutrition("i ate 2 eggs, ten strawberries, and 10 french toast")
