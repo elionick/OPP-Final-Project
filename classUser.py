@@ -30,6 +30,9 @@ class user():
         self.userID = userDao.getUserID(username)
         self.setBMI()
         self.setBodyFat()
+        self.netWeight = self.weight * (1-self.bodyFat/100)
+        # Katch-McArdle formula
+        self.restingCalorieConsumption = 370 + (21.6 * self.netWeight)
         self.updateWorkouts()
         self.setFamilyMembers()
         
@@ -75,7 +78,8 @@ class user():
                         self.nextWorkout = False
         
     def setTodaysCalorieBurningAndDuration(self):
-        self.todaysCalorieBurning = sum(workout.calorieBurning for workout in self.workouts if getWeekdayNumber(workout.weekday) == datetime.datetime.today().weekday())
+        self.todaysWorkoutCalorieBurning = sum(workout.calorieBurning for workout in self.workouts if getWeekdayNumber(workout.weekday) == datetime.datetime.today().weekday())
+        self.todaysCalorieBurning = self.todaysWorkoutCalorieBurning + self.restingCalorieConsumption
         self.todaysDuration = sum(workout.duration for workout in self.workouts if getWeekdayNumber(workout.weekday) == datetime.datetime.today().weekday())
 
     def setFamilyMembers(self):

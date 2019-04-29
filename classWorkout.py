@@ -12,6 +12,7 @@ class workout(workoutDao):
     def setCalorieBurningAndDuration(self):
         self.calorieBurning = sum(exercise.calories for exercise in self.exercises)
         self.duration = sum(exercise.duration for exercise in self.exercises)
+
     def printExercises(self):
         exercisesList = []
         for exercise in self.exercises:
