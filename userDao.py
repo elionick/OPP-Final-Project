@@ -1,6 +1,19 @@
 from dbFunctions import *
 class userDao:
+    @staticmethod
+    def setWeightGoal(user_id, weight_goal):
+        try:
+            with connection.cursor() as cursor:
+                sql = "update USERS set WEIGHT_GOAL= %s where USER_ID %s"
+                cursor.execute(sql, (weight_goal, user_id))
+                connection.commit()
+        finally:
+            cursor.close()
     
+    @staticmethod
+    def getWeightGoal(user_id):
+        return userDao.getValueOfUserInField(user_id, "WEIGHT_GOAL")
+
     @staticmethod
     def deleteFamilyMember(user_id, family_member_user_id):
         try:

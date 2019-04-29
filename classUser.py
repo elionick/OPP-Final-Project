@@ -30,17 +30,36 @@ class user():
         self.userID = userDao.getUserID(username)
         self.setBMI()
         self.setBodyFat()
+        self.setNetWeightandRestCalorieCons()
+        self.setWeightGoal()
+        self.updateWorkouts()
+        self.setFamilyMembers()
+        self.setCalorieNeed()
+        
+    def setNetWeightandRestCalorieCons(self):
         self.netWeight = self.weight * (1-self.bodyFat/100)
         # Katch-McArdle formula
         self.restingCalorieConsumption = 370 + (21.6 * self.netWeight)
-        self.updateWorkouts()
-        self.setFamilyMembers()
+
+    def setWeightGoal(self):
+        self.weightGoal = userDao.getWeightGoal(self.userID)
         
-    
+    def setCalorieNeed(self):
+        if self.weightGoal is not None:
+            if self.weightGoal < self.weight:
+                self.calorieNeed = self.todaysCalorieBurning * 0.85
+            elif self.weightGoal > self.weight:
+                self.calorieNeed = self.todaysCalorieBurning * 1.15
+            else:
+                self.calorieNeed = self.todaysCalorieBurning
+        else:
+            self.calorieNeed = self.todaysCalorieBurning
+
     def updateWorkouts(self):
         self.setWorkouts()
         self.setTodaysCalorieBurningAndDuration()
         self.setNextWorkout()
+        self.setCalorieNeed()
 
     def __str__(self):
         return str([self.firstName, self.lastName])
@@ -111,12 +130,18 @@ class user():
         userDao.setValueForUserInField(self.userID, "WEIGHT", self.weight)
         self.setBMI()
         self.setBodyFat()
+        self.setNetWeightandRestCalorieCons()
+        self.setTodaysCalorieBurningAndDuration()
+        self.setCalorieNeed()
 
     def updateHeight(self, new_height):
         self.height = new_height
         userDao.setValueForUserInField(self.userID, "HEIGHT", self.height)
         self.setBMI()
         self.setBodyFat()
+        self.setNetWeightandRestCalorieCons()
+        self.setTodaysCalorieBurningAndDuration()
+        self.setCalorieNeed()
 
     def setBMI(self):
         self.valueBMI =  apiBMI.getBMI(self.weight, self.height)
