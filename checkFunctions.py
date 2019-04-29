@@ -142,5 +142,12 @@ def checkExerciseValid(input):
     except:
         return False
 
+# Check family member
+def checkFamilyMember(input, own_username, family_members_usernames):
+    if userDao.checkUsernameExists(input) and input != own_username and input not in family_members_usernames:
+        return True
+    else:
+        return False
+
 if __name__ == "__main__":
     pass

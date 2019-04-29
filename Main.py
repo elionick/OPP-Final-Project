@@ -66,7 +66,7 @@ while choice not in ["q", "Q"]:
 
 # Main Menu
 while choice not in ["q", "Q"]:
-    choice = uiMenu(mainMenu, menu_title = "Main Menu", sub_title = "Hello %s! Your BMI is %.2f (%s). Your Body Fat is %.2f%%.\n\nNext workout at:\t\t%s %s\nWorkout Duration:\t\t%.2f minutes\nWorkout calorie burning:\t%.2f\n\nCalorie consumption today:\t%.2f\nTotal workout duration today:\t%.2f minutes" % (active_user.firstName, active_user.valueBMI,active_user.statusBMI, active_user.bodyFat, str(active_user.nextWorkout.startTime).split(":")[0] + ":" + str(active_user.nextWorkout.startTime).split(":")[1] if active_user.nextWorkout != False else "--", active_user.nextWorkout.weekday if active_user.nextWorkout != False else "",active_user.nextWorkout.duration if active_user.nextWorkout != False else 0, active_user.nextWorkout.calorieBurning if active_user.nextWorkout != False else 0, active_user.todaysCalorieBurning, active_user.todaysDuration),user_instruction="What would you like to do?")
+    choice = uiMenu(mainMenu, menu_title = "Main Menu", sub_title = "Hello %s! Your BMI is %.2f (%s). Your Body Fat is %.2f%%.\n\nNext workout at:\t\t%s on %s\nWorkout Duration:\t\t%.2f minutes\nWorkout calorie burning:\t%.2f\n\nCalorie consumption today:\t%.2f\nTotal workout duration today:\t%.2f minutes" % (active_user.firstName, active_user.valueBMI,active_user.statusBMI, active_user.bodyFat, str(active_user.nextWorkout.startTime).split(":")[0] + ":" + str(active_user.nextWorkout.startTime).split(":")[1] if active_user.nextWorkout != False else "--", active_user.nextWorkout.weekday if active_user.nextWorkout != False else "",active_user.nextWorkout.duration if active_user.nextWorkout != False else 0, active_user.nextWorkout.calorieBurning if active_user.nextWorkout != False else 0, active_user.todaysCalorieBurning, active_user.todaysDuration),user_instruction="What would you like to do?")
     if choice == 1:
         while choice not in ["q", "Q"]:
             # Update profile information
@@ -210,6 +210,23 @@ while choice not in ["q", "Q"]:
     if choice == 4:
         pass
     if choice == 5:
+        while True:
+            choice = uiMenu(active_user.familyMembers + ["Add Family Member","Go back to Main Menu"], menu_title = "Family Members", user_instruction="Choose a family member to delete or another option:")
+            if choice == len(active_user.familyMembers) + 2:
+                choice = ''
+                break
+            elif choice in ["q", "Q"]:
+                break
+            elif choice == len(active_user.familyMembers) + 1:
+                # Add Family Member
+                family_member_username = uiMenu(["Enter username of family member"], menu_title="Add Family Member", input_type="questions", error_keys=["username"], questions_check_functions=[checkFamilyMember], questions_check_functions_additional_args=[[active_user.username, active_user.familyMembersUsernames]])
+                userDao.addFamilyMember(active_user.userID, family_member_username)
+                active_user.setFamilyMembers()
+            else:
+                # Delete Family Member
+                userDao.deleteFamilyMember(active_user.userID, active_user.familyMembers[choice - 1].userID)
+                active_user.setFamilyMembers()
+    if choice == 6:
         # Logout
         while choice not in ["q", "Q"]:
             choice = uiMenu(logInMenu, menu_title = "Login", user_instruction="What would you like to do?")

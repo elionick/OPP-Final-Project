@@ -31,6 +31,7 @@ class user():
         self.setBMI()
         self.setBodyFat()
         self.updateWorkouts()
+        self.setFamilyMembers()
         
     
     def updateWorkouts(self):
@@ -39,7 +40,7 @@ class user():
         self.setNextWorkout()
 
     def __str__(self):
-        return str([self.firstName, self.middleName, self.lastName])
+        return str([self.firstName, self.lastName])
     
     def setNextWorkout(self):
         workouts_weekdays = [getWeekdayNumber(workout.weekday) for workout in self.workouts]
@@ -76,6 +77,13 @@ class user():
     def setTodaysCalorieBurningAndDuration(self):
         self.todaysCalorieBurning = sum(workout.calorieBurning for workout in self.workouts if getWeekdayNumber(workout.weekday) == datetime.datetime.today().weekday())
         self.todaysDuration = sum(workout.duration for workout in self.workouts if getWeekdayNumber(workout.weekday) == datetime.datetime.today().weekday())
+
+    def setFamilyMembers(self):
+        family_members = []
+        for family_member_username in userDao.getFamilyMembersUsername(self.userID):
+            family_members.append(user.from_username(family_member_username))
+        self.familyMembers = family_members
+        self.familyMembersUsernames = [user.username for user in self.familyMembers]
 
     def setWorkouts(self):
         self.workouts = workout.createListOfWorkoutObjects(self.userID)
