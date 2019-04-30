@@ -3,6 +3,7 @@ from userDao import *
 from datetime import date
 from classWorkout import workout
 from getFunctions import *
+from foodLogDao import *
 import datetime
 class user():
     def __init__(self, first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password):
@@ -28,6 +29,7 @@ class user():
             # create user in database
             userDao.createUserFromList(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password)
         self.userID = userDao.getUserID(username)
+        self.setTodaysCaloricIntake()
         self.setBMI()
         self.setBodyFat()
         self.setNetWeightandRestCalorieBurn()
@@ -35,7 +37,15 @@ class user():
         self.updateWorkouts()
         self.setFamilyMembers()
         self.setCalorieNeed()
-        
+        self.setNetCalorieNeed()
+
+    def setTodaysCaloricIntake(self):
+        self.CaloricIntake = foodLogDao.getTodaysCaloricIntake(self.userID)
+        if self.CaloricIntake is not None:
+            pass
+        else:
+            self.CaloricIntake = 0
+
     def setNetWeightandRestCalorieBurn(self):
         self.netWeight = self.weight * (1-self.bodyFat/100)
         # Katch-McArdle formula
@@ -44,6 +54,16 @@ class user():
     def setWeightGoal(self):
         self.weightGoal = userDao.getWeightGoal(self.userID)
         
+    def setNetCalorieNeed(self):
+        if self.weightGoal is not None:
+            if self.weightGoal < self.weight:
+                self.netCalorieNeed = self.todaysCalorieBurning * 0.85 - self.CaloricIntake
+            elif self.weightGoal > self.weight:
+                self.netCalorieNeed = self.todaysCalorieBurning * 1.15 - self.CaloricIntake
+            else:
+                self.netCalorieNeed = self.todaysCalorieBurning - self.CaloricIntake
+        else:
+            self.netCalorieNeed = self.todaysCalorieBurning - self.CaloricIntake
     def setCalorieNeed(self):
         if self.weightGoal is not None:
             if self.weightGoal < self.weight:
@@ -60,6 +80,7 @@ class user():
         self.setTodaysCalorieBurningAndDuration()
         self.setNextWorkout()
         self.setCalorieNeed()
+        self.setNetCalorieNeed()
 
     def __str__(self):
         return str([self.firstName, self.lastName])
@@ -133,6 +154,7 @@ class user():
         self.setNetWeightandRestCalorieBurn()
         self.setTodaysCalorieBurningAndDuration()
         self.setCalorieNeed()
+        self.setNetCalorieNeed()
 
     def updateHeight(self, new_height):
         self.height = new_height
@@ -142,6 +164,7 @@ class user():
         self.setNetWeightandRestCalorieBurn()
         self.setTodaysCalorieBurningAndDuration()
         self.setCalorieNeed()
+        self.setNetCalorieNeed()
 
     def setBMI(self):
         self.valueBMI =  apiBMI.getBMI(self.weight, self.height)
