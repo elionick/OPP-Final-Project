@@ -25,7 +25,10 @@ class CoopScraper(object):
                 info = product.find(
                     "dd", class_="product-item__price__value product-item__price__value--weight").findAll("span")
                 product_weight = info[2].text.strip()
-                product_price = info[3].text
+                try:
+                    product_price = info[3].text
+                except:
+                    product_price = info[2].text
 
                 if "/100g" in product_price:
                     product_price = product_price.split("/")[0]

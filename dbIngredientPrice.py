@@ -1,12 +1,11 @@
-import migros_prices as migros
-import coop_prices as coop
+import classMigrosPrices as migros
+import classCoopPrices as coop
 import dbFunctions
 
-def updateMigrosPrices():
-    # List with some of the most commonly used ingredients, which we are pre-saving!
-    products_Migros = ["Zwiebeln", "Knoblauch", "Karotten", "Peperoni", "Tomaten",
-                       "Kopfsalat", "Valflora Halbrahm", "M-Classic Rindshackfleisch"]
 
+def updateMigrosPrices(products_Migros):
+    # List with some of the most commonly used ingredients, which we are pre-saving!
+    products_Migros = list(products_Migros)
 
     # Loop through the products with the respective functions and save the returned lists!
     for product in products_Migros:
@@ -29,7 +28,7 @@ def updateMigrosPrices():
             if (brand[i] == "Fresh product" and ((len(name[i])-len(product)) <= 6)) or (name[i] in product):
 
                 DBEntry.append(brand[i] + "," + name[i].replace(",", "-") + "," + price[i])
-
+        print(DBEntry)
         # Clean and standardize the table_names
         if brand[0] in product:
             tablename = name[0] + "_PRICE"
@@ -44,16 +43,17 @@ def updateMigrosPrices():
 
         # If the table does not exist, create one and enter the values
         else:
-            dbFunctions.createNewPriceTable(tablename, "ENTRY_ID", "BRAND", "PRODUCT", "PRICE", "DATE")
+            dbFunctions.createNewPriceTable(
+                tablename, "ENTRY_ID", "BRAND", "PRODUCT", "PRICE", "DATE")
     dbFunctions.addNewPrice(tablename, DBEntry)
 
-def updateCoopPrices():
+
+def updateCoopPrices(productsCoop):
     # Loop through the products with the respective functions and save the returned lists!
-    productsCoop = ["Zwiebeln", "Knoblauch", "Karotten", "Peperoni",
-                    "Kopfsalat", "Halbrahm UHT", "Rinds Hackfleisch"]
+    productsCoop = list(productsCoop)
 
-
-    brandsCoop = ["Naturaplan", "Bio", "Prix", "Garantie", "Naturafarm", "Emmi", "Floralp", "Zweifel"]
+    brandsCoop = ["Naturaplan", "Bio", "Prix", "Garantie",
+                  "Naturafarm", "Emmi", "Floralp", "Zweifel"]
     for product in productsCoop:
         scraper = coop.CoopScraper(product)
 
@@ -109,6 +109,14 @@ def updateCoopPrices():
                 tablename, "ENTRY_ID", "BRAND", "PRODUCT", "PRICE", "DATE")
             dbFunctions.addNewPrice(tablename, DBEntry)
 
+
 if __name__ == "__main__":
-    updateCoopPrices()
-    updateMigrosPrices()
+
+    productsCoop = ["Zwiebeln", "Knoblauch", "Karotten", "Peperoni",
+                    "Kopfsalat", "Halbrahm UHT", "Rinds Hackfleisch"]
+
+    productsMigros = ["Zwiebeln", "Knoblauch", "Karotten", "Peperoni", "Tomaten",
+                      "Kopfsalat", "Valflora Halbrahm", "M-Classic Rindshackfleisch"]
+
+    updateCoopPrices(productsCoop)
+    updateMigrosPrices(productsMigros)
