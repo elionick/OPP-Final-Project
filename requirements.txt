@@ -5,9 +5,5 @@ datetime
 validate_email
 beautifulsoup4
 selenium
-getpass
 googletrans
-platform
-subprocess
-inspect
 
