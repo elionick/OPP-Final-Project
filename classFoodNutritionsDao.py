@@ -1,5 +1,6 @@
 import requests
 
+
 class FoodNutritionsDao:
     url_main = "https://trackapi.nutritionix.com/"
     function_url = "v2/natural/nutrients"
@@ -19,10 +20,11 @@ class FoodNutritionsDao:
     @staticmethod
     def checkFoodInApi(food):
         FoodNutritionsDao.num += 1
-        params = {"query" : food}
-        r = requests.post(FoodNutritionsDao.url, headers = FoodNutritionsDao.headers, json = params).json()
+        params = {"query": food}
+        r = requests.post(FoodNutritionsDao.url,
+                          headers=FoodNutritionsDao.headers, json=params).json()
         if 'foods' in r:
-            #return True
+            # return True
             return r['foods'][0]['food_name']
         else:
             return False
@@ -47,6 +49,7 @@ class FoodNutritionsDao:
             return (int(sum(calories)))
         except Exception:
             return (0)
+
 
 if __name__ == "__main__":
     pass

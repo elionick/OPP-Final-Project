@@ -12,7 +12,6 @@ class priceRetriever:
 
     def findIngredients(self):
 
-
         splitIngredients = []
         for i in range(len(self.ingredients)):
             splitIngredients.append(self.ingredients[i].split(" "))
@@ -28,7 +27,6 @@ class priceRetriever:
     def translateIngredients(self):
         for i in range(len(self.finalIngredients)):
             self.finalIngredients[i] = translateFunctions.translate(self.finalIngredients[i])
-
 
     def getCoopPrices(self):
 
@@ -51,7 +49,7 @@ class priceRetriever:
 
             brand = []
             if name == []:
-                print("We could not get prices for " +str(ingredient))
+                print("We could not get prices for " + str(ingredient))
 
             # Separate the brand out of the product-name
             for i in range(len(name)):
@@ -79,14 +77,13 @@ class priceRetriever:
             for i in range(len(price)):
                 price[i] = price[i].split()[0]
                 price[i] = price[i].split("/")[0]
-                price[i] = round(float(price[i]),2)
+                price[i] = round(float(price[i]), 2)
 
             cheapestprice = min(price)
             n = price.index(cheapestprice)
 
             # Save the result
             self.IngredientPrices.append(brand[n] + "," + name[n] + "," + str(price[n]))
-
 
 
 if __name__ == "__main__":
@@ -106,5 +103,3 @@ if __name__ == "__main__":
     # Get the cheapest product - The result will be in the instance variable "self.IngredientPrices"
     test.getCoopPrices()
     print(test.IngredientPrices)
-
-
