@@ -151,7 +151,7 @@ class user():
     # Construct from list
     def from_list(cls, arg_list):
         first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password = arg_list
-        return cls(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password)
+        return cls(first_name, middle_name, last_name, gender, float(height), float(weight), e_mail, birthday, diet, intolerances, username, password)
     @classmethod
     # Construct from database
     def from_username(cls, username):
