@@ -65,20 +65,19 @@ def addNewPrice(product, productEntries):
                 cursor.execute(sql, (productEntries[i][0], productEntries[i][1],
                                      productEntries[i][2], datetime.date.today()))
 
-
     finally:
         connection.commit()
         cursor.close()
 
 
-def dbNewFavRecipe(Recipe_ID, RECIPE_NAME, RECIPE,USER_ID, INGREDIENTS, CALORIES):
-    #adds new entry to the FAV_RECIPE table
-    #add test Fav_Recipe DB entry exist User_ID and Reciep_ID
+def dbNewFavRecipe(Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, INGREDIENTS, CALORIES):
+    # adds new entry to the FAV_RECIPE table
+    # add test Fav_Recipe DB entry exist User_ID and Reciep_ID
     try:
         with connection.cursor() as cursor:
             sql = "INSERT INTO FAV_RECIPE (RECIPE_ID,RECIPE_NAME,RECIPE,USER_ID, INGREDIENTS, CALORIES)"\
-             + "VALUES (%s,%s,%s,%s,%s,%s)"
-            cursor.execute(sql, (Recipe_ID,RECIPE_NAME,RECIPE,USER_ID,INGREDIENTS,CALORIES))
+                + "VALUES (%s,%s,%s,%s,%s,%s)"
+            cursor.execute(sql, (Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, INGREDIENTS, CALORIES))
             connection.commit()
             print("insert successful")
 
@@ -97,11 +96,11 @@ def getRecipeList(USER_ID):
         cursor.close()
 
 
-def checkRecipeExist(USER_ID,Recipe_ID):
+def checkRecipeExist(USER_ID, Recipe_ID):
     try:
         with connection.cursor() as cursor:
             sql = "SELECT COUNT(*) FROM FAV_RECIPE WHERE USER_ID = %s AND RECIPE_ID = %s"
-            cursor.execute(sql, (USER_ID,Recipe_ID))
+            cursor.execute(sql, (USER_ID, Recipe_ID))
             if cursor.fetchone()["COUNT(*)"] == 1:
                 return True
             else:
@@ -109,4 +108,3 @@ def checkRecipeExist(USER_ID,Recipe_ID):
 
     finally:
         cursor.close()
-

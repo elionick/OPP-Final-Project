@@ -1,0 +1,9 @@
+requests
+pprint
+pymysql
+datetime
+validate_email
+beautifulsoup4
+selenium
+googletrans
+
