@@ -30,13 +30,13 @@ class user():
         self.userID = userDao.getUserID(username)
         self.setBMI()
         self.setBodyFat()
-        self.setNetWeightandRestCalorieCons()
+        self.setNetWeightandRestCalorieBurn()
         self.setWeightGoal()
         self.updateWorkouts()
         self.setFamilyMembers()
         self.setCalorieNeed()
         
-    def setNetWeightandRestCalorieCons(self):
+    def setNetWeightandRestCalorieBurn(self):
         self.netWeight = self.weight * (1-self.bodyFat/100)
         # Katch-McArdle formula
         self.restingCalorieConsumption = 370 + (21.6 * self.netWeight)
@@ -130,7 +130,7 @@ class user():
         userDao.setValueForUserInField(self.userID, "WEIGHT", self.weight)
         self.setBMI()
         self.setBodyFat()
-        self.setNetWeightandRestCalorieCons()
+        self.setNetWeightandRestCalorieBurn()
         self.setTodaysCalorieBurningAndDuration()
         self.setCalorieNeed()
 
@@ -139,7 +139,7 @@ class user():
         userDao.setValueForUserInField(self.userID, "HEIGHT", self.height)
         self.setBMI()
         self.setBodyFat()
-        self.setNetWeightandRestCalorieCons()
+        self.setNetWeightandRestCalorieBurn()
         self.setTodaysCalorieBurningAndDuration()
         self.setCalorieNeed()
 
