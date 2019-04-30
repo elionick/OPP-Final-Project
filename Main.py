@@ -204,6 +204,12 @@ while choice not in ["q", "Q"]:
                     workout_chosen.deleteWorkout()
                     active_user.updateWorkouts()
             if choice == 4:
+                # Weight goal
+                weight_goal = uiMenu(["Enter weight goal"], menu_title="Set weight goal", input_type="questions", error_keys=["weight"], questions_check_functions=[checkWeight])
+                userDao.setWeightGoal(active_user.userID, weight_goal)
+                active_user.setWeightGoal()
+                active_user.setCalorieNeed()
+            if choice == 5:
                 choice = ''
                 # Go back to main menu
                 break
@@ -227,6 +233,9 @@ while choice not in ["q", "Q"]:
                 userDao.deleteFamilyMember(active_user.userID, active_user.familyMembers[choice - 1].userID)
                 active_user.setFamilyMembers()
     if choice == 6:
+        # Food Log
+        pass
+    if choice == 7:
         # Logout
         while choice not in ["q", "Q"]:
             choice = uiMenu(logInMenu, menu_title = "Login", user_instruction="What would you like to do?")

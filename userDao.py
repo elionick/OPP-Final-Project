@@ -4,7 +4,7 @@ class userDao:
     def setWeightGoal(user_id, weight_goal):
         try:
             with connection.cursor() as cursor:
-                sql = "update USERS set WEIGHT_GOAL= %s where USER_ID %s"
+                sql = "update USER set WEIGHT_GOAL=%s where USER_ID=%s"
                 cursor.execute(sql, (weight_goal, user_id))
                 connection.commit()
         finally:

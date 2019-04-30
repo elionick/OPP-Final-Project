@@ -1,0 +1,2 @@
+class foodLogDao:
+    pass
