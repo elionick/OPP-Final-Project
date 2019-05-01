@@ -67,6 +67,26 @@ def getNearbyPlace():
                 print("----------------------------------------------")
 
 
+def getDirection():
+    main_api = "https://maps.googleapis.com/maps/api/directions/json?"
+
+    url = main_api + urllib.parse.urlencode({"origin": "47.429889,9.376306", "key": "AIzaSyCGmcaD0lKJaFYRgU0nyBaHjQ1JX8r3A_o",
+                                            "destination": "place_id:ChIJa04EtIwem0cRZW_G-OOE9zo", "mode":"walking", "departure_time": "now"})
+
+    print(url)
+
+    json_data = requests.get(url).json()
+    json_status = json_data["status"]
+    print("API Status: " + json_status)
+    print("----------------------------------------------")
+
+    if json_status == "OK":
+        polyline = json_data["routes"][0]["overview_polyline"]["points"]
+        print("Polyline: "  +str(polyline))
+        print("----------------------------------------------")
+
+
+
 def getDistance():
     main_api = "https://maps.googleapis.com/maps/api/distancematrix/json?"
 
@@ -86,6 +106,8 @@ def getDistance():
         json_status = json_data["status"]
         print("API Status: " + json_status)
         print("----------------------------------------------")
+
+
 
         if json_status == "OK":
             origin = json_data["origin_addresses"][0]
@@ -115,14 +137,13 @@ def getLocation():
         print("API Status: " + json_status)
 
         if json_status == "OK":
-            for each in json_data["results"][0]["address_components"]:
-                print(each["long_name"])
-            if json_data["results"][0]["formatted_address"]:
-                formatted_address = json_data["results"][0]["formatted_address"]
-                print()
-                print(formatted_address)
+            for each in json_data["results"]:
+                location = each["geometry"]["location"]["lat"], each["geometry"]["location"]["lng"]
+                print(location)
 
 
 if __name__ == '__main__':
-    getDistance()
-    # getNearbyPlace()
+    #getDistance()
+    #getNearbyPlace()
+    #getDirection()
+    getLocation()
