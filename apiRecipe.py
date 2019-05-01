@@ -1,8 +1,9 @@
 import requests
 import pprint
 import pymysql
-from classFoodNutritionsDao import *
-from dbFunctions import *
+from apiFoodNutritions import *
+from recipeDao import *
+from classPriceCatcher import *
 
 
 def getRecipeByMeal(USER_ID, INTOLERANCE, DIET):
@@ -71,7 +72,7 @@ def getRecipeByMeal(USER_ID, INTOLERANCE, DIET):
         calories = list()
         while (i < (len(INGREDIENTS))):
             #print(INGREDIENTS[i])
-            calories_1 = FoodNutritionsDao.getCalories(INGREDIENTS[i])
+            calories_1 = apiFoodNutritions.getCalories(INGREDIENTS[i])
             calories.append(calories_1)
             i += 1
         CALORIES = int(sum(calories))
@@ -149,7 +150,7 @@ def getRecipeByIngredients(USER_ID):
     i = 0
     calories = list()
     while (i < (len(INGREDIENTS))):
-        calories_1 = FoodNutritionsDao.getCalories(INGREDIENTS[i])
+        calories_1 = apiFoodNutritions.getCalories(INGREDIENTS[i])
         calories.append((int(calories_1)))
         i += 1
     CALORIES = int(sum(calories))
@@ -157,20 +158,13 @@ def getRecipeByIngredients(USER_ID):
     global RECIPE
     RECIPE = getRecipeInformation(Recipe_ID)
 
-    i = 0
-    ing = list()
-    while (i < (len(INGREDIENTS))):
-        ing.append(FoodNutritionsDao.checkFoodInApi(INGREDIENTS[i]))
-        i += 1
-    print(ing)
-
     test_fav = input("Do you wanna save the recipe in your favourites? yes/no")
     if (test_fav == "yes"):
         if checkRecipeExist(USER_ID,Recipe_ID) == True:
             print("Recipe already saved as favourite. Check your favourites")
             pass
         else:
-            dbNewFavRecipe(Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, str(INGREDIENTS), CALORIES)
+            dbNewFavRecipe(int(Recipe_ID), str(RECIPE_NAME), RECIPE, int(USER_ID), str(INGREDIENTS), CALORIES)
             pass
     else:
         choice2 = input("Do you want to search for another recipe? yes/no")
@@ -222,11 +216,11 @@ def getRecipeInformation(Recipe_ID):
 
 
 if __name__ == '__main__':
-    #pass
+    pass
     #dbLogin()
     #getRecipeIngedients("849492")
     #connection.close()
     #getRecipeInformation("849492")
-    getRecipeByMeal(1,"tomato","regular")
+    #getRecipeByMeal(1,"tomato","regular")
     #getRecipeByIngredients(1)
     #food_nutrition("i ate 2 eggs, ten strawberries, and 10 french toast")

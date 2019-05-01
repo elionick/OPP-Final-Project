@@ -152,19 +152,18 @@ while choice not in ["q", "Q"]:
         while choice not in ["q", "Q"]:
             # Recipes
             choice = uiMenu(recipesMenu, menu_title = "Recipes",user_instruction="What would you like to do?")
-            info = userDao.getUserAttributesAsList(username)
-            User_ID = userDao.getUserID(username)
             if choice == 1:
-                getRecipeByIngredients(User_ID)
+                getRecipeByIngredients(active_user.userID)
                 pass
             if choice == 2:
-                getRecipeByMeal(User_ID, info[9], info[8])
+                getRecipeByMeal(active_user.userID, active_user.intolerances, active_user.intolerances)
                 pass
             if choice == 3:
-                chooseRecipe(User_ID)
+                chooseRecipe(active_user.userID)
                 pass
             if choice == 4:
                 # Go back to main menu
+                choice = ''
                 break
     if choice == 3:
         while choice not in ["q", "Q"]:
