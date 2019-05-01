@@ -84,6 +84,7 @@ class priceRetriever:
 
             # Save the result
             self.IngredientPrices.append(brand[n] + "," + name[n] + "," + str(price[n]))
+            self.IngredientPricesonly.append(price[n])
 
 
 if __name__ == "__main__":

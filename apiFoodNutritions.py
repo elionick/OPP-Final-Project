@@ -55,5 +55,25 @@ class apiFoodNutritions:
                 food_names.append(element['tags']['item'])
         return list(set(food_names))
 
+    def getCalories(query):
+        try:
+            params = {"query": query}
+            r = requests.post(apiFoodNutritions.url, headers=apiFoodNutritions.headers, json=params)
+            test = r.json()
+            # pprint.pprint(test)
+            name = list()
+            i = 0
+            while i < len(test['foods']):
+                name.append(test['foods'][i]['food_name'])
+                i += 1
+            calories = list()
+            i = 0
+            while i < len(test['foods']):
+                calories.append(test['foods'][i]['nf_calories'])
+                i += 1
+            return (int(sum(calories)))
+        except Exception:
+            return (0)
+
 if __name__ == "__main__":
     pass
