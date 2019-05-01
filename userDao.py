@@ -1,5 +1,56 @@
 from dbFunctions import *
 class userDao:
+    @staticmethod
+    def setWeightGoal(user_id, weight_goal):
+        try:
+            with connection.cursor() as cursor:
+                sql = "update USER set WEIGHT_GOAL=%s where USER_ID=%s"
+                cursor.execute(sql, (weight_goal, user_id))
+                connection.commit()
+        finally:
+            cursor.close()
+    
+    @staticmethod
+    def getWeightGoal(user_id):
+        return userDao.getValueOfUserInField(user_id, "WEIGHT_GOAL")
+
+    @staticmethod
+    def deleteFamilyMember(user_id, family_member_user_id):
+        try:
+            with connection.cursor() as cursor:
+                sql = "delete from FAMILY_MEMBERS where FK_PRIMARY_USER_ID = %s and FK_FAMILY_MEMBER_USER_ID = %s"
+                cursor.execute(sql, (user_id, family_member_user_id))
+                connection.commit()
+        finally:
+            cursor.close()
+    
+    @staticmethod
+    def addFamilyMember(user_id, family_member_username):
+        try:
+            with connection.cursor() as cursor:
+                sql = "insert into FAMILY_MEMBERS (FK_PRIMARY_USER_ID, FK_FAMILY_MEMBER_USER_ID) values (%s, %s)"
+                cursor.execute(sql, (user_id, userDao.getUserID(family_member_username)))
+                connection.commit()
+        finally:
+            cursor.close()
+
+    @staticmethod
+    def getFamilyMembersUsername(user_id):
+        try:
+            with connection.cursor() as cursor:
+                sql = "select FK_FAMILY_MEMBER_USER_ID FROM FAMILY_MEMBERS WHERE FK_PRIMARY_USER_ID = %s"
+                cursor.execute(sql, user_id)
+                info = cursor.fetchall()
+                family_members_id = [v['FK_FAMILY_MEMBER_USER_ID'] for v in info]
+                family_members_usernames = []
+                for family_member in family_members_id:
+                    sql = "select LOGIN_NAME FROM USER WHERE USER_ID = %s"
+                    cursor.execute(sql, family_member)
+                    info = cursor.fetchone()
+                    family_members_usernames.append(info['LOGIN_NAME'])
+                return family_members_usernames
+        finally:
+            cursor.close()
 
     @staticmethod
     # Get user attributes from database as list
@@ -116,5 +167,5 @@ class userDao:
                 userDao.setValueForUserInField(user_id, sql_field_names[index], inputs[index])
 
 if __name__ == "__main__":
-    pass
+    print(userDao.getFamilyMembersUsername(35))
     

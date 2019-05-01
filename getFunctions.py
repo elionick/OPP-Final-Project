@@ -21,7 +21,8 @@ def getErrorMessage(error_code, custom_message = ''):
     "gender": "Error! Please enter a valid gender.",
     "day": "Error! Please enter a valid day.",
     "time": "Error! Please enter a valid time.",
-    "exercise": "Error! Please enter a valid exercise."
+    "exercise": "Error! Please enter a valid exercise.",
+    "food" : "Error! Please enter valid food."
     }
     return errorMessages[error_code]
 

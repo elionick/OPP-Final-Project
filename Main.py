@@ -9,6 +9,7 @@ from classWorkout import workout
 from classExercise import exercise
 from apiRecipe import *
 from recipeDao import *
+from apiFoodNutritions import *
 
 # Show Welcome
 showWelcome()
@@ -66,7 +67,7 @@ while choice not in ["q", "Q"]:
 
 # Main Menu
 while choice not in ["q", "Q"]:
-    choice = uiMenu(mainMenu, menu_title = "Main Menu", sub_title = "Hello %s! Your BMI is %.2f (%s). Your Body Fat is %.2f%%.\n\nNext workout at:\t\t%s %s\nWorkout Duration:\t\t%.2f minutes\nWorkout calorie burning:\t%.2f\n\nCalorie consumption today:\t%.2f\nTotal workout duration today:\t%.2f minutes" % (active_user.firstName, active_user.valueBMI,active_user.statusBMI, active_user.bodyFat, str(active_user.nextWorkout.startTime).split(":")[0] + ":" + str(active_user.nextWorkout.startTime).split(":")[1] if active_user.nextWorkout != False else "--", active_user.nextWorkout.weekday if active_user.nextWorkout != False else "",active_user.nextWorkout.duration if active_user.nextWorkout != False else 0, active_user.nextWorkout.calorieBurning if active_user.nextWorkout != False else 0, active_user.todaysCalorieBurning, active_user.todaysDuration),user_instruction="What would you like to do?")
+    choice = uiMenu(mainMenu, menu_title = "Main Menu", sub_title = "Hello %s! Your BMI is %.2f (%s). Your Body Fat is %.2f%%.\n\nNext workout at:\t\t\t%s on %s\nWorkout Duration:\t\t\t%.2f minutes\nWorkout calorie burning:\t\t%.2f\n\nToday's stats:\nResting calorie burning:\t\t%.2f\nWorkout(s) calorie burning:\t\t%.2f\nTotal calorie burning:\t\t\t%.2f\nCalorie requirement:\t\t\t%.2f/%.2f\nTotal workout duration:\t\t\t%.2f minutes" % (active_user.firstName, active_user.valueBMI,active_user.statusBMI, active_user.bodyFat, str(active_user.nextWorkout.startTime).split(":")[0] + ":" + str(active_user.nextWorkout.startTime).split(":")[1] if active_user.nextWorkout != False else "--", active_user.nextWorkout.weekday if active_user.nextWorkout != False else "--",active_user.nextWorkout.duration if active_user.nextWorkout != False else 0, active_user.nextWorkout.calorieBurning if active_user.nextWorkout != False else 0, active_user.restingCalorieConsumption, active_user.todaysWorkoutCalorieBurning,  active_user.todaysCalorieBurning, active_user.netCalorieNeed, active_user.calorieNeed, active_user.todaysDuration),user_instruction="What would you like to do?")
     if choice == 1:
         while choice not in ["q", "Q"]:
             # Update profile information
@@ -108,7 +109,34 @@ while choice not in ["q", "Q"]:
                 active_user.updateAttribute("diet", new_diet, "DIET")
             if choice == 10:
                 # to do: Intolerance Add and Delete Option
-                pass
+                while choice not in ["q", "Q"]:
+                    choice = uiMenu(["Add intolerance", "Delete intolerance", "Go back to update profile information"], menu_title = "Intolerances",user_instruction="What would you like to do?")
+                    if choice == 1:
+                        # Add intolerance
+                        new_intolerance = uiMenu(["Enter new intolerance"], menu_title = "Update Intolerances", input_type="questions",error_keys=["intolerance"], questions_check_functions=[checkIntoleranceUpdate], questions_check_functions_additional_args=[[active_user.intolerancesList]])[0]
+                        new_intolerance = apiFoodNutritions.getFoodNameString(new_intolerance)
+                        if active_user.intolerances == "":
+                            active_user.setIntolerances(new_intolerance)    
+                        else:
+                            active_user.setIntolerances(active_user.intolerances + "," + new_intolerance)
+                        userDao.setValueForUserInField(active_user.userID, "INTOLERANCE", active_user.intolerances)
+                    if choice == 2:
+                        while choice not in ["q", "Q"]:
+                            # delete intolerance
+                            choice = uiMenu(active_user.intolerancesList + ["Go back to update profile information"] if active_user.intolerances is not "" else ["Go back to update profile information"], menu_title = "Delete Intolerances",user_instruction="Which intolerance would you like to delete?")
+                            if choice == len(active_user.intolerancesList) + 1 if active_user.intolerances is not "" else 1:
+                                choice = ''
+                                break
+                            elif choice in ["q", "Q"]:
+                                break
+                            else:
+                                new_intolerance = list(active_user.intolerancesList)
+                                new_intolerance.pop(choice - 1)
+                                active_user.setIntolerances(new_intolerance)
+                                userDao.setValueForUserInField(active_user.userID, "INTOLERANCE", active_user.intolerances)
+                    if choice == 3:
+                        choice = ''
+                        break
             if choice == 11:
                 # Update username
                 new_username = uiMenu(["Enter new username"], menu_title = "Update Username", input_type="questions", error_keys=["username"], questions_check_functions=[checkNewUsername])[0]
@@ -204,12 +232,48 @@ while choice not in ["q", "Q"]:
                     workout_chosen.deleteWorkout()
                     active_user.updateWorkouts()
             if choice == 4:
+                # Weight goal
+                weight_goal = uiMenu(["Enter weight goal"], menu_title="Set weight goal", input_type="questions", error_keys=["weight"], questions_check_functions=[checkWeight])
+                userDao.setWeightGoal(active_user.userID, weight_goal)
+                active_user.setWeightGoal()
+                active_user.setCalorieNeed()
+                active_user.setNetCalorieNeed()
+            if choice == 5:
                 choice = ''
                 # Go back to main menu
                 break
     if choice == 4:
         pass
     if choice == 5:
+        while True:
+            choice = uiMenu(active_user.familyMembers + ["Add Family Member","Go back to Main Menu"], menu_title = "Family Members", user_instruction="Choose a family member to delete or another option:")
+            if choice == len(active_user.familyMembers) + 2:
+                choice = ''
+                break
+            elif choice in ["q", "Q"]:
+                break
+            elif choice == len(active_user.familyMembers) + 1:
+                # Add Family Member
+                family_member_username = uiMenu(["Enter username of family member"], menu_title="Add Family Member", input_type="questions", error_keys=["username"], questions_check_functions=[checkFamilyMember], questions_check_functions_additional_args=[[active_user.username, active_user.familyMembersUsernames]])
+                userDao.addFamilyMember(active_user.userID, family_member_username)
+                active_user.setFamilyMembers()
+            else:
+                # Delete Family Member
+                userDao.deleteFamilyMember(active_user.userID, active_user.familyMembers[choice - 1].userID)
+                active_user.setFamilyMembers()
+    if choice == 6:
+        # Food Log
+        while choice not in ["q", "Q"]:
+            choice = uiMenu(["Add food", "Go back to main menu"], menu_title = "Food Log", user_instruction="What would you like to do?")
+            if choice == 1:
+                food = uiMenu(["Enter food"], menu_title="Food Log", input_type="questions", error_keys=["food"], questions_check_functions=[apiFoodNutritions.checkFoodInApi])
+                foodLogDao.setMeal(food, apiFoodNutritions.getCaloriesOfFood(food[0]), active_user.userID)
+                active_user.setTodaysCaloricIntake()
+                active_user.setNetCalorieNeed()
+            if choice == 2:
+                choice = ''
+                break
+    if choice == 7:
         # Logout
         while choice not in ["q", "Q"]:
             choice = uiMenu(logInMenu, menu_title = "Login", user_instruction="What would you like to do?")
