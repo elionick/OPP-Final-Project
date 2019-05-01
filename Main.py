@@ -9,6 +9,7 @@ from classWorkout import workout
 from classExercise import exercise
 from apiRecipe import *
 from recipeDao import *
+from apiFoodNutritions import *
 
 # Show Welcome
 showWelcome()
@@ -235,7 +236,16 @@ while choice not in ["q", "Q"]:
                 active_user.setFamilyMembers()
     if choice == 6:
         # Food Log
-        pass
+        while choice not in ["q", "Q"]:
+            choice = uiMenu(["Add food", "Go back to main menu"], menu_title = "Food Log", user_instruction="What would you like to do?")
+            if choice == 1:
+                food = uiMenu(["Enter food"], menu_title="Food Log", input_type="questions", error_keys=["food"], questions_check_functions=[apiFoodNutritions.checkFoodInApi])
+                foodLogDao.setMeal(food, apiFoodNutritions.getCaloriesOfFood(food[0]), active_user.userID)
+                active_user.setTodaysCaloricIntake()
+                active_user.setNetCalorieNeed()
+            if choice == 2:
+                choice = ''
+                break
     if choice == 7:
         # Logout
         while choice not in ["q", "Q"]:
