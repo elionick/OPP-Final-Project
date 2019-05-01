@@ -1,6 +1,6 @@
 from validate_email import validate_email
 from userDao import *
-from classFoodNutritionsDao import *
+from apiFoodNutritions import *
 import datetime
 from apiExercises import *
 
@@ -108,8 +108,19 @@ def checkIntolerances(input):
     else:
         intolerances = input.split(',')
         for intolerance in intolerances:
-            if FoodNutritionsDao.checkFoodInApi(intolerance) == False:
+            if apiFoodNutritions.checkFoodInApi(intolerance) == False:
                 return False
+    return True
+
+# Check Intolerance Update
+def checkIntoleranceUpdate(input, existing_intolerance):
+    try:
+        food_name_s = apiFoodNutritions.getFoodNameList(input)
+    except:
+        return False
+    for food in food_name_s:
+        if food in existing_intolerance:
+            return False
     return True
 
 def checkGender(input):
@@ -150,4 +161,6 @@ def checkFamilyMember(input, own_username, family_members_usernames):
         return False
 
 if __name__ == "__main__":
-    pass
+
+    print(checkIntoleranceUpdate("Tomatoes", ["tomatos"]))
+    IntoleranceUpdate("Tomatoes", ["tomatos"])

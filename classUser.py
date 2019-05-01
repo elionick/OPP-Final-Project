@@ -4,6 +4,7 @@ from datetime import date
 from classWorkout import workout
 from getFunctions import *
 from foodLogDao import *
+from apiFoodNutritions import *
 import datetime
 class user():
     def __init__(self, first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password):
@@ -23,11 +24,11 @@ class user():
         self.birthday = datetime.datetime.strptime(str(birthday), "%Y-%m-%d").date()
         self.setAge()
         self.diet = diet
-        self.intolerances = intolerances
+        self.setIntolerances(intolerances)
         # Create user if user not exists
         if userDao.checkUsernameExists(username) == False:
             # create user in database
-            userDao.createUserFromList(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password)
+            userDao.createUserFromList(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, apiFoodNutritions.getFoodNameString(intolerances), username, password)
         self.userID = userDao.getUserID(username)
         self.setTodaysCaloricIntake()
         self.setBMI()
@@ -38,6 +39,17 @@ class user():
         self.setFamilyMembers()
         self.setCalorieNeed()
         self.setNetCalorieNeed()
+
+    def setIntolerances(self, intolerances):
+        if intolerances == "" or intolerances == []:
+            self.intolerancesList = []
+            self.intolerances = ""
+        elif isinstance(intolerances, str):
+            self.intolerancesList = intolerances.split(",")
+            self.intolerances = intolerances
+        elif isinstance(intolerances, list):
+            self.intolerancesList = intolerances
+            self.intolerances = ", ".join(intolerances)
 
     def setTodaysCaloricIntake(self):
         self.CaloricIntake = foodLogDao.getTodaysCaloricIntake(self.userID)
@@ -181,8 +193,7 @@ class user():
         arg_list = userDao.getUserAttributesAsList(username)
         first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password = arg_list
         return cls(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password)
-
-
+    
 
 if __name__ == "__main__":
     pass
