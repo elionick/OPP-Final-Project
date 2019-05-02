@@ -1,6 +1,12 @@
 import os
+import platform
+def clear_screen():
+    command = "cls" if platform.system().lower()=="windows" else "clear"
+    os.system(command)
+
+
 def showWelcome():
-    os.system("clear")
+    clear_screen()
     print(""" 
  █     █░▓█████  ██▓     ▄████▄   ▒█████   ███▄ ▄███▓▓█████  ▐██▌ 
 ▓█░ █ ░█░▓█   ▀ ▓██▒    ▒██▀ ▀█  ▒██▒  ██▒▓██▒▀█▀ ██▒▓█   ▀  ▐██▌ 
@@ -15,7 +21,7 @@ def showWelcome():
     """)
 
 def showQuit():
-    os.system("clear")
+    clear_screen()
     print("""
   ▄████  ▒█████   ▒█████  ▓█████▄     ▄▄▄▄ ▓██   ██▓▓█████  ▐██▌ 
  ██▒ ▀█▒▒██▒  ██▒▒██▒  ██▒▒██▀ ██▌   ▓█████▄▒██  ██▒▓█   ▀  ▐██▌ 

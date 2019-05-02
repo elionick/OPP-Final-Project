@@ -7,7 +7,8 @@ from getpass import getpass
 from classUser import *
 from classWorkout import workout
 from classExercise import exercise
-from apiRecipe import *
+# Hier ist ein Bug:
+#from apiRecipe import *
 from recipeDao import *
 from apiFoodNutritions import *
 

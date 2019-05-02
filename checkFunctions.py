@@ -161,6 +161,4 @@ def checkFamilyMember(input, own_username, family_members_usernames):
         return False
 
 if __name__ == "__main__":
-
-    print(checkIntoleranceUpdate("Tomatoes", ["tomatos"]))
-    IntoleranceUpdate("Tomatoes", ["tomatos"])
+    pass
