@@ -1,5 +1,3 @@
-import platform    # For getting the operating system name
-import subprocess
 from designElements import *
 from checkFunctions import *
 from getFunctions import *
@@ -110,10 +108,5 @@ def uiMenu(menu_elements_list, menu_title = None, sub_title = None, sub_sub_titl
                 if len(menu_elements_list) == len(answers):
                     return answers
         
-
-def clear_screen():
-    command = "cls" if platform.system().lower()=="windows" else "clear"
-    return subprocess.call(command) == 0
-
 if __name__ == "__main__":
-    pass
+    print(platform.system().lower())
