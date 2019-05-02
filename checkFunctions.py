@@ -3,6 +3,7 @@ from userDao import *
 from apiFoodNutritions import *
 import datetime
 from apiExercises import *
+import apiMap
 
 # checks if user input is possible choice
 def checkIfChoice(input, poss_options, quit_option = True):
@@ -159,6 +160,13 @@ def checkFamilyMember(input, own_username, family_members_usernames):
         return True
     else:
         return False
+
+# Check address
+def checkAddress(input):
+    checkAddress = apiMap.maps(input)
+    if checkAddress.getLocation():
+        return True
+
 
 if __name__ == "__main__":
     pass

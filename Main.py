@@ -243,7 +243,14 @@ while choice not in ["q", "Q"]:
                 # Go back to main menu
                 break
     if choice == 4:
-        pass
+        while choice not in ["q", "Q"]:
+            # Shopping
+            choice = uiMenu(fitnessMenu, menu_title="Shopping", user_instruction="What would you like to do?")
+            if choice == 1:
+                workout_data = uiMenu(createNewWorkout, menu_title="Create New Workout", input_type="questions", error_keys=["day", "time"], questions_check_functions=[checkDayValid, checkTimeValid])
+                new_workout = workout(active_user.userID, workout_data[1], workout_data[0])
+                # Menu to add exercises to workout
+
     if choice == 5:
         while True:
             choice = uiMenu(active_user.familyMembers + ["Add Family Member","Go back to Main Menu"], menu_title = "Family Members", user_instruction="Choose a family member to delete or another option:")

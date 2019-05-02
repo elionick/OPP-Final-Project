@@ -18,6 +18,6 @@ fitnessMenu = ["Create new workout", "Workout plan", "Delete workout", "Set weig
 updateProfileInformationMenu = ["First name", "Middle Name", "Last name", "Gender", "Height", "Weight", "Email", "Birthday", "Diet", "Intolerances", "Username", "Password", "Go back to main menu"]
 createNewWorkout = ["Day (MON, TUE, WED, THU, FRI, SAT, SUN)", "Time"]
 specifyWorkout = ["Add exercise to workout", "Save Workout"]
-
+shoppingMenu = ["Find the nearest supermarket", "Get my shopping list",  "Check price development"]
 recipesMenu = ["Search recipe by ingredients", "Search recipe by meal", "Look at your favourite recipes","Go back to main menu"]
 

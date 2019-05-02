@@ -3,13 +3,14 @@ import urllib
 import sendEmail
 
 class maps():
-    def __init__(self):
+    def __init__(self, address):
         self.key = "AIzaSyCGmcaD0lKJaFYRgU0nyBaHjQ1JX8r3A_o"
         self.location = ""
         self.destination = ""
         self.type = ""
         self.directions = []
         self.polyline = ""
+        self.address = address
 
     def getImg(self):
         main_api = "https://maps.googleapis.com/maps/api/staticmap?"
@@ -89,9 +90,9 @@ class maps():
 
     def getLocation(self):
         main_api = "https://maps.googleapis.com/maps/api/geocode/json?"
-        address = input("Address: ")
+        # address = input("Address: ")
 
-        url = main_api + urllib.parse.urlencode({"address": address, "key": self.key})
+        url = main_api + urllib.parse.urlencode({"address": self.address, "key": self.key})
         json_data = requests.get(url).json()
 
         json_status = json_data["status"]
@@ -101,6 +102,9 @@ class maps():
             for each in json_data["results"]:
                 self.location = str(each["geometry"]["location"]["lat"]) + "," + str(each["geometry"]["location"]["lng"])
                 print(self.location)
+            return True
+
+
 
 
     def getDistance(self):
