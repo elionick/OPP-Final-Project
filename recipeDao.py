@@ -22,8 +22,10 @@ def chooseRecipe(USER_ID):
     choice = input("Which recipe do you wanna check?")
     try:
         pprint.pprint(info[(int(choice)-1)])
-    except Exception: print("Index not found")
+    except Exception:
+        print("Index not found")
     pass
+
 
 def dbNewFavRecipe(Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, INGREDIENTS, CALORIES):
     # adds new entry to the FAV_RECIPE table
@@ -60,9 +62,9 @@ def checkRecipeExist(USER_ID, Recipe_ID):
                 return True
             else:
                 return False
-
     finally:
         cursor.close()
+
 
 if __name__ == "__main__":
     pass
