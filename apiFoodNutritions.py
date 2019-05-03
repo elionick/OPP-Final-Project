@@ -36,6 +36,8 @@ class apiFoodNutritions:
     
     @staticmethod
     def getFoodNameString(food):
+        if food == "":
+            return ""
         food_names = []
         for food in food.split(","):
             params = {"query" : food}
@@ -55,6 +57,7 @@ class apiFoodNutritions:
                 food_names.append(element['tags']['item'])
         return list(set(food_names))
 
+    @staticmethod
     def getCalories(query):
         try:
             params = {"query": query}

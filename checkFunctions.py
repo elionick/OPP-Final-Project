@@ -166,6 +166,8 @@ def checkAddress(input):
     checkAddress = apiMap.maps(input)
     if checkAddress.getLocation():
         return True
+    else:
+        return False
 
 
 if __name__ == "__main__":

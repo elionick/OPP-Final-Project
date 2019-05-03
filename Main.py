@@ -260,17 +260,18 @@ while choice not in ["q", "Q"]:
                                 break
             if choice == 3:
                 # Delete Workout
-                choice = uiMenu(active_user.workouts + ["Go back to Fitness Menu"],
-                                menu_title="Weekly Workouts", user_instruction="Choose a workout to delete:")
-                if choice == len(active_user.workouts) + 1:
-                    choice = ''
-                    break
-                elif choice in ["q", "Q"]:
-                    break
-                else:
-                    workout_chosen = active_user.workouts[choice - 1]
-                    workout_chosen.deleteWorkout()
-                    active_user.updateWorkouts()
+                while choice not in ["q", "Q"]:
+                    choice = uiMenu(active_user.workouts + ["Go back to Fitness Menu"],
+                                    menu_title="Weekly Workouts", user_instruction="Choose a workout to delete:")
+                    if choice == len(active_user.workouts) + 1:
+                        choice = ''
+                        break
+                    elif choice in ["q", "Q"]:
+                        break
+                    else:
+                        workout_chosen = active_user.workouts[choice - 1]
+                        workout_chosen.deleteWorkout()
+                        active_user.updateWorkouts()
             if choice == 4:
                 # Weight goal
                 weight_goal = uiMenu(["Enter weight goal"], menu_title="Set weight goal", input_type="questions", error_keys=[
@@ -384,37 +385,39 @@ while choice not in ["q", "Q"]:
                 break
             if choice == 2:
                 user_data = uiMenu(
-                    createUserProfil,
-                    menu_title="Create User Profile",
-                    error_keys=[
-                        "name",
-                        None,
-                        "name",
-                        "gender",
-                        "height",
-                        "weight",
-                        "email",
-                        "birth",
-                        "diet",
-                        "intolerance",
-                        "username",
-                        "password"],
-                    input_type="questions",
-                    questions_check_functions=[
-                        checkIfStringLenNeqZero,
-                        None,
-                        checkIfStringLenNeqZero,
-                        checkGender,
-                        checkHeight,
-                        checkWeight,
-                        checkEmail,
-                        checkValidYearOfBirth,
-                        checkDiet,
-                        checkIntolerances,
-                        checkNewUsername,
-                        checkIfStringLenNeqZero],
-                    questions_special_input_func=[None, None, None, None,
-                                                  None, None, None, None, None, None, None, getpass]
+                createUserProfil,
+                menu_title="Create User Profile",
+                error_keys=[
+                "name",
+                None,
+                "name",
+                "gender",
+                "height",
+                "weight",
+                "email",
+                "birth",
+                "address",
+                "diet",
+                "intolerance",
+                "username",
+                "password"],
+                input_type="questions",
+                questions_check_functions=[
+                checkIfStringLenNeqZero,
+                None,
+                checkIfStringLenNeqZero,
+                checkGender,
+                checkHeight,
+                checkWeight,
+                checkEmail,
+                checkValidYearOfBirth,
+                checkAddress,
+                checkDiet,
+                checkIntolerances,
+                checkNewUsername,
+                checkIfStringLenNeqZero],
+                questions_special_input_func=[None, None, None, None,
+                                          None, None, None, None, None, None, None, None, getpass]
                 )
                 active_user = user.from_list(user_data)
                 break
