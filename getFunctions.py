@@ -14,6 +14,7 @@ def getErrorMessage(error_code, custom_message = ''):
     "weight" : "Error! Please enter a valid weight (40kg - 350 kg).",
     "email" : "Error! Please enter a valid email.",
     "birth" : "Error! Please enter a valid birthday (format: yyyy-mm-dd).",
+    "address": "Error! Please enter a valid address.",
     "username" : "Error! Please enter a valid username.",
     "password" : "Error! Please enter a valid password.",
     "diet" : "Error! Please enter a valid diet.",

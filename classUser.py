@@ -1,13 +1,16 @@
-import apiBMI 
+import apiBMI
 from userDao import *
 from datetime import date
 from classWorkout import workout
 from getFunctions import *
 from foodLogDao import *
 from apiFoodNutritions import *
+from recipeDao import *
 import datetime
+
+
 class user():
-    def __init__(self, first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password):
+    def __init__(self, first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, address, diet, intolerances, username, password):
         self.firstName = first_name
         self.middleName = middle_name
         self.lastName = last_name
@@ -21,6 +24,7 @@ class user():
         self.username = username
         self.password = password
         self.eMail = e_mail
+        self.address = address
         self.birthday = datetime.datetime.strptime(str(birthday), "%Y-%m-%d").date()
         self.setAge()
         self.diet = diet
@@ -28,7 +32,8 @@ class user():
         # Create user if user not exists
         if userDao.checkUsernameExists(username) == False:
             # create user in database
-            userDao.createUserFromList(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, apiFoodNutritions.getFoodNameString(intolerances), username, password)
+            userDao.createUserFromList(first_name, middle_name, last_name, gender, height, weight, e_mail,
+                                       birthday, address, diet, apiFoodNutritions.getFoodNameString(intolerances), username, password)
         self.userID = userDao.getUserID(username)
         self.setTodaysCaloricIntake()
         self.setBMI()
@@ -39,6 +44,7 @@ class user():
         self.setFamilyMembers()
         self.setCalorieNeed()
         self.setNetCalorieNeed()
+        self.getFavRecipes()
 
     def setIntolerances(self, intolerances):
         if intolerances == "" or intolerances == []:
@@ -65,7 +71,7 @@ class user():
 
     def setWeightGoal(self):
         self.weightGoal = userDao.getWeightGoal(self.userID)
-        
+
     def setNetCalorieNeed(self):
         if self.weightGoal is not None:
             if self.weightGoal < self.weight:
@@ -76,6 +82,7 @@ class user():
                 self.netCalorieNeed = self.todaysCalorieBurning - self.CaloricIntake
         else:
             self.netCalorieNeed = self.todaysCalorieBurning - self.CaloricIntake
+
     def setCalorieNeed(self):
         if self.weightGoal is not None:
             if self.weightGoal < self.weight:
@@ -96,14 +103,15 @@ class user():
 
     def __str__(self):
         return str([self.firstName, self.lastName])
-    
+
     def setNextWorkout(self):
         workouts_weekdays = [getWeekdayNumber(workout.weekday) for workout in self.workouts]
-        workouts_time = [(datetime.datetime.min + workout.startTime).time() for workout in self.workouts]
+        workouts_time = [(datetime.datetime.min + workout.startTime).time()
+                         for workout in self.workouts]
         todays_day = datetime.datetime.today().weekday()
         current_time = datetime.datetime.now().time()
         possible_workouts = []
-        for next_weekday, next_time, next_workout in zip(workouts_weekdays,workouts_time, self.workouts):
+        for next_weekday, next_time, next_workout in zip(workouts_weekdays, workouts_time, self.workouts):
             if next_weekday == todays_day and next_time >= current_time:
                 possible_workouts.append(next_workout)
         if len(possible_workouts) != 0:
@@ -128,11 +136,13 @@ class user():
                         self.nextWorkout = possible_workouts[0]
                     else:
                         self.nextWorkout = False
-        
+
     def setTodaysCalorieBurningAndDuration(self):
-        self.todaysWorkoutCalorieBurning = sum(workout.calorieBurning for workout in self.workouts if getWeekdayNumber(workout.weekday) == datetime.datetime.today().weekday())
+        self.todaysWorkoutCalorieBurning = sum(workout.calorieBurning for workout in self.workouts if getWeekdayNumber(
+            workout.weekday) == datetime.datetime.today().weekday())
         self.todaysCalorieBurning = self.todaysWorkoutCalorieBurning + self.restingCalorieConsumption
-        self.todaysDuration = sum(workout.duration for workout in self.workouts if getWeekdayNumber(workout.weekday) == datetime.datetime.today().weekday())
+        self.todaysDuration = sum(workout.duration for workout in self.workouts if getWeekdayNumber(
+            workout.weekday) == datetime.datetime.today().weekday())
 
     def setFamilyMembers(self):
         family_members = []
@@ -143,20 +153,24 @@ class user():
 
     def setWorkouts(self):
         self.workouts = workout.createListOfWorkoutObjects(self.userID)
-        self.workouts = sorted(self.workouts, key=lambda x: (getTimeAsStringFromTimedelta(getattr(x, "startTime"))), reverse = True)
-        self.workouts = sorted(self.workouts, key=lambda x: (getWeekdayNumber(getattr(x, "weekday"))))
-    
+        self.workouts = sorted(self.workouts, key=lambda x: (
+            getTimeAsStringFromTimedelta(getattr(x, "startTime"))), reverse=True)
+        self.workouts = sorted(self.workouts, key=lambda x: (
+            getWeekdayNumber(getattr(x, "weekday"))))
+
     # Estimate Body Fat Percentage
     def setBodyFat(self):
         self.bodyFat = 1.39 * self.valueBMI + 0.16 * self.age - 10.34 * self.genderBinary - 9
 
     def setAge(self):
         today = date.today()
-        self.age = today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
+        self.age = today.year - self.birthday.year - \
+            ((today.month, today.day) < (self.birthday.month, self.birthday.day))
 
-    def updateAttribute(self, attribute, new_value, dao_fieldname, is_password = False):
+    def updateAttribute(self, attribute, new_value, dao_fieldname, is_password=False):
         setattr(self, attribute, new_value)
-        userDao.setValueForUserInField(self.userID, dao_fieldname, getattr(self, attribute), is_password = is_password)
+        userDao.setValueForUserInField(self.userID, dao_fieldname, getattr(
+            self, attribute), is_password=is_password)
 
     def updateWeight(self, new_weight):
         self.weight = new_weight
@@ -167,6 +181,9 @@ class user():
         self.setTodaysCalorieBurningAndDuration()
         self.setCalorieNeed()
         self.setNetCalorieNeed()
+
+    def getFavRecipes(self):
+        self.favrecipe = getRecipeList(self.userID)
 
     def updateHeight(self, new_height):
         self.height = new_height
@@ -179,21 +196,22 @@ class user():
         self.setNetCalorieNeed()
 
     def setBMI(self):
-        self.valueBMI =  apiBMI.getBMI(self.weight, self.height)
+        self.valueBMI = apiBMI.getBMI(self.weight, self.height)
         self.statusBMI = apiBMI.getBMIstatus(self.weight, self.height)
 
     @classmethod
     # Construct from list
     def from_list(cls, arg_list):
-        first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password = arg_list
-        return cls(first_name, middle_name, last_name, gender, float(height), float(weight), e_mail, birthday, diet, intolerances, username, password)
+        first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, address, diet, intolerances, username, password = arg_list
+        return cls(first_name, middle_name, last_name, gender, float(height), float(weight), e_mail, birthday, address, diet, intolerances, username, password)
+
     @classmethod
     # Construct from database
     def from_username(cls, username):
         arg_list = userDao.getUserAttributesAsList(username)
-        first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password = arg_list
-        return cls(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, diet, intolerances, username, password)
-    
+        first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, address, diet, intolerances, username, password = arg_list
+        return cls(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, address, diet, intolerances, username, password)
+
 
 if __name__ == "__main__":
     pass

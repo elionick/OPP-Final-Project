@@ -1,6 +1,7 @@
 import classMigrosPrices as migros
 import classCoopPrices as coop
 import dbFunctions
+import priceDAO
 
 
 def updateMigrosPrices(products_Migros):
@@ -39,13 +40,13 @@ def updateMigrosPrices(products_Migros):
 
         # Check if the table is already created, and if yes, enter the values
         if dbFunctions.checkTableExist(tablename) is True:
-            dbFunctions.addNewPrice(tablename, DBEntry)
+            priceDAO.addNewPrice(tablename, DBEntry)
 
         # If the table does not exist, create one and enter the values
         else:
             dbFunctions.createNewPriceTable(
                 tablename, "ENTRY_ID", "BRAND", "PRODUCT", "PRICE", "DATE")
-    dbFunctions.addNewPrice(tablename, DBEntry)
+            priceDAO.addNewPrice(tablename, DBEntry)
 
 
 def updateCoopPrices(productsCoop):
@@ -101,13 +102,13 @@ def updateCoopPrices(productsCoop):
 
         # Check if the table is already created, and if yes, enter the values
         if dbFunctions.checkTableExist(tablename) is True:
-            dbFunctions.addNewPrice(tablename, DBEntry)
+            priceDAO.addNewPrice(tablename, DBEntry)
 
         # If the table does not exist, create one and enter the values
         else:
             dbFunctions.createNewPriceTable(
                 tablename, "ENTRY_ID", "BRAND", "PRODUCT", "PRICE", "DATE")
-            dbFunctions.addNewPrice(tablename, DBEntry)
+            priceDAO.addNewPrice(tablename, DBEntry)
 
 
 if __name__ == "__main__":
@@ -115,8 +116,10 @@ if __name__ == "__main__":
     productsCoop = ["Zwiebeln", "Knoblauch", "Karotten", "Peperoni",
                     "Kopfsalat", "Halbrahm UHT", "Rinds Hackfleisch"]
 
-    productsMigros = ["Zwiebeln", "Knoblauch", "Karotten", "Peperoni", "Tomaten",
-                      "Kopfsalat", "Valflora Halbrahm", "M-Classic Rindshackfleisch"]
+    productsMigros = ["Zwiebeln", "Knoblauch", "Karotten", "Peperoni",
+                      "Tomaten", "Kopfsalat", "Valflora Halbrahm", "M-Classic Rindshackfleisch"]
+
+
 
     updateCoopPrices(productsCoop)
     updateMigrosPrices(productsMigros)
