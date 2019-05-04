@@ -3,7 +3,7 @@ from userDao import *
 from apiFoodNutritions import *
 import datetime
 from apiExercises import *
-import apiMap
+import re
 
 # checks if user input is possible choice
 def checkIfChoice(input, poss_options, quit_option = True):
@@ -163,8 +163,9 @@ def checkFamilyMember(input, own_username, family_members_usernames):
 
 # Check address
 def checkAddress(input):
-    checkAddress = apiMap.maps(input)
-    if checkAddress.getLocation():
+    r = re.compile('.*, \d{4}')
+    match = r.match(input)
+    if match is not None:
         return True
     else:
         return False

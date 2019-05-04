@@ -44,7 +44,7 @@ class user():
         self.setFamilyMembers()
         self.setCalorieNeed()
         self.setNetCalorieNeed()
-        self.getFavRecipes()
+        self.setFavRecipes()
 
     def setIntolerances(self, intolerances):
         if intolerances == "" or intolerances == []:
@@ -182,8 +182,15 @@ class user():
         self.setCalorieNeed()
         self.setNetCalorieNeed()
 
-    def getFavRecipes(self):
-        self.favrecipe = getRecipeList(self.userID)
+    def setFavRecipes(self):
+        if getRecipeList(self.userID) == ():
+            self.favrecipe = []
+        else:
+            self.favrecipe = getRecipeList(self.userID)
+
+        self.favrecipeshort = []
+        for each in self.favrecipe:
+            self.favrecipeshort.append(each["RECIPE_NAME"])
 
     def updateHeight(self, new_height):
         self.height = new_height
