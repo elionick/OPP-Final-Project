@@ -6,8 +6,10 @@ def addNewPrice(product, productEntries):
         for i in range(len(productEntries)):
             productEntries[i] = productEntries[i].split(",")
 
-    product = product.replace(" ", "_")
-    product = product.upper()
+        product = product.replace(" ", "_")
+        product = product.upper()
+    except:
+        print("An error happened, the entries were faultful!")
 
     try:
         with connection.cursor() as cursor:

@@ -12,10 +12,10 @@ from classExercise import exercise
 from recipeDao import *
 from apiFoodNutritions import *
 from apiMap import *
-
+from classShoppingList import *
 # Show Welcome
 showWelcome()
-time.sleep(2)
+# time.sleep(2)
 
 # Initialize choice
 choice = ''
@@ -296,7 +296,7 @@ while choice not in ["q", "Q"]:
                 choice = uiMenu(supermarketMenu, menu_title="Find a supermarket",
                                 user_instruction="Which option do you want?")
                 if choice == 1:
-                    map = apiMap.maps(active_user.address)
+                    map = maps(active_user.address)
                     map.getLocation()
                     print("Your location is: " + str(map.location))
                     map.getNearbyPlace("supermarket")
@@ -324,12 +324,54 @@ while choice not in ["q", "Q"]:
                     break
             # Make shopping list for a favourite recipe. Is bugged from the recipe site
             if choice == 2:
-                choice = ""
-                choice = uiMenu(active_user.getFavRecipes(
-                ) + ["Go back to Main Menu"], menu_title="Shopping List", user_instruction="For which receipe do you want a shopping list?")
-                if choice == len(active_user.getFavRecipes()) + 2:
-                    choice = ''
-                    break
+                while choice not in ["q", "Q"]:
+                    choice = uiMenu(active_user.favrecipeshort + ["Go back to previous Menu"], menu_title="Shopping List",
+                                   user_instruction="For which receipe do you want a shopping list?")
+
+                    if choice == len(active_user.favrecipeshort) + 1:
+                       choice = ''
+                       break
+
+                    else:
+                        recipe_chosen = active_user.favrecipeshort[choice - 1]
+                        recipe_chosen_index = int(choice)-int(1)
+                        while choice not in ["q", "Q"]:
+                            choice = uiMenu(["See the shopping list", "Send me the shopping list", "Go back to different recipes"],
+                                            menu_title="Shopping List", sub_title=recipe_chosen, user_instruction="What would you like to do?")
+
+
+
+                            if choice == 1:
+                                while choice not in ["q", "Q"]:
+                                    # Shopping list
+
+                                    new_shoppingList = shoppinglist(recipe_chosen_index, active_user.userID)
+                                    shoppinglist = str(new_shoppingList.printShoppingList())
+                                    choice = uiMenu(
+                                        ["Send shopping list to email", "Go back to shooping lists"],
+                                        menu_title="Shopping List", sub_title=shoppinglist,
+                                        user_instruction="What would you like to do?")
+                                    if choice == 1:
+                                        choice = ""
+                                        new_shoppingList.sendEmail(active_user.eMail)
+                                        break
+
+                                    if choice == 2:
+                                        choice = ""
+                                        break
+
+                            if choice == 2:
+                                while choice not in ["q", "Q"]:
+                                    choice = ""
+                                    new_shoppingList = shoppinglist(recipe_chosen_index, active_user.userID)
+                                    shoppinglist = str(new_shoppingList.printShoppingList())
+                                    new_shoppingList.sendEmail(active_user.eMail)
+                                    break
+
+                            if choice == 3:
+                                choice = ""
+                                break
+
 
             if choice == 3:
                 pass
