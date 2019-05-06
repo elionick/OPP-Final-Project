@@ -63,22 +63,49 @@ def getRecipeByMeal(USER_ID, INTOLERANCE, DIET):
         INGREDIENTS = INGREDIENTS.replace("\'", " ")
         INGREDIENTS = INGREDIENTS.replace("', '", ",")
         INGREDIENTS = INGREDIENTS.split(",")
-        #print(INGREDIENTS)
-        #print(type(INGREDIENTS))
+        print(INGREDIENTS)
+        print(type(INGREDIENTS))
         global RECIPE_NAME
         RECIPE_NAME = str(names[Recipe1 - 1])
         global CALORIES
         i = 0
         calories = list()
         while (i < (len(INGREDIENTS))):
-            #print(INGREDIENTS[i])
             calories_1 = apiFoodNutritions.getCalories(INGREDIENTS[i])
-            calories.append(calories_1)
+            calories.append((int(calories_1)))
             i += 1
         CALORIES = int(sum(calories))
-        print("Calories:"+str(CALORIES))
+        print("Calories:" + str(CALORIES))
+
         global RECIPE
         RECIPE = getRecipeInformation(Recipe_ID)
+
+        global PRICE
+        price = list()
+        ingredients = INGREDIENTS
+        # Create a new instance of the class, the input will be the ingredients list
+        test = priceRetriever(ingredients)
+
+        # Checks which of the ingredients is a food item with the API
+        test.findIngredients()
+        print(test.finalIngredients)
+
+        # Translate these ingredients
+        test.translateIngredients()
+        print(test.finalIngredients)
+
+        # Get the cheapest product - The result will be in the instance variable "self.IngredientPrices"
+        test.getCoopPrices()
+        print(test.IngredientPrices)
+        i = 0
+        while i < len(INGREDIENTS):
+            test1 = test.IngredientPrices[i]
+            test1 = test1.split(",")
+            print(test1[2])
+            price.append(float(test1[2]))
+            i += 1
+        PRICE = sum(price)
+        print(PRICE)
 
         test_fav = input("Do you wanna save the recipe in your favourites? yes/no")
         if (test_fav == "yes"):
@@ -86,7 +113,7 @@ def getRecipeByMeal(USER_ID, INTOLERANCE, DIET):
                 print("Recipe already saved as favourite. Check your favourites")
                 pass
             else:
-                dbNewFavRecipe(Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, str(INGREDIENTS), CALORIES)
+                dbNewFavRecipe(Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, str(INGREDIENTS), CALORIES, PRICE)
                 pass
         else:
             choice2 = input("Do you want to search for another recipe? yes/no")
@@ -143,7 +170,7 @@ def getRecipeByIngredients(USER_ID):
     Recipe_ID = str(Results[Recipe1-1]['id'])
     global INGREDIENTS
     INGREDIENTS = Ingredients_list[Recipe1-1]
-    #print(INGREDIENTS)
+    print(INGREDIENTS)
     global RECIPE_NAME
     RECIPE_NAME = str(names[Recipe1-1])
     global CALORIES
@@ -158,13 +185,40 @@ def getRecipeByIngredients(USER_ID):
     global RECIPE
     RECIPE = getRecipeInformation(Recipe_ID)
 
+    global PRICE
+    price = list()
+    ingredients = INGREDIENTS
+    # Create a new instance of the class, the input will be the ingredients list
+    test = priceRetriever(ingredients)
+
+    # Checks which of the ingredients is a food item with the API
+    test.findIngredients()
+    print(test.finalIngredients)
+
+    # Translate these ingredients
+    test.translateIngredients()
+    print(test.finalIngredients)
+
+    # Get the cheapest product - The result will be in the instance variable "self.IngredientPrices"
+    test.getCoopPrices()
+    print(test.IngredientPrices)
+    i = 0
+    while i < len(INGREDIENTS):
+        test1 = test.IngredientPrices[i]
+        test1 = test1.split(",")
+        print(test1[2])
+        price.append(float(test1[2]))
+        i += 1
+    PRICE = sum(price)
+    print(PRICE)
+
     test_fav = input("Do you wanna save the recipe in your favourites? yes/no")
     if (test_fav == "yes"):
         if checkRecipeExist(USER_ID,Recipe_ID) == True:
             print("Recipe already saved as favourite. Check your favourites")
             pass
         else:
-            dbNewFavRecipe(int(Recipe_ID), str(RECIPE_NAME), RECIPE, int(USER_ID), str(INGREDIENTS), CALORIES)
+            dbNewFavRecipe(int(Recipe_ID), str(RECIPE_NAME), RECIPE, int(USER_ID), str(INGREDIENTS), CALORIES, PRICE)
             pass
     else:
         choice2 = input("Do you want to search for another recipe? yes/no")

@@ -84,12 +84,12 @@ class priceRetriever:
 
             # Save the result
             self.IngredientPrices.append(brand[n] + "," + name[n] + "," + str(price[n]))
-            self.IngredientPricesonly.append(price[n])
+            #self.IngredientPricesonly.append(price[n])
 
 
 if __name__ == "__main__":
-
-    ingredients = ["5 eggs", "onion", "bread"]
+    pass
+    """ingredients = ""
     # Create a new instance of the class, the input will be the ingredients list
     test = priceRetriever(ingredients)
 
@@ -103,4 +103,4 @@ if __name__ == "__main__":
 
     # Get the cheapest product - The result will be in the instance variable "self.IngredientPrices"
     test.getCoopPrices()
-    print(test.IngredientPrices)
+    print(test.IngredientPrices)"""
