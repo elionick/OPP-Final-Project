@@ -1,6 +1,5 @@
 from dbFunctions import *
 from datetime import date
-import pymysql
 import pprint
 from dbFunctions import *
 
@@ -26,6 +25,35 @@ def chooseRecipe(USER_ID):
         print("Index not found")
     pass
 
+def deleteRecipe(USER_ID):
+    info = getRecipeList(USER_ID)
+    i = 0
+    recipe_name = list()
+    while i < len(info):
+        recipe_name.append(info[i]['RECIPE_NAME'])
+        i += 1
+    number = list(range(1, (len(info)+1), 1))
+    i = 0
+    while i < (len(info)):
+        summary = list()
+        summary.extend((number[i], recipe_name[i]))
+        print(summary)
+        i += 1
+    choice = int(input("Which recipe do you wanna delete?"))
+    RECIPE_ID = int(info[choice - 1]['RECIPE_ID'])
+    try:
+        with connection.cursor() as cursor:
+            sql = "delete FROM sql7288305.FAV_RECIPE where USER_ID = %s and RECIPE_ID = %s"
+            cursor.execute(sql, (USER_ID, RECIPE_ID))
+            connection.commit()
+
+    except Exception:
+        print("Index not found")
+
+    finally:
+        cursor.close()
+
+    pass
 
 def dbNewFavRecipe(Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, INGREDIENTS, CALORIES, PRICE):
     # adds new entry to the FAV_RECIPE table
@@ -67,4 +95,5 @@ def checkRecipeExist(USER_ID, Recipe_ID):
 
 
 if __name__ == "__main__":
-    pass
+    deleteRecipe(1)
+#1088227
