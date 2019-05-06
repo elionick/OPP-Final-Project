@@ -27,14 +27,14 @@ def chooseRecipe(USER_ID):
     pass
 
 
-def dbNewFavRecipe(Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, INGREDIENTS, CALORIES):
+def dbNewFavRecipe(Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, INGREDIENTS, CALORIES, PRICE):
     # adds new entry to the FAV_RECIPE table
     # add test Fav_Recipe DB entry exist User_ID and Reciep_ID
     try:
         with connection.cursor() as cursor:
-            sql = "INSERT INTO FAV_RECIPE (RECIPE_ID,RECIPE_NAME,RECIPE,USER_ID, INGREDIENTS, CALORIES)"\
-                + "VALUES (%s,%s,%s,%s,%s,%s)"
-            cursor.execute(sql, (Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, INGREDIENTS, CALORIES))
+            sql = "INSERT INTO FAV_RECIPE (RECIPE_ID,RECIPE_NAME,RECIPE,USER_ID, INGREDIENTS, CALORIES, PRICE)"\
+                + "VALUES (%s,%s,%s,%s,%s,%s,%s)"
+            cursor.execute(sql, (Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, INGREDIENTS, CALORIES, PRICE))
             connection.commit()
             print("insert successful")
 
