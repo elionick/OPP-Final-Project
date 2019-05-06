@@ -27,4 +27,6 @@ shoppingMenu = ["Find the nearest supermarket", "Get my shopping list",
 supermarketMenu = ["Find me a supermarket near me",
                    "Find me a supermarket from another location", "Go back to main menu"]
 recipesMenu = ["Search recipe by ingredients", "Search recipe by meal",
-               "Look at your favourite recipes", "Go back to main menu"]
+               "Check favourite recipes", "Go back to main menu"]
+favRecipeMenu = ["Look at your favourite recipes", "Delete favourite recipe",
+            "Go back to recipe menu"]

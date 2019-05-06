@@ -8,9 +8,7 @@ from classUser import *
 from classWorkout import workout
 from classExercise import exercise
 # Hier ist ein Bug:
-#from apiRecipe import *
-from recipeDao import *
-from apiFoodNutritions import *
+from apiRecipe import *
 from apiMap import *
 from classShoppingList import *
 # Show Welcome
@@ -184,15 +182,26 @@ while choice not in ["q", "Q"]:
             choice = uiMenu(recipesMenu, menu_title="Recipes",
                             user_instruction="What would you like to do?")
             if choice == 1:
-                getRecipeByIngredients(active_user.userID)
+                apiRecipe.getRecipeByIngredients(active_user.userID)
+                active_user.setTodaysCaloricIntake()
                 pass
             if choice == 2:
-                getRecipeByMeal(active_user.userID, active_user.intolerances,
-                                active_user.intolerances)
+                apiRecipe.getRecipeByMeal(active_user.userID, active_user.intolerances,active_user.intolerances)
+                active_user.setTodaysCaloricIntake()
                 pass
             if choice == 3:
-                chooseRecipe(active_user.userID)
-                pass
+                choice = uiMenu(favRecipeMenu, menu_title="Favourite recipes",
+                            user_instruction="What would you like to do?")
+                if choice == 1:
+                    chooseRecipe(active_user.userID)
+                    pass
+                if choice == 2:
+                    deleteRecipe(active_user.userID)
+                    pass
+                if choice == 3:
+                    # Go back to recipe menu
+                    choice = ''
+                    break
             if choice == 4:
                 # Go back to main menu
                 choice = ''
