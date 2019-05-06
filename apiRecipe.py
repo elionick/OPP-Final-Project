@@ -1,9 +1,10 @@
 import requests
 import pprint
-import pymysql
 from apiFoodNutritions import *
 from recipeDao import *
 from classPriceCatcher import *
+from checkFunctions import *
+from foodLogDao import *
 
 
 def getRecipeByMeal(USER_ID, INTOLERANCE, DIET):
@@ -29,7 +30,7 @@ def getRecipeByMeal(USER_ID, INTOLERANCE, DIET):
     #pprint.pprint(Results)
     if Results == []:
         print("No result found or invalid input, try again")
-        getRecipeByMeal(1, "", "no")
+        getRecipeByMeal(USER_ID,INTOLERANCE,DIET)
     else:
         names = list()
         i = 0
@@ -54,7 +55,12 @@ def getRecipeByMeal(USER_ID, INTOLERANCE, DIET):
             summary.extend((number[k], names[k], Ingredients_list[k]))
             print(summary)
             k += 1
-        Recipe1 = int(input("Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + ")"))
+        Recipe1 = input("Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + ")")
+        while checkStringIsInt(Recipe1) == False:
+            Recipe1 = input("Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + ")")
+        Recipe1 = int(Recipe1)
+        while Recipe1 not in range(1, (len(Results) + 1), 1):
+            Recipe1 = int(input("Please enter a number between 1- " + str(len(Results))))
         global Recipe_ID
         Recipe_ID = str(Results[Recipe1 - 1]['id'])
         global INGREDIENTS
@@ -64,7 +70,7 @@ def getRecipeByMeal(USER_ID, INTOLERANCE, DIET):
         INGREDIENTS = INGREDIENTS.replace("', '", ",")
         INGREDIENTS = INGREDIENTS.split(",")
         print(INGREDIENTS)
-        print(type(INGREDIENTS))
+        #print(type(INGREDIENTS))
         global RECIPE_NAME
         RECIPE_NAME = str(names[Recipe1 - 1])
         global CALORIES
@@ -88,26 +94,36 @@ def getRecipeByMeal(USER_ID, INTOLERANCE, DIET):
 
         # Checks which of the ingredients is a food item with the API
         test.findIngredients()
-        print(test.finalIngredients)
+        #print(test.finalIngredients)
 
         # Translate these ingredients
         test.translateIngredients()
-        print(test.finalIngredients)
+        #print(test.finalIngredients)
 
         # Get the cheapest product - The result will be in the instance variable "self.IngredientPrices"
         test.getCoopPrices()
-        print(test.IngredientPrices)
+        #print(test.IngredientPrices)
         i = 0
         while i < len(INGREDIENTS):
             test1 = test.IngredientPrices[i]
             test1 = test1.split(",")
-            print(test1[2])
+            #print(test1[2])
             price.append(float(test1[2]))
             i += 1
         PRICE = sum(price)
         print(PRICE)
 
+        food_log = input("Do you wanna add the meal to your food log? yes/no")
+        while food_log not in {"yes", "no"}:
+            food_log = input("Please enter yes or no: ")
+        if food_log == "yes":
+            foodLogDao.setMeal(RECIPE_NAME, CALORIES, USER_ID)
+        else:
+            pass
+
         test_fav = input("Do you wanna save the recipe in your favourites? yes/no")
+        while test_fav not in {"yes", "no"}:
+            test_fav = input("Please enter yes or no: ")
         if (test_fav == "yes"):
             if checkRecipeExist(USER_ID, Recipe_ID) == True:
                 print("Recipe already saved as favourite. Check your favourites")
@@ -117,6 +133,8 @@ def getRecipeByMeal(USER_ID, INTOLERANCE, DIET):
                 pass
         else:
             choice2 = input("Do you want to search for another recipe? yes/no")
+            while choice2 not in {"yes", "no"}:
+                choice2 = input("Please enter yes or no: ")
             if (choice2 == "yes"):
                 getRecipeByMeal(USER_ID,INTOLERANCE,DIET)
             else:
@@ -135,97 +153,119 @@ def getRecipeByIngredients(USER_ID):
             )
     Results = r.json()
     names = list()
-    i = 0
-    while i < len(Results):
-        names.append(Results[i]['title'])
-        i += 1
-    Ingredients_list = list()
-    j = 0
-    while j < len(Results):
-        i = 0
-        recipe_Ing = list()
-        while i < len(Results[j]['missedIngredients']):
-            recipe_Ing.append(Results[j]['missedIngredients'][i]['original'])
-            i += 1
-        i = 0
-        while i < len(Results[j]['usedIngredients']):
-            recipe_Ing.append(Results[j]['usedIngredients'][i]['original'])
-            i += 1
-        Ingredients_list.append(recipe_Ing)
-        j += 1
-
-    number = list(range(1,(len(Results)+1),1))
-
-    k = 0
-    while (k < (len(Results))):
-        summary = list()
-        print(Results[k]['image'])
-        #Image.open(Results[k]['image']).show()
-        summary.extend((number[k],names[k],Ingredients_list[k]))
-        print(summary)
-        k += 1
-    #pprint.pprint(Results)
-    Recipe1 = int(input("Which of the dishes do you want to choose? (number 1- "+str(len(Results))+")"))
-    global Recipe_ID
-    Recipe_ID = str(Results[Recipe1-1]['id'])
-    global INGREDIENTS
-    INGREDIENTS = Ingredients_list[Recipe1-1]
-    print(INGREDIENTS)
-    global RECIPE_NAME
-    RECIPE_NAME = str(names[Recipe1-1])
-    global CALORIES
-    i = 0
-    calories = list()
-    while (i < (len(INGREDIENTS))):
-        calories_1 = apiFoodNutritions.getCalories(INGREDIENTS[i])
-        calories.append((int(calories_1)))
-        i += 1
-    CALORIES = int(sum(calories))
-    print("Calories:"+str(CALORIES))
-    global RECIPE
-    RECIPE = getRecipeInformation(Recipe_ID)
-
-    global PRICE
-    price = list()
-    ingredients = INGREDIENTS
-    # Create a new instance of the class, the input will be the ingredients list
-    test = priceRetriever(ingredients)
-
-    # Checks which of the ingredients is a food item with the API
-    test.findIngredients()
-    print(test.finalIngredients)
-
-    # Translate these ingredients
-    test.translateIngredients()
-    print(test.finalIngredients)
-
-    # Get the cheapest product - The result will be in the instance variable "self.IngredientPrices"
-    test.getCoopPrices()
-    print(test.IngredientPrices)
-    i = 0
-    while i < len(INGREDIENTS):
-        test1 = test.IngredientPrices[i]
-        test1 = test1.split(",")
-        print(test1[2])
-        price.append(float(test1[2]))
-        i += 1
-    PRICE = sum(price)
-    print(PRICE)
-
-    test_fav = input("Do you wanna save the recipe in your favourites? yes/no")
-    if (test_fav == "yes"):
-        if checkRecipeExist(USER_ID,Recipe_ID) == True:
-            print("Recipe already saved as favourite. Check your favourites")
-            pass
-        else:
-            dbNewFavRecipe(int(Recipe_ID), str(RECIPE_NAME), RECIPE, int(USER_ID), str(INGREDIENTS), CALORIES, PRICE)
-            pass
+    if Results == []:
+        print("No result found or invalid input, try again")
+        getRecipeByIngredients(USER_ID)
     else:
-        choice2 = input("Do you want to search for another recipe? yes/no")
-        if (choice2 == "yes"):
-            getRecipeByIngredients(USER_ID)
+        i = 0
+        while i < len(Results):
+            names.append(Results[i]['title'])
+            i += 1
+        Ingredients_list = list()
+        j = 0
+        while j < len(Results):
+            i = 0
+            recipe_Ing = list()
+            while i < len(Results[j]['missedIngredients']):
+                recipe_Ing.append(Results[j]['missedIngredients'][i]['original'])
+                i += 1
+            i = 0
+            while i < len(Results[j]['usedIngredients']):
+                recipe_Ing.append(Results[j]['usedIngredients'][i]['original'])
+                i += 1
+            Ingredients_list.append(recipe_Ing)
+            j += 1
+
+        number = list(range(1,(len(Results)+1),1))
+
+        k = 0
+        while (k < (len(Results))):
+            summary = list()
+            print(Results[k]['image'])
+            #Image.open(Results[k]['image']).show()
+            summary.extend((number[k],names[k],Ingredients_list[k]))
+            print(summary)
+            k += 1
+        #pprint.pprint(Results)
+        Recipe1 = input("Which of the dishes do you want to choose? (number 1- "+str(len(Results))+")")
+        while checkStringIsInt(Recipe1) == False:
+            Recipe1 = input("Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + ")")
+        Recipe1 = int(Recipe1)
+        while Recipe1 not in range(1, (len(Results) + 1), 1):
+            Recipe1 = int(input("Please enter a number between 1- " + str(len(Results))))
+        global Recipe_ID
+        Recipe_ID = str(Results[Recipe1-1]['id'])
+        global INGREDIENTS
+        INGREDIENTS = Ingredients_list[Recipe1-1]
+        print(INGREDIENTS)
+        global RECIPE_NAME
+        RECIPE_NAME = str(names[Recipe1-1])
+        global CALORIES
+        i = 0
+        calories = list()
+        while (i < (len(INGREDIENTS))):
+            calories_1 = apiFoodNutritions.getCalories(INGREDIENTS[i])
+            calories.append((int(calories_1)))
+            i += 1
+        CALORIES = int(sum(calories))
+        print("Calories:"+str(CALORIES))
+        global RECIPE
+        RECIPE = getRecipeInformation(Recipe_ID)
+
+        global PRICE
+        price = list()
+        ingredients = INGREDIENTS
+        # Create a new instance of the class, the input will be the ingredients list
+        test = priceRetriever(ingredients)
+
+        # Checks which of the ingredients is a food item with the API
+        test.findIngredients()
+        #print(test.finalIngredients)
+
+        # Translate these ingredients
+        test.translateIngredients()
+        #print(test.finalIngredients)
+
+        # Get the cheapest product - The result will be in the instance variable "self.IngredientPrices"
+        test.getCoopPrices()
+        #print(test.IngredientPrices)
+        i = 0
+        while i < len(INGREDIENTS):
+            test1 = test.IngredientPrices[i]
+            test1 = test1.split(",")
+            #print(test1[2])
+            price.append(float(test1[2]))
+            i += 1
+        PRICE = sum(price)
+        print(PRICE)
+
+        food_log = input("Do you wanna add the meal to your food log? yes/no")
+        while food_log not in {"yes", "no"}:
+            food_log = input("Please enter yes or no: ")
+        if food_log == "yes":
+            foodLogDao.setMeal(RECIPE_NAME, CALORIES, USER_ID)
         else:
             pass
+
+        test_fav = input("Do you wanna save the recipe in your favourites? yes/no")
+        while test_fav not in {"yes", "no"}:
+            test_fav = input("Please enter yes or no: ")
+        if (test_fav == "yes"):
+            if checkRecipeExist(USER_ID,Recipe_ID) == True:
+                print("Recipe already saved as favourite. Check your favourites")
+                pass
+            else:
+                dbNewFavRecipe(int(Recipe_ID), str(RECIPE_NAME), RECIPE, int(USER_ID), str(INGREDIENTS), CALORIES, PRICE)
+                input("Press enter to go back to the recipe menu")
+                pass
+        else:
+            choice2 = input("Do you want to search for another recipe? yes/no")
+            while choice2 not in {"yes", "no"}:
+                choice2 = input("Please enter yes or no: ")
+            if (choice2 == "yes"):
+                getRecipeByIngredients(USER_ID)
+            else:
+                pass
 
 def getRecipeIngedients(Recipe_ID):
     #api to get recipe ingredients
@@ -265,16 +305,12 @@ def getRecipeInformation(Recipe_ID):
         return str(Recipe2['instructions'])
     except Exception:
         #print("Sorry we couldn't find the recipe")
-        return "Sorry we couldn't find the recipe"  #change later
+        return "Sorry we couldn't find the recipe"
 
 
 
 if __name__ == '__main__':
-    pass
-    #dbLogin()
-    #getRecipeIngedients("849492")
-    #connection.close()
-    #getRecipeInformation("849492")
+    #pass
     #getRecipeByMeal(1,"tomato","regular")
-    #getRecipeByIngredients(1)
-    #food_nutrition("i ate 2 eggs, ten strawberries, and 10 french toast")
+    getRecipeByIngredients(1)
+
