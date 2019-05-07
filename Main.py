@@ -181,7 +181,34 @@ while choice not in ["q", "Q"]:
             # Recipes
             choice = uiMenu(recipesMenu, menu_title="Recipes",
                             user_instruction="What would you like to do?")
-            recipe = apiRecipe(active_user.userID, active_user.intolerances,active_user.intolerances)
+            if choice in {1,2}:
+                if userDao.getFamilyMemberUserID(active_user.userID) == []:
+                    recipe = apiRecipe(active_user.userID, active_user.intolerances, active_user.intolerances)
+                else:
+                    question = input("do you wanna cook alone or with family members? (family or alone)")
+                    while question not in {"family", "alone"}:
+                        question = input("Please enter alone or family: ")
+                    if question == "family":
+                        familyMembers = list(userDao.getFamilyMemberUserID(active_user.userID))
+                        memberDiet = list()
+                        Intolerance = list()
+                        i = 0
+                        while i < len(familyMembers):
+                            Intolerance += userDao.getIntolerance(familyMembers[i])
+                            i += 1
+                        i = 0
+                        while i < len(familyMembers):
+                            memberDiet.append(userDao.getDiet(familyMembers[i]))
+                            i += 1
+                        if "vegan" in memberDiet:
+                            Diet = "vegan"
+                        elif "vegetarian" in memberDiet:
+                            Diet = "vegetarian"
+                        else:
+                            Diet = "regular"
+                        recipe = apiRecipe(active_user.userID, Diet, Intolerance)
+                    if question == "alone":
+                        recipe = apiRecipe(active_user.userID, active_user.intolerances,active_user.intolerances)
             if choice == 1:
                 recipe.getRecipeByIngredients()
                 active_user.setTodaysCaloricIntake()
