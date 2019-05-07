@@ -97,7 +97,7 @@ def checkNewUsername(input):
 
 # Check diet knonw
 def checkDiet(input):
-    if input in ["regular", "vegetarian", "vegan", "frutarian"]:
+    if input in ["regular", "vegetarian", "vegan"]:
         return True
     else:
         return False
