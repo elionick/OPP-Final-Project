@@ -16,7 +16,7 @@ createUserProfil = ["What is your first name?",
                     "Create Password"
                     ]
 fitnessMenu = ["Create new workout", "Workout plan",
-               "Delete workout", "Set weight goal", "Go back to main menu"]
+               "Delete workout", "Set weight goal", "Find the nearest gym", "Go back to main menu"]
 
 updateProfileInformationMenu = ["First name", "Middle Name", "Last name", "Gender", "Height", "Weight",
                                 "Email", "Birthday", "Address", "Diet", "Intolerances", "Username", "Password", "Go back to main menu"]
@@ -30,4 +30,4 @@ gymMenu = ["Find me a gym near me", "Find me a gym from another location", "Go b
 recipesMenu = ["Search recipe by ingredients", "Search recipe by meal",
                "Check favourite recipes", "Go back to main menu"]
 favRecipeMenu = ["Look at your favourite recipes", "Delete favourite recipe",
-            "Go back to recipe menu"]
+                 "Go back to recipe menu"]

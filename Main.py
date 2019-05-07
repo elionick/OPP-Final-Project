@@ -182,7 +182,7 @@ while choice not in ["q", "Q"]:
                             user_instruction="What would you like to do?")
             if choice in {1,2}:
                 if userDao.getFamilyMemberUserID(active_user.userID) == []:
-                    recipe = apiRecipe(active_user.userID, active_user.intolerances, active_user.intolerances)
+                    recipe = apiRecipe(active_user.userID, active_user.intolerances, active_user.diet)
                 else:
                     question = input("do you wanna cook alone or with family members? (family or alone)")
                     while question not in {"family", "alone"}:
