@@ -18,7 +18,6 @@ class userDao:
 
     @staticmethod
     def getIntolerance(user_id):
-        print(userDao.getValueOfUserInField(user_id, "INTOLERANCE"))
         return userDao.getValueOfUserInField(user_id, "INTOLERANCE").split(",")
 
     @staticmethod
