@@ -30,7 +30,6 @@ class apiRecipe:
                 )
         Result = r.json()
         Results = Result['results']
-        #pprint.pprint(Results)
         if Results == []:
             print("No result found or invalid input, try again")
             self.getRecipeByMeal()
@@ -40,7 +39,6 @@ class apiRecipe:
             while i < len(Results):
                 names.append(Results[i]['title'])
                 i += 1
-            #print(names)
             Ingredients_list = list()
 
             j = 0
@@ -57,6 +55,7 @@ class apiRecipe:
                 print("https://spoonacular.com/recipeImages/"+str(Results[k]['id'])+"-312x231.jpg")
                 summary.extend((number[k], names[k], Ingredients_list[k]))
                 print(summary)
+                print("")
                 k += 1
             Recipe1 = input("Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + "): ")
             while checkStringIsInt(Recipe1) == False:
@@ -73,20 +72,20 @@ class apiRecipe:
             INGREDIENTS2 = INGREDIENTS2.split(",")
             self.INGREDIENTS = INGREDIENTS2
             print(self.INGREDIENTS)
-            #print(type(INGREDIENTS))
 
             self.RECIPE_NAME = str(names[Recipe1 - 1])
-
+            print("Checking for calories...")
             i = 0
             calories = list()
             while (i < (len(self.INGREDIENTS))):
-                calories_1 = apiFoodNutritions.getCalories(self.INGREDIENTS[i])
+                calories_1 = apiFoodNutritions.getCaloriesOfFood(self.INGREDIENTS[i])
                 calories.append((int(calories_1)))
                 i += 1
             self.CALORIES = int(sum(calories))
             print("Calories: " + str(self.CALORIES))
 
-            self.RECIPE = apiRecipe.getRecipeInformation(self.Recipe_ID)
+            self.RECIPE = self.getRecipeInformation()
+            print(self.RECIPE)
 
             # Create a new instance of the class, the input will be the ingredients list
             prices = priceRetriever(self.INGREDIENTS)
@@ -193,11 +192,10 @@ class apiRecipe:
             while (k < (len(Results))):
                 summary = list()
                 print(Results[k]['image'])
-                #Image.open(Results[k]['image']).show()
                 summary.extend((number[k],names[k],Ingredients_list[k]))
                 print(summary)
+                print("")
                 k += 1
-            #pprint.pprint(Results)
             Recipe1 = input("Which of the dishes do you want to choose? (number 1- "+str(len(Results))+"): ")
             while checkStringIsInt(Recipe1) == False:
                 Recipe1 = input("Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + "): ")
@@ -213,14 +211,16 @@ class apiRecipe:
 
             i = 0
             calories = list()
+            print("Checking for calories...")
             while (i < (len(self.INGREDIENTS))):
-                calories_1 = apiFoodNutritions.getCalories(self.INGREDIENTS[i])
+                calories_1 = apiFoodNutritions.getCaloriesOfFood(self.INGREDIENTS[i])
                 calories.append((int(calories_1)))
                 i += 1
             self.CALORIES = int(sum(calories))
             print("Calories:"+str(self.CALORIES))
 
-            self.RECIPE = apiRecipe.getRecipeInformation(self.Recipe_ID)
+            self.RECIPE = self.getRecipeInformation()
+            print(self.RECIPE)
 
             # Create a new instance of the class, the input will be the ingredients list
             prices = priceRetriever(self.INGREDIENTS)
@@ -296,7 +296,6 @@ class apiRecipe:
             response = requests.get("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/"+Recipe_ID+"/ingredientWidget.json",
                                    headers= {"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com", "X-RapidAPI-Key": "8ad4046d49msha3912eb864b6baep193b5bjsne4b65b911209"}
                                    )
-            #pprint.pprint(response.json())
             Recipe2 = response.json()
             i = 0
             ingredients1 = list()
@@ -304,10 +303,8 @@ class apiRecipe:
                 ingredient = str(Recipe2['ingredients'][i]['amount']['metric']['value']) + " " + Recipe2['ingredients'][i]['amount']['metric']['unit'] + " " + Recipe2['ingredients'][i]['name']
                 ingredients1.append(ingredient)
                 i += 1
-            #print(ingredients1)
             return str(ingredients1)
         except Exception:
-            #print ("Sorry we couldn't find the Ingredients")
             return ("No ingredients found")
 
     def getRecipeInformation(self):
@@ -316,7 +313,6 @@ class apiRecipe:
             response = requests.get("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/"+self.Recipe_ID+"/information",
                                    headers = self.headers
                                    )
-            #pprint.pprint(response.json())
             Recipe2 = response.json()
             pprint.pprint(Recipe2['instructions'])
             return str(Recipe2['instructions'])

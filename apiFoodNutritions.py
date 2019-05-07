@@ -40,12 +40,15 @@ class apiFoodNutritions:
     
     @staticmethod
     def getCaloriesOfFood(food):
-        params = {"query" : food}
-        r = requests.post(apiFoodNutritions.url, headers = apiFoodNutritions.getHeader(), json = params).json()
-        sum_calories = 0
-        for element in r['foods']:
-            sum_calories += element['nf_calories']
-        return sum_calories
+        try:
+            params = {"query" : food}
+            r = requests.post(apiFoodNutritions.url, headers = apiFoodNutritions.getHeader(), json = params).json()
+            sum_calories = 0
+            for element in r['foods']:
+                sum_calories += element['nf_calories']
+            return sum_calories
+        except Exception:
+            return (0)
     
     @staticmethod
     def getFoodNameString(food):
@@ -69,27 +72,6 @@ class apiFoodNutritions:
             for element in r['foods']:
                 food_names.append(element['tags']['item'])
         return list(set(food_names))
-
-    @staticmethod
-    def getCalories(query):
-        try:
-            params = {"query": query}
-            r = requests.post(apiFoodNutritions.url, headers=apiFoodNutritions.getHeader(), json=params)
-            test = r.json()
-            # pprint.pprint(test)
-            name = list()
-            i = 0
-            while i < len(test['foods']):
-                name.append(test['foods'][i]['food_name'])
-                i += 1
-            calories = list()
-            i = 0
-            while i < len(test['foods']):
-                calories.append(test['foods'][i]['nf_calories'])
-                i += 1
-            return (int(sum(calories)))
-        except Exception:
-            return (0)
 
 if __name__ == "__main__":
     pass
