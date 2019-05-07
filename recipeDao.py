@@ -1,7 +1,7 @@
 from dbFunctions import *
 from datetime import date
 import pprint
-from dbFunctions import *
+from foodLogDao import *
 
 
 def chooseRecipe(USER_ID):
@@ -23,6 +23,13 @@ def chooseRecipe(USER_ID):
         pprint.pprint(info[(int(choice)-1)])
     except Exception:
         print("Index not found")
+    food_log = input("Do you wanna add the meal to your food log? yes/no")
+    while food_log not in {"yes", "no"}:
+        food_log = input("Please enter yes or no: ")
+    if food_log == "yes":
+        foodLogDao.setMeal(info[(int(choice)-1)]['RECIPE_NAME'],info[(int(choice)-1)]['CALORIES'],USER_ID)
+    else:
+        pass
     pass
 
 def deleteRecipe(USER_ID):

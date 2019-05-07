@@ -17,6 +17,27 @@ class userDao:
         return userDao.getValueOfUserInField(user_id, "WEIGHT_GOAL")
 
     @staticmethod
+    def getIntolerance(user_id):
+        print(userDao.getValueOfUserInField(user_id, "INTOLERANCE"))
+        return userDao.getValueOfUserInField(user_id, "INTOLERANCE").split(",")
+
+    @staticmethod
+    def getDiet(user_id):
+        return userDao.getValueOfUserInField(user_id, "DIET")
+
+    @staticmethod
+    def getFamilyMemberUserID(user_id):
+        try:
+            with connection.cursor() as cursor:
+                sql = "select FK_FAMILY_MEMBER_USER_ID FROM FAMILY_MEMBERS WHERE FK_PRIMARY_USER_ID = %s"
+                cursor.execute(sql, user_id)
+                info = cursor.fetchall()
+                family_members_id = [v['FK_FAMILY_MEMBER_USER_ID'] for v in info]
+                return family_members_id
+        finally:
+            cursor.close()
+
+    @staticmethod
     def deleteFamilyMember(user_id, family_member_user_id):
         try:
             with connection.cursor() as cursor:
