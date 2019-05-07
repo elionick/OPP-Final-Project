@@ -2,6 +2,7 @@ from recipeDao import *
 from classPriceCatcher import *
 from checkFunctions import *
 from foodLogDao import *
+import re
 
 class apiRecipe:
     def __init__(self, USER_ID, INTOLERANCE, DIET):
@@ -13,10 +14,10 @@ class apiRecipe:
         self.INGREDIENTS = []
         self.CALORIES = []
         self.RECIPE = []
-        self.PRICE = int()
+        self.PRICE = float()
 
     def getRecipeByMeal(self):
-        query = input("Search for meal")
+        query = input("Search for meal: ")
         if (self.DIET == "regular"):
 
             r = requests.get("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?intolerances="+self.INTOLERANCE+"&number=20&offset=0&type=main+course&query="+query+"",
@@ -57,12 +58,12 @@ class apiRecipe:
                 summary.extend((number[k], names[k], Ingredients_list[k]))
                 print(summary)
                 k += 1
-            Recipe1 = input("Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + ")")
+            Recipe1 = input("Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + "): ")
             while checkStringIsInt(Recipe1) == False:
-                Recipe1 = input("Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + ")")
+                Recipe1 = input("Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + "): ")
             Recipe1 = int(Recipe1)
             while Recipe1 not in range(1, (len(Results) + 1), 1):
-                Recipe1 = int(input("Please enter a number between 1- " + str(len(Results))))
+                Recipe1 = int(input("Please enter a number between 1- " + str(len(Results))) + ": ")
             self.Recipe_ID = str(Results[Recipe1 - 1]['id'])
 
             INGREDIENTS2 = Ingredients_list[Recipe1 - 1]
@@ -83,37 +84,51 @@ class apiRecipe:
                 calories.append((int(calories_1)))
                 i += 1
             self.CALORIES = int(sum(calories))
-            print("Calories:" + str(self.CALORIES))
+            print("Calories: " + str(self.CALORIES))
 
             self.RECIPE = apiRecipe.getRecipeInformation(self.Recipe_ID)
 
-            price = list()
-            ingredients = self.INGREDIENTS
             # Create a new instance of the class, the input will be the ingredients list
-            test = priceRetriever(ingredients)
+            prices = priceRetriever(self.INGREDIENTS)
+
+            # Filter out small ingredient amounts which won't impact the price alot (Tbsps etc.)
+            prices.filterIngredients()
 
             # Checks which of the ingredients is a food item with the API
-            test.findIngredients()
-            #print(test.finalIngredients)
+            prices.findIngredients()
 
             # Translate these ingredients
-            test.translateIngredients()
-            #print(test.finalIngredients)
+            prices.translateIngredients()
 
             # Get the cheapest product - The result will be in the instance variable "self.IngredientPrices"
-            test.getCoopPrices()
-            #print(test.IngredientPrices)
-            i = 0
-            while i < len(self.INGREDIENTS):
-                test1 = test.IngredientPrices[i]
-                test1 = test1.split(",")
-                #print(test1[2])
-                price.append(float(test1[2]))
-                i += 1
-            self.PRICE = sum(price)
-            print(self.PRICE)
+            prices.getCoopPrices()
 
-            food_log = input("Do you wanna add the meal to your food log? yes/no")
+            price_list = []
+            adjustedprices = []
+
+            # Look for ingredient amounts in gram or ml:
+            for i in range(len(self.INGREDIENTS)):
+                r = re.compile(r'\d*\s*g|\d*.\d*\s*ml')
+                matches = r.findall(self.INGREDIENTS[i])
+                for match in matches:
+                    adjustedprices.append([i, str(match).split("g")[0].split("ml")[0].strip()])
+
+            i = 0
+            while i < len(prices.IngredientPrices):
+                test1 = prices.IngredientPrices[i]
+                test1 = test1.split(",")
+                price_list.append(float(test1[2]))
+                i += 1
+
+            for i in range(len(adjustedprices)):
+                if price_list[adjustedprices[i][0]] > 10:
+                    price_list[adjustedprices[i][0]] = float(
+                        price_list[adjustedprices[i][0]]) / float((1000 / float(adjustedprices[i][1])))
+
+            self.PRICE = "%.2f" % sum(price_list)
+            print("Approximate Price for that recipe: " + str(self.PRICE) + " CHF")
+
+            food_log = input("Do you wanna add the meal to your food log? yes/no: ")
             while food_log not in {"yes", "no"}:
                 food_log = input("Please enter yes or no: ")
             if food_log == "yes":
@@ -121,7 +136,7 @@ class apiRecipe:
             else:
                 pass
 
-            test_fav = input("Do you wanna save the recipe in your favourites? yes/no")
+            test_fav = input("Do you wanna save the recipe in your favourites? yes/no: ")
             while test_fav not in {"yes", "no"}:
                 test_fav = input("Please enter yes or no: ")
             if (test_fav == "yes"):
@@ -132,7 +147,7 @@ class apiRecipe:
                     dbNewFavRecipe(self.Recipe_ID, self.RECIPE_NAME, self.RECIPE, self.USER_ID, str(self.INGREDIENTS), self.CALORIES, self.PRICE)
                     pass
             else:
-                choice2 = input("Do you want to search for another recipe? yes/no")
+                choice2 = input("Do you want to search for another recipe? yes/no: ")
                 while choice2 not in {"yes", "no"}:
                     choice2 = input("Please enter yes or no: ")
                 if (choice2 == "yes"):
@@ -142,7 +157,7 @@ class apiRecipe:
 
     def getRecipeByIngredients(self):
         #get recipe by ingredients
-        query = input("Insert the ingredients")
+        query = input("Insert the ingredients: ")
 
         r = requests.get("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?number=20&ranking=1&ignorePantry=false&ingredients="+query+"",
                 headers= self.headers
@@ -183,12 +198,12 @@ class apiRecipe:
                 print(summary)
                 k += 1
             #pprint.pprint(Results)
-            Recipe1 = input("Which of the dishes do you want to choose? (number 1- "+str(len(Results))+")")
+            Recipe1 = input("Which of the dishes do you want to choose? (number 1- "+str(len(Results))+"): ")
             while checkStringIsInt(Recipe1) == False:
-                Recipe1 = input("Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + ")")
+                Recipe1 = input("Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + "): ")
             Recipe1 = int(Recipe1)
             while Recipe1 not in range(1, (len(Results) + 1), 1):
-                Recipe1 = int(input("Please enter a number between 1- " + str(len(Results))))
+                Recipe1 = int(input("Please enter a number between 1- " + str(len(Results))+": "))
             self.Recipe_ID = str(Results[Recipe1-1]['id'])
 
             self.INGREDIENTS = Ingredients_list[Recipe1-1]
@@ -207,32 +222,47 @@ class apiRecipe:
 
             self.RECIPE = apiRecipe.getRecipeInformation(self.Recipe_ID)
 
-            price = list()
             # Create a new instance of the class, the input will be the ingredients list
-            test = priceRetriever(self.INGREDIENTS)
+            prices = priceRetriever(self.INGREDIENTS)
+
+            # Filter out small ingredient amounts which won't impact the price alot (Tbsps etc.)
+            prices.filterIngredients()
 
             # Checks which of the ingredients is a food item with the API
-            test.findIngredients()
-            #print(test.finalIngredients)
+            prices.findIngredients()
 
             # Translate these ingredients
-            test.translateIngredients()
-            #print(test.finalIngredients)
+            prices.translateIngredients()
 
             # Get the cheapest product - The result will be in the instance variable "self.IngredientPrices"
-            test.getCoopPrices()
-            #print(test.IngredientPrices)
-            i = 0
-            while i < len(self.INGREDIENTS):
-                test1 = test.IngredientPrices[i]
-                test1 = test1.split(",")
-                #print(test1[2])
-                price.append(float(test1[2]))
-                i += 1
-            self.INGREDIENTSPRICE = sum(price)
-            print(self.INGREDIENTSPRICE)
+            prices.getCoopPrices()
 
-            food_log = input("Do you wanna add the meal to your food log? yes/no")
+            price_list = []
+            adjustedprices = []
+
+            # Look for ingredient amounts in gram or ml:
+            for i in range(len(self.INGREDIENTS)):
+                r = re.compile(r'\d*\s*g|\d*.\d*\s*ml')
+                matches = r.findall(self.INGREDIENTS[i])
+                for match in matches:
+                    adjustedprices.append([i, str(match).split("g")[0].split("ml")[0].strip()])
+
+            i = 0
+            while i < len(prices.IngredientPrices):
+                test1 = prices.IngredientPrices[i]
+                test1 = test1.split(",")
+                price_list.append(float(test1[2]))
+                i += 1
+
+            for i in range(len(adjustedprices)):
+                if price_list[adjustedprices[i][0]] > 10:
+                    price_list[adjustedprices[i][0]] = float(
+                        price_list[adjustedprices[i][0]]) / float((1000 / float(adjustedprices[i][1])))
+
+            self.PRICE = "%.2f" % sum(price_list)
+            print("Approximate Price for that recipe: " + str(self.PRICE) + " CHF")
+
+            food_log = input("Do you wanna add the meal to your food log? yes/no: ")
             while food_log not in {"yes", "no"}:
                 food_log = input("Please enter yes or no: ")
             if food_log == "yes":
@@ -240,7 +270,7 @@ class apiRecipe:
             else:
                 pass
 
-            test_fav = input("Do you wanna save the recipe in your favourites? yes/no")
+            test_fav = input("Do you wanna save the recipe in your favourites? yes/no: ")
             while test_fav not in {"yes", "no"}:
                 test_fav = input("Please enter yes or no: ")
             if (test_fav == "yes"):
@@ -252,7 +282,7 @@ class apiRecipe:
                     input("Press enter to go back to the recipe menu")
                     pass
             else:
-                choice2 = input("Do you want to search for another recipe? yes/no")
+                choice2 = input("Do you want to search for another recipe? yes/no: ")
                 while choice2 not in {"yes", "no"}:
                     choice2 = input("Please enter yes or no: ")
                 if (choice2 == "yes"):
@@ -296,8 +326,8 @@ class apiRecipe:
 
 
 if __name__ == '__main__':
-    #pass
-    test1 = apiRecipe(1,"tomato","regular")
-    test1.getRecipeByMeal()
+    pass
+    # test1 = apiRecipe(1,"tomato","regular")
+    # test1.getRecipeByMeal()
     # getRecipeByMeal
 
