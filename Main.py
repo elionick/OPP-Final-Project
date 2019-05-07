@@ -13,7 +13,7 @@ from apiMap import *
 from classShoppingList import *
 # Show Welcome
 showWelcome()
-# time.sleep(2)
+time.sleep(2)
 
 # Initialize choice
 choice = ''
@@ -317,7 +317,41 @@ while choice not in ["q", "Q"]:
                 active_user.setWeightGoal()
                 active_user.setCalorieNeed()
                 active_user.setNetCalorieNeed()
+
             if choice == 5:
+                while choice not in ["q", "Q"]:
+                    # ["Find me a gym near me", "Find me a gym from another location", "Go back to main menu"]
+                    choice = uiMenu(gymMenu, menu_title="Find a gym",
+                                    user_instruction="Which option do you want?")
+                    if choice == 1:
+                        map = maps(active_user.address)
+                        map.getLocation()
+                        print("Your location is: " + str(map.location))
+                        map.getNearbyPlace("gym")
+                        map.getDistance()
+                        map.getDirection()
+                        map.getImg()
+                        map.sendEmail(active_user.eMail)
+                        time.sleep(5)
+                        break
+
+                    if choice == 2:
+                        address = input("For which address would you like find a gym? :")
+                        map = maps(address)
+                        map.getLocation()
+                        print("The location is: " + str(map.location))
+                        map.getNearbyPlace("gym")
+                        map.getDistance()
+                        map.getDirection()
+                        map.getImg()
+                        map.sendEmail(active_user.eMail)
+                        time.sleep(5)
+                        break
+
+                    if choice == 3:
+                        break
+
+            if choice == 6:
                 choice = ''
                 # Go back to main menu
                 break
@@ -328,37 +362,37 @@ while choice not in ["q", "Q"]:
             choice = uiMenu(shoppingMenu, menu_title="Shopping",
                             user_instruction="What would you like to do?")
             if choice == 1:
-                choice = ""
-                # ["Find me a supermarket near me", "Find me a supermarket from another location", "Go back to main menue"]
-                choice = uiMenu(supermarketMenu, menu_title="Find a supermarket",
-                                user_instruction="Which option do you want?")
-                if choice == 1:
-                    map = maps(active_user.address)
-                    map.getLocation()
-                    print("Your location is: " + str(map.location))
-                    map.getNearbyPlace("supermarket")
-                    map.getDistance()
-                    map.getDirection()
-                    map.getImg()
-                    map.sendEmail(active_user.eMail)
-                    time.sleep(5)
-                    break
+                while choice not in ["q", "Q"]:
+                    # ["Find me a supermarket near me", "Find me a supermarket from another location", "Go back to previous menu"]
+                    choice = uiMenu(supermarketMenu, menu_title="Find a supermarket",
+                                    user_instruction="Which option do you want?")
+                    if choice == 1:
+                        map = maps(active_user.address)
+                        map.getLocation()
+                        print("Your location is: " + str(map.location))
+                        map.getNearbyPlace("supermarket")
+                        map.getDistance()
+                        map.getDirection()
+                        map.getImg()
+                        map.sendEmail(active_user.eMail)
+                        time.sleep(5)
+                        break
 
-                if choice == 2:
-                    address = input("For which address would you like find supermarkets? :")
-                    map = apiMap.maps(address)
-                    map.getLocation()
-                    print("The location is: " + str(map.location))
-                    map.getNearbyPlace("supermarket")
-                    map.getDistance()
-                    map.getDirection()
-                    map.getImg()
-                    map.sendEmail(active_user.eMail)
-                    time.sleep(5)
-                    break
+                    if choice == 2:
+                        address = input("For which address would you like find supermarkets? :")
+                        map = maps(address)
+                        map.getLocation()
+                        print("The location is: " + str(map.location))
+                        map.getNearbyPlace("supermarket")
+                        map.getDistance()
+                        map.getDirection()
+                        map.getImg()
+                        map.sendEmail(active_user.eMail)
+                        time.sleep(5)
+                        break
 
-                if choice == 3:
-                    break
+                    if choice == 3:
+                        break
             # Make shopping list for a favourite recipe. Is bugged from the recipe site
             if choice == 2:
                 while choice not in ["q", "Q"]:
