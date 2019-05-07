@@ -22,7 +22,6 @@ choice = ''
 while choice not in ["q", "Q"]:
     choice = uiMenu(logInMenu, menu_title="Login", user_instruction="What would you like to do?")
     if choice == 1:
-        global username
         username = uiMenu(["Username"], menu_title="Login", error_keys=["username"],
                           input_type="questions", questions_check_functions=[userDao.checkUsernameExists])
         uiMenu(["Password"], menu_title="Login", error_keys=["password"],
