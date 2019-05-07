@@ -25,7 +25,8 @@ specifyWorkout = ["Add exercise to workout", "Save Workout"]
 shoppingMenu = ["Find the nearest supermarket", "Get my shopping list",
                 "Check price development", "Go back to main menu"]
 supermarketMenu = ["Find me a supermarket near me",
-                   "Find me a supermarket from another location", "Go back to main menu"]
+                   "Find me a supermarket from another location", "Go back to previous menu"]
+gymMenu = ["Find me a gym near me", "Find me a gym from another location", "Go back to previous menu"]
 recipesMenu = ["Search recipe by ingredients", "Search recipe by meal",
                "Check favourite recipes", "Go back to main menu"]
 favRecipeMenu = ["Look at your favourite recipes", "Delete favourite recipe",
