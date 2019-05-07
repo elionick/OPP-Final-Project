@@ -181,12 +181,13 @@ while choice not in ["q", "Q"]:
             # Recipes
             choice = uiMenu(recipesMenu, menu_title="Recipes",
                             user_instruction="What would you like to do?")
+            recipe = apiRecipe(active_user.userID, active_user.intolerances,active_user.intolerances)
             if choice == 1:
-                apiRecipe.getRecipeByIngredients(active_user.userID)
+                recipe.getRecipeByIngredients()
                 active_user.setTodaysCaloricIntake()
                 pass
             if choice == 2:
-                apiRecipe.getRecipeByMeal(active_user.userID, active_user.intolerances,active_user.intolerances)
+                recipe.getRecipeByMeal()
                 active_user.setTodaysCaloricIntake()
                 pass
             if choice == 3:
