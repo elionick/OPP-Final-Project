@@ -31,5 +31,5 @@ recipesMenu = ["Search recipe by ingredients", "Search recipe by meal",
                "Check favourite recipes", "Go back to main menu"]
 favRecipeMenu = ["Look at your favourite recipes", "Delete favourite recipe",
                  "Go back to recipe menu"]
-recipesFamilyMenu = ["Cook alone", "Cook with your family"]
+recipesFamilyMenu = ["Cook alone", "Cook with your family", "Go back to recipe menu"]
 directionsMenu = ["Walking", "Driving", "Public Transport"]
