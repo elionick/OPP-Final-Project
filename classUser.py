@@ -10,7 +10,7 @@ import datetime
 
 
 class user():
-    def __init__(self, first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, address, diet, intolerances, username, password):
+    def __init__(self, first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, address, diet, intolerances, username, password, family_member = False):
         self.firstName = first_name
         self.middleName = middle_name
         self.lastName = last_name
@@ -41,7 +41,8 @@ class user():
         self.setNetWeightandRestCalorieBurn()
         self.setWeightGoal()
         self.updateWorkouts()
-        self.setFamilyMembers()
+        if family_member == False:
+            self.setFamilyMembers()
         self.setCalorieNeed()
         self.setNetCalorieNeed()
         self.setFavRecipes()
@@ -147,7 +148,7 @@ class user():
     def setFamilyMembers(self):
         family_members = []
         for family_member_username in userDao.getFamilyMembersUsername(self.userID):
-            family_members.append(user.from_username(family_member_username))
+            family_members.append(user.from_username(family_member_username, family_member = True))
         self.familyMembers = family_members
         self.familyMembersUsernames = [user.username for user in self.familyMembers]
 
@@ -214,10 +215,10 @@ class user():
 
     @classmethod
     # Construct from database
-    def from_username(cls, username):
+    def from_username(cls, username, family_member = False):
         arg_list = userDao.getUserAttributesAsList(username)
         first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, address, diet, intolerances, username, password = arg_list
-        return cls(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, address, diet, intolerances, username, password)
+        return cls(first_name, middle_name, last_name, gender, height, weight, e_mail, birthday, address, diet, intolerances, username, password, family_member)
 
 
 if __name__ == "__main__":
