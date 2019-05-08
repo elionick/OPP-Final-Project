@@ -4,8 +4,8 @@ class apiFoodNutritions:
     url_main = "https://trackapi.nutritionix.com/"
     function_url = "v2/natural/nutrients"
     url = url_main + function_url
-    appids = ["bce0b0b5", "125860af", "76591b82", "966b1cc8","f6661396"]
-    keys = ["e7c0ea3cc865c376372b54a51856ae54", "e1945fd53a59a5536c1f3d8daf69bb8e", "0c54d652d52dd4e0839a3a8e4c10930c", "f56ab2ebf3e2b1919c68c2ac0c2fa6f1", "4477702c0fc88bcc6ba8a6e274b64994"]
+    appids = ["bce0b0b5", "125860af", "76591b82", "966b1cc8","f6661396", "af03cced", "bed13739", "855312fe"]
+    keys = ["e7c0ea3cc865c376372b54a51856ae54", "e1945fd53a59a5536c1f3d8daf69bb8e", "0c54d652d52dd4e0839a3a8e4c10930c", "f56ab2ebf3e2b1919c68c2ac0c2fa6f1", "4477702c0fc88bcc6ba8a6e274b64994", "e13387be80e79baf37a583edfd7c2357", "29efb2de913eff1a40ef8f2a4f9cb0a3", "cef0f38dc022c2526031608d00bcc0ac"]
     
     @staticmethod
     def getHeader():
