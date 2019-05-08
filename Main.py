@@ -180,56 +180,65 @@ while choice not in ["q", "Q"]:
             # Recipes
             choice = uiMenu(recipesMenu, menu_title="Recipes",
                             user_instruction="What would you like to do?")
-            if choice in {1, 2}:
-                if userDao.getFamilyMemberUserID(active_user.userID) == []:
-                    recipe = apiRecipe(active_user.userID, active_user.intolerances, active_user.diet)
-                else:
-                    question = uiMenu(recipesFamilyMenu, menu_title="Family Recipes",
-                                      user_instruction="Do you want to cook with your family or alone?")
-                    if question == 1:
-                        recipe = apiRecipe(active_user.userID, active_user.intolerances, active_user.diet)
-                    if question == 2:
-                        familyMembers = list(userDao.getFamilyMemberUserID(active_user.userID))
-                        familyMembers.append(active_user.userID)
-                        memberDiet = list()
-                        Intolerance = list()
-                        i = 0
-                        while i < len(familyMembers):
-                            Intolerance += userDao.getIntolerance(familyMembers[i])
-                            i += 1
-                        i = 0
-                        while i < len(familyMembers):
-                            memberDiet.append(userDao.getDiet(familyMembers[i]))
-                            i += 1
-                        if "vegan" in memberDiet:
-                            Diet = "vegan"
-                        elif "vegetarian" in memberDiet:
-                            Diet = "vegetarian"
-                        else:
-                            Diet = "regular"
-                        Intolerance = str(Intolerance)
-                        Intolerance = Intolerance[1:-1]
-                        recipe = apiRecipe(active_user.userID, Intolerance, Diet)
-            if choice == 1:
-                recipe.getRecipeByIngredients()
-                active_user.setTodaysCaloricIntake()
-                pass
-            if choice == 2:
-                recipe.getRecipeByMeal()
-                active_user.setTodaysCaloricIntake()
-                pass
-            if choice == 3:
-                choice = uiMenu(favRecipeMenu, menu_title="Favourite recipes",
-                            user_instruction="What would you like to do?")
+            while choice not in ["q", "Q"]:
+                if choice in [1, 2]:
+                    if userDao.getFamilyMemberUserID(active_user.userID) == []:
+                        recipe = apiRecipe(active_user.userID,  active_user.intolerances, active_user.diet)
+                    else:
+                        question = uiMenu(recipesFamilyMenu, menu_title="Family Recipes", user_instruction="Do you want to cook with your family or alone?")
+                        if question == 1:
+                            recipe = apiRecipe(active_user.userID,  active_user.intolerances, active_user.diet)
+                        if question == 2:
+                            familyMembers = list(userDao.getFamilyMemberUserID  (active_user.userID))
+                            familyMembers.append(active_user.userID)
+                            memberDiet = list()
+                            Intolerance = list()
+                            i = 0
+                            while i < len(familyMembers):
+                                Intolerance += userDao.getIntolerance(familyMembers [i])
+                                i += 1
+                            i = 0
+                            while i < len(familyMembers):
+                                memberDiet.append(userDao.getDiet(familyMembers[i]))
+                                i += 1
+                            if "vegan" in memberDiet:
+                                Diet = "vegan"
+                            elif "vegetarian" in memberDiet:
+                                Diet = "vegetarian"
+                            else:
+                                Diet = "regular"
+                            Intolerance = str(Intolerance)
+                            Intolerance = Intolerance[1:-1]
+                            recipe = apiRecipe(active_user.userID, Intolerance,     Diet)
+                        if question == 3:
+                            # go back
+                            break
+                        if question in ["q", "Q"]:
+                            choice = "q"
+                            break
                 if choice == 1:
-                    chooseRecipe(active_user.userID)
+                    recipe.getRecipeByIngredients()
+                    active_user.setTodaysCaloricIntake()
                     pass
                 if choice == 2:
-                    deleteRecipe(active_user.userID)
+                    recipe.getRecipeByMeal()
+                    active_user.setTodaysCaloricIntake()
                     pass
                 if choice == 3:
-                    # Go back to recipe menu
-                    choice = ''
+                    choice = uiMenu(favRecipeMenu, menu_title="Favourite recipes",
+                                user_instruction="What would you like to do?")
+                    if choice == 1:
+                        chooseRecipe(active_user.userID)
+                        pass
+                    if choice == 2:
+                        deleteRecipe(active_user.userID)
+                        pass
+                    if choice == 3:
+                        # Go back to recipe menu
+                        choice = ''
+                        break
+                if choice == 4:
+                    # Go back to main menu
                     break
             if choice == 4:
                 # Go back to main menu
