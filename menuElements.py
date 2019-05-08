@@ -23,7 +23,7 @@ updateProfileInformationMenu = ["First name", "Middle Name", "Last name", "Gende
 createNewWorkout = ["Day (MON, TUE, WED, THU, FRI, SAT, SUN)", "Time"]
 specifyWorkout = ["Add exercise to workout", "Save Workout"]
 shoppingMenu = ["Find the nearest supermarket", "Get my shopping list",
-                "Check price development", "Go back to main menu"]
+                "Go back to main menu"]
 supermarketMenu = ["Find me a supermarket near me",
                    "Find me a supermarket from another location", "Go back to previous menu"]
 gymMenu = ["Find me a gym near me", "Find me a gym from another location", "Go back to previous menu"]
@@ -32,3 +32,4 @@ recipesMenu = ["Search recipe by ingredients", "Search recipe by meal",
 favRecipeMenu = ["Look at your favourite recipes", "Delete favourite recipe",
                  "Go back to recipe menu"]
 recipesFamilyMenu = ["Cook alone", "Cook with your family"]
+directionsMenu = ["Walking", "Driving", "Public Transport"]

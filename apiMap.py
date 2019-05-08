@@ -14,6 +14,7 @@ class maps():
         self.directions = []
         self.polyline = ""
         self.address = address
+        self.mode = ""
 
     def getLocation(self):
         main_api = "https://maps.googleapis.com/maps/api/geocode/json?"
@@ -42,8 +43,10 @@ class maps():
     def getDirection(self):
         main_api = "https://maps.googleapis.com/maps/api/directions/json?"
 
+
+
         url = main_api + urllib.parse.urlencode({"origin": self.location, "key": self.key,
-                                                 "destination": self.destination, "mode": "walking", "departure_time": "now", "language": "en"})
+                                                 "destination": self.destination, "mode": self.mode, "departure_time": "now", "language": "en"})
 
         json_data = requests.get(url).json()
         json_status = json_data["status"]
@@ -102,7 +105,7 @@ class maps():
         main_api = "https://maps.googleapis.com/maps/api/distancematrix/json?"
 
         url = main_api + urllib.parse.urlencode({"origins": self.location, "key": self.key,
-                                                 "destinations": self.destination, "mode": "walking", "departure_time": "now"})
+                                                 "destinations": self.destination, "mode": self.mode, "departure_time": "now"})
 
         json_data = requests.get(url).json()
         json_status = json_data["status"]
@@ -115,8 +118,8 @@ class maps():
 
             print("Route calculated!")
             print()
-            print("The distance from "+str(origin)+" to " + str(self.destinationaddress) +
-                  " it is %s and takes %s" % (distance, duration))
+
+            print("Your route:\n\n" + str(origin)+" to " + str(self.destinationaddress) + "\nThe distance is %s. It takes %s to get there." % (distance, duration))
             print()
 
     def sendEmail(self, email):

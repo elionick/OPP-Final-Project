@@ -326,24 +326,58 @@ while choice not in ["q", "Q"]:
                         map.getLocation()
                         print("Your location is: " + str(map.location))
                         map.getNearbyPlace("gym")
+                        choice = uiMenu(directionsMenu, menu_title="How to you want to reach your destination?",
+                                        user_instruction="Which option do you want?")
+
+                        if choice == 1:
+                            map.mode = "walking"
+
+                        if choice == 2:
+                            map.mode = "driving"
+
+                        if choice == 3:
+                            map.mode = "transit"
+
+                        if choice == 4:
+                            choice = ""
+                            break
+
                         map.getDistance()
                         map.getDirection()
                         map.getImg()
                         map.sendEmail(active_user.eMail)
                         time.sleep(5)
+                        choice = ""
                         break
 
                     if choice == 2:
                         address = input("For which address would you like find a gym? :")
                         map = maps(address)
                         map.getLocation()
-                        print("The location is: " + str(map.location))
+                        print("Your location is: " + str(map.location))
                         map.getNearbyPlace("gym")
+                        choice = uiMenu(directionsMenu, menu_title="How to you want to reach your destination?",
+                                        user_instruction="Which option do you want?")
+
+                        if choice == 1:
+                            map.mode = "walking"
+
+                        if choice == 2:
+                            map.mode = "driving"
+
+                        if choice == 3:
+                            map.mode = "transit"
+
+                        if choice == 4:
+                            choice = ""
+                            break
+
                         map.getDistance()
                         map.getDirection()
                         map.getImg()
                         map.sendEmail(active_user.eMail)
                         time.sleep(5)
+                        choice = ""
                         break
 
                     if choice == 3:
@@ -369,24 +403,58 @@ while choice not in ["q", "Q"]:
                         map.getLocation()
                         print("Your location is: " + str(map.location))
                         map.getNearbyPlace("supermarket")
+                        choice = uiMenu(directionsMenu, menu_title="How to you want to reach your destination?",
+                                        user_instruction="Which option do you want?")
+
+                        if choice == 1:
+                            map.mode = "walking"
+
+                        if choice == 2:
+                            map.mode = "driving"
+
+                        if choice == 3:
+                            map.mode = "transit"
+
+                        if choice == 4:
+                            choice = ""
+                            break
+
                         map.getDistance()
                         map.getDirection()
                         map.getImg()
                         map.sendEmail(active_user.eMail)
                         time.sleep(5)
+                        choice = ""
                         break
 
                     if choice == 2:
                         address = input("For which address would you like find supermarkets? :")
                         map = maps(address)
                         map.getLocation()
-                        print("The location is: " + str(map.location))
+                        print("Your location is: " + str(map.location))
                         map.getNearbyPlace("supermarket")
+                        choice = uiMenu(directionsMenu, menu_title="How to you want to reach your destination?",
+                                        user_instruction="Which option do you want?")
+
+                        if choice == 1:
+                            map.mode = "walking"
+
+                        if choice == 2:
+                            map.mode = "driving"
+
+                        if choice == 3:
+                            map.mode = "transit"
+
+                        if choice == 4:
+                            choice = ""
+                            break
+
                         map.getDistance()
                         map.getDirection()
                         map.getImg()
                         map.sendEmail(active_user.eMail)
                         time.sleep(5)
+                        choice = ""
                         break
 
                     if choice == 3:
@@ -440,11 +508,8 @@ while choice not in ["q", "Q"]:
                             if choice == 3:
                                 choice = ""
                                 break
-
-
             if choice == 3:
-                pass
-            if choice == 4:
+                choice = ""
                 break
 
     if choice == 5:
