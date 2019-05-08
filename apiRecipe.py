@@ -151,7 +151,7 @@ class apiRecipe:
                     choice2 = input("Please enter yes or no: ")
                 if (choice2 == "yes"):
                     self.getRecipeByMeal()
-                else:
+                if (choice2 == "no"):
                     pass
 
     def getRecipeByIngredients(self):
@@ -287,7 +287,7 @@ class apiRecipe:
                     choice2 = input("Please enter yes or no: ")
                 if (choice2 == "yes"):
                     self.getRecipeByIngredients()
-                else:
+                if (choice2 == "no"):
                     pass
     @staticmethod
     def getRecipeIngedients(Recipe_ID):

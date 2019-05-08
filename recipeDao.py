@@ -6,61 +6,69 @@ from foodLogDao import *
 
 def chooseRecipe(USER_ID):
     info = getRecipeList(USER_ID)
-    i = 0
-    recipe_name = list()
-    while i < len(info):
-        recipe_name.append(info[i]['RECIPE_NAME'])
-        i += 1
-    number = list(range(1, (len(info)+1), 1))
-    i = 0
-    while i < (len(info)):
-        summary = list()
-        summary.extend((number[i], recipe_name[i]))
-        print(summary)
-        i += 1
-    choice = input("Which recipe do you wanna check?")
-    try:
-        pprint.pprint(info[(int(choice)-1)])
-    except Exception:
-        print("Index not found")
-    food_log = input("Do you wanna add the meal to your food log? yes/no")
-    while food_log not in {"yes", "no"}:
-        food_log = input("Please enter yes or no: ")
-    if food_log == "yes":
-        foodLogDao.setMeal(info[(int(choice)-1)]['RECIPE_NAME'],info[(int(choice)-1)]['CALORIES'],USER_ID)
-    else:
+    if info == ():
+        print("You don't have any favourites")
         pass
-    pass
+    else:
+        i = 0
+        recipe_name = list()
+        while i < len(info):
+            recipe_name.append(info[i]['RECIPE_NAME'])
+            i += 1
+        number = list(range(1, (len(info)+1), 1))
+        i = 0
+        while i < (len(info)):
+            summary = list()
+            summary.extend((number[i], recipe_name[i]))
+            print(summary)
+            i += 1
+        choice = input("Which recipe do you wanna check?")
+        try:
+            pprint.pprint(info[(int(choice)-1)])
+        except Exception:
+            print("Index not found")
+        food_log = input("Do you wanna add the meal to your food log? yes/no")
+        while food_log not in {"yes", "no"}:
+            food_log = input("Please enter yes or no: ")
+        if food_log == "yes":
+            foodLogDao.setMeal(info[(int(choice)-1)]['RECIPE_NAME'],info[(int(choice)-1)]['CALORIES'],USER_ID)
+        else:
+            pass
+        pass
 
 def deleteRecipe(USER_ID):
     info = getRecipeList(USER_ID)
-    i = 0
-    recipe_name = list()
-    while i < len(info):
-        recipe_name.append(info[i]['RECIPE_NAME'])
-        i += 1
-    number = list(range(1, (len(info)+1), 1))
-    i = 0
-    while i < (len(info)):
-        summary = list()
-        summary.extend((number[i], recipe_name[i]))
-        print(summary)
-        i += 1
-    choice = int(input("Which recipe do you wanna delete?"))
-    RECIPE_ID = int(info[choice - 1]['RECIPE_ID'])
-    try:
-        with connection.cursor() as cursor:
-            sql = "delete FROM sql7288305.FAV_RECIPE where USER_ID = %s and RECIPE_ID = %s"
-            cursor.execute(sql, (USER_ID, RECIPE_ID))
-            connection.commit()
+    if info == ():
+        print("You don't have any favourites")
+        pass
+    else:
+        i = 0
+        recipe_name = list()
+        while i < len(info):
+            recipe_name.append(info[i]['RECIPE_NAME'])
+            i += 1
+        number = list(range(1, (len(info)+1), 1))
+        i = 0
+        while i < (len(info)):
+            summary = list()
+            summary.extend((number[i], recipe_name[i]))
+            print(summary)
+            i += 1
+        choice = int(input("Which recipe do you wanna delete?"))
+        RECIPE_ID = int(info[choice - 1]['RECIPE_ID'])
+        try:
+            with connection.cursor() as cursor:
+                sql = "delete FROM sql7288305.FAV_RECIPE where USER_ID = %s and RECIPE_ID = %s"
+                cursor.execute(sql, (USER_ID, RECIPE_ID))
+                connection.commit()
 
-    except Exception:
-        print("Index not found")
+        except Exception:
+            print("Index not found")
 
-    finally:
-        cursor.close()
+        finally:
+            cursor.close()
 
-    pass
+        pass
 
 def dbNewFavRecipe(Recipe_ID, RECIPE_NAME, RECIPE, USER_ID, INGREDIENTS, CALORIES, PRICE):
     # adds new entry to the FAV_RECIPE table
