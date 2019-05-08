@@ -190,6 +190,7 @@ while choice not in ["q", "Q"]:
                         recipe = apiRecipe(active_user.userID, active_user.intolerances, active_user.diet)
                     if question == 2:
                         familyMembers = list(userDao.getFamilyMemberUserID(active_user.userID))
+                        familyMembers.append(active_user.userID)
                         memberDiet = list()
                         Intolerance = list()
                         i = 0
@@ -206,7 +207,9 @@ while choice not in ["q", "Q"]:
                             Diet = "vegetarian"
                         else:
                             Diet = "regular"
-                        recipe = apiRecipe(active_user.userID, Diet, Intolerance)
+                        Intolerance = str(Intolerance)
+                        Intolerance = Intolerance[1:-1]
+                        recipe = apiRecipe(active_user.userID, Intolerance, Diet)
             if choice == 1:
                 recipe.getRecipeByIngredients()
                 active_user.setTodaysCaloricIntake()
