@@ -174,7 +174,7 @@ class user():
             self, attribute), is_password=is_password)
 
     def updateWeight(self, new_weight):
-        self.weight = new_weight
+        self.weight = float(new_weight)
         userDao.setValueForUserInField(self.userID, "WEIGHT", self.weight)
         self.setBMI()
         self.setBodyFat()
@@ -194,7 +194,7 @@ class user():
             self.favrecipeshort.append(each["RECIPE_NAME"])
 
     def updateHeight(self, new_height):
-        self.height = new_height
+        self.height = float(new_height)
         userDao.setValueForUserInField(self.userID, "HEIGHT", self.height)
         self.setBMI()
         self.setBodyFat()
