@@ -109,4 +109,4 @@ def uiMenu(menu_elements_list, menu_title = None, sub_title = None, sub_sub_titl
                     return answers
         
 if __name__ == "__main__":
-    print(platform.system().lower())
+    pass

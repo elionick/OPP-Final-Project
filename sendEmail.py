@@ -62,5 +62,3 @@ def sendEmail(topic, receiver, content):
 
 if __name__ == "__main__":
     pass
-    #directions = [['Head <b>northwest</b> on <b>Geltenwilenstrasse</b> toward <b>Unterstrasse</b>', '0.2 km', '3 mins'], ['Turn <b>right</b> onto <b>Vadianstrasse</b>', '0.7 km', '9 mins'], ['Turn <b>right</b> onto <b>Multertor</b>', '18 m', '1 min'], ['<b>Multertor</b> turns slightly <b>left</b> and becomes <b>Multergasse</b>', '0.2 km', '2 mins'], ['Slight <b>right</b> onto <b>Bärenpl.</b>', '16 m', '1 min'], ['Continue onto <b>Spisergasse</b>', '55 m', '1 min'], ['Turn <b>left</b> onto <b>Kugelgasse</b>', '51 m', '1 min'], ['Turn <b>right</b> onto <b>Löwengasse</b>', '57 m', '1 min']]
-    #sendEmail("supermarket", "priestrix@gmail.com", directions)

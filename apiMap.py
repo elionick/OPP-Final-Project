@@ -130,10 +130,3 @@ class maps():
 
 if __name__ == "__main__":
     pass
-    #map = maps("Dorfmatte 1204, 3113 Rubigen")
-    #map.getLocation()
-    #map.getNearbyPlace("supermarket")
-    #map.getDistance()
-    #map.getDirection()
-    #map.getImg()
-    # map.sendEmail("priestrix@gmail.com")

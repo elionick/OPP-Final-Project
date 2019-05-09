@@ -37,7 +37,4 @@ def getMetByExercise(query, gender = None, weight_kg = None, height_cm = None, a
     return retv
 
 if __name__ == "__main__":
-    print(getExerciseName_s("ran 3 km and swam 200m"))
-    print(getCaloriesBurnedByExercise("ran 3 km and swam 200m"))
-    print(getDurationByExercise("ran 3 km and swam 200m"))
-    print(getExerciseDataFromQuery("ran 3 km and swam 200m").json())
+    pass

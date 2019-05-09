@@ -7,4 +7,3 @@ def translate(query):
 
 if __name__ == '__main__':
     pass
-    #translate(query)
