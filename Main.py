@@ -180,7 +180,7 @@ while choice not in ["q", "Q"]:
             choice = uiMenu(recipesMenu, menu_title="Recipes",
                             user_instruction="What would you like to do?")
 
-            if choice in {1, 2}:
+            if choice in [1, 2]:
                 if userDao.getFamilyMemberUserID(active_user.userID) == []:
                     recipe = apiRecipe(active_user.userID,  active_user.intolerances, active_user.diet)
                 else:
