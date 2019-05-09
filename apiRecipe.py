@@ -122,7 +122,10 @@ class apiRecipe:
             while i < len(prices.IngredientPrices):
                 test1 = prices.IngredientPrices[i]
                 test1 = test1.split(",")
-                price_list.append(float(test1[2]))
+                try:
+                    price_list.append(float(test1[2]))
+                except:
+                    price_list.append(float(0))
                 i += 1
 
             for i in range(len(adjustedprices)):
@@ -264,7 +267,10 @@ class apiRecipe:
             while i < len(prices.IngredientPrices):
                 test1 = prices.IngredientPrices[i]
                 test1 = test1.split(",")
-                price_list.append(float(test1[2]))
+                try:
+                    price_list.append(float(test1[2]))
+                except:
+                    price_list.append(float(0))
                 i += 1
 
             # Checks if the price is higher than 10 (so we assume then it is a kilo price and not a piece price anymore)
