@@ -7,7 +7,6 @@ from getpass import getpass
 from classUser import *
 from classWorkout import workout
 from classExercise import exercise
-# Hier ist ein Bug:
 from apiRecipe import *
 from apiMap import *
 from classShoppingList import *
