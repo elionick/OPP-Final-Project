@@ -318,7 +318,6 @@ class apiRecipe:
                                    headers = self.headers
                                    )
             Recipe2 = response.json()
-            pprint.pprint(Recipe2['instructions'])
             return str(Recipe2['instructions'])
         except Exception:
             return "Sorry we couldn't find the recipe"
