@@ -479,6 +479,7 @@ while choice not in ["q", "Q"]:
                         break
             # Make shopping list for a favourite recipe.
             if choice == 2:
+                active_user.setFavRecipes()
                 while choice not in ["q", "Q"]:
                     choice = uiMenu(active_user.favrecipeshort + ["Go back to previous Menu"], menu_title="Shopping List",
                                    user_instruction="For which receipe do you want a shopping list?")
