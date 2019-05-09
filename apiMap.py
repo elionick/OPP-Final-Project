@@ -18,7 +18,6 @@ class maps():
 
     def getLocation(self):
         main_api = "https://maps.googleapis.com/maps/api/geocode/json?"
-        # address = input("Address: ")
 
         url = main_api + urllib.parse.urlencode({"address": self.address, "key": self.key})
         json_data = requests.get(url).json()
@@ -32,6 +31,7 @@ class maps():
 
     def getImg(self):
         main_api = "https://maps.googleapis.com/maps/api/staticmap?"
+
         url = main_api + urllib.parse.urlencode({"center": self.location, "zoom": "14", "size": "640x640",
                                                  "scale": "2", "path": "color:0x0000ff80|weight:5|enc:"+self.polyline, "markers":"color:blue|" +self.location +"|" +self.destinationaddress, "key": self.key})
 
@@ -42,8 +42,6 @@ class maps():
 
     def getDirection(self):
         main_api = "https://maps.googleapis.com/maps/api/directions/json?"
-
-
 
         url = main_api + urllib.parse.urlencode({"origin": self.location, "key": self.key,
                                                  "destination": self.destination, "mode": self.mode, "departure_time": "now", "language": "en"})
@@ -130,3 +128,4 @@ class maps():
 
 if __name__ == "__main__":
     pass
+    

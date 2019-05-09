@@ -333,7 +333,8 @@ while choice not in ["q", "Q"]:
 
             if choice == 5:
                 while choice not in ["q", "Q"]:
-                    # ["Find me a gym near me", "Find me a gym from another location", "Go back to main menu"]
+                    # Mapping menu
+                    # ["1 Find me a gym near me", "2 Find me a gym from another location", "3 Go back to main menu"]
                     choice = uiMenu(gymMenu, menu_title="Find a gym",
                                     user_instruction="Which option do you want?")
                     if choice == 1:
@@ -474,7 +475,7 @@ while choice not in ["q", "Q"]:
 
                     if choice == 3:
                         break
-            # Make shopping list for a favourite recipe. Is bugged from the recipe site
+            # Make shopping list for a favourite recipe.
             if choice == 2:
                 while choice not in ["q", "Q"]:
                     choice = uiMenu(active_user.favrecipeshort + ["Go back to previous Menu"], menu_title="Shopping List",
@@ -490,8 +491,6 @@ while choice not in ["q", "Q"]:
                         while choice not in ["q", "Q"]:
                             choice = uiMenu(["See the shopping list", "Send me the shopping list", "Go back to different recipes"],
                                             menu_title="Shopping List", sub_title=recipe_chosen, user_instruction="What would you like to do?")
-
-
 
                             if choice == 1:
                                 while choice not in ["q", "Q"]:

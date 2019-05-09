@@ -4,9 +4,11 @@ from checkFunctions import *
 from foodLogDao import *
 import re
 
+
 class apiRecipe:
     def __init__(self, USER_ID, INTOLERANCE, DIET):
-        self.headers = {"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com", "X-RapidAPI-Key": "8ad4046d49msha3912eb864b6baep193b5bjsne4b65b911209"}
+        self.headers = {"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+                        "X-RapidAPI-Key": "8ad4046d49msha3912eb864b6baep193b5bjsne4b65b911209"}
         self.INTOLERANCE = INTOLERANCE
         self.DIET = DIET
         self.USER_ID = USER_ID
@@ -21,13 +23,14 @@ class apiRecipe:
         if (self.DIET == "regular"):
 
             r = requests.get("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?intolerances="+self.INTOLERANCE+"&number=20&offset=0&type=main+course&query="+query+"",
-            headers = self.headers
-            )
+                             headers=self.headers
+                             )
         else:
             r = requests.get(
-                "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?diet="+self.DIET+"&intolerances="+self.INTOLERANCE+"&number=20&offset=0&type=main+course&query="+query+"",
-                headers = self.headers
-                )
+                "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?diet="+self.DIET +
+                "&intolerances="+self.INTOLERANCE+"&number=20&offset=0&type=main+course&query="+query+"",
+                headers=self.headers
+            )
         Result = r.json()
         Results = Result['results']
         if Results == []:
@@ -57,9 +60,11 @@ class apiRecipe:
                 print(summary)
                 print("")
                 k += 1
-            Recipe1 = input("Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + "): ")
+            Recipe1 = input(
+                "Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + "): ")
             while checkStringIsInt(Recipe1) == False:
-                Recipe1 = input("Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + "): ")
+                Recipe1 = input(
+                    "Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + "): ")
             Recipe1 = int(Recipe1)
             while Recipe1 not in range(1, (len(Results) + 1), 1):
                 Recipe1 = int(input("Please enter a number between 1- " + str(len(Results))) + ": ")
@@ -107,10 +112,11 @@ class apiRecipe:
 
             # Look for ingredient amounts in gram or ml:
             for i in range(len(self.INGREDIENTS)):
-                r = re.compile(r'\d*\s*g|\d*.\d*\s*ml')
+                r = re.compile(r'.*\d*\s*[^k]g|\d*.\d*\s*ml')
                 matches = r.findall(self.INGREDIENTS[i])
                 for match in matches:
-                    adjustedprices.append([i, str(match).split("g")[0].split("ml")[0].strip()])
+                    adjustedprices.append([i, str(match).split("g")[0].split("ml")
+                                           [0].split("k")[0].split("l")[0].strip()])
 
             i = 0
             while i < len(prices.IngredientPrices):
@@ -122,7 +128,8 @@ class apiRecipe:
             for i in range(len(adjustedprices)):
                 try:
                     if price_list[adjustedprices[i][0]] > 10:
-                        price_list[adjustedprices[i][0]] = float(price_list[adjustedprices[i][0]]) / float((1000 / float(adjustedprices[i][1])))
+                        price_list[adjustedprices[i][0]] = float(
+                            price_list[adjustedprices[i][0]]) / float((1000 / float(adjustedprices[i][1])))
                 except ValueError:
                     pass
 
@@ -145,7 +152,8 @@ class apiRecipe:
                     print("Recipe already saved as favourite. Check your favourites")
                     pass
                 else:
-                    dbNewFavRecipe(self.Recipe_ID, self.RECIPE_NAME, self.RECIPE, self.USER_ID, str(self.INGREDIENTS), self.CALORIES, self.PRICE)
+                    dbNewFavRecipe(self.Recipe_ID, self.RECIPE_NAME, self.RECIPE,
+                                   self.USER_ID, str(self.INGREDIENTS), self.CALORIES, self.PRICE)
                     pass
             else:
                 choice2 = input("Do you want to search for another recipe? yes/no: ")
@@ -157,12 +165,12 @@ class apiRecipe:
                     pass
 
     def getRecipeByIngredients(self):
-        #get recipe by ingredients
+        # get recipe by ingredients
         query = input("Insert the ingredients: ")
 
         r = requests.get("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?number=20&ranking=1&ignorePantry=false&ingredients="+query+"",
-                headers= self.headers
-                )
+                         headers=self.headers
+                         )
         Results = r.json()
         names = list()
         if Results == []:
@@ -188,19 +196,21 @@ class apiRecipe:
                 Ingredients_list.append(recipe_Ing)
                 j += 1
 
-            number = list(range(1,(len(Results)+1),1))
+            number = list(range(1, (len(Results)+1), 1))
 
             k = 0
             while (k < (len(Results))):
                 summary = list()
                 print(Results[k]['image'])
-                summary.extend((number[k],names[k],Ingredients_list[k]))
+                summary.extend((number[k], names[k], Ingredients_list[k]))
                 print(summary)
                 print("")
                 k += 1
-            Recipe1 = input("Which of the dishes do you want to choose? (number 1- "+str(len(Results))+"): ")
+            Recipe1 = input(
+                "Which of the dishes do you want to choose? (number 1- "+str(len(Results))+"): ")
             while checkStringIsInt(Recipe1) == False:
-                Recipe1 = input("Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + "): ")
+                Recipe1 = input(
+                    "Which of the dishes do you wanna choose? (number 1- " + str(len(Results)) + "): ")
             Recipe1 = int(Recipe1)
             while Recipe1 not in range(1, (len(Results) + 1), 1):
                 Recipe1 = int(input("Please enter a number between 1- " + str(len(Results))+": "))
@@ -244,10 +254,11 @@ class apiRecipe:
 
             # Look for ingredient amounts in gram or ml:
             for i in range(len(self.INGREDIENTS)):
-                r = re.compile(r'\d*\s*g|\d*.\d*\s*ml')
+                r = re.compile(r'.*\d*\s*[^k]g|\d*.\d*\s*ml')
                 matches = r.findall(self.INGREDIENTS[i])
                 for match in matches:
-                    adjustedprices.append([i, str(match).split("g")[0].split("ml")[0].strip()])
+                    adjustedprices.append([i, str(match).split("g")[0].split("ml")
+                                           [0].split("k")[0].split("l")[0].strip()])
 
             i = 0
             while i < len(prices.IngredientPrices):
@@ -256,10 +267,13 @@ class apiRecipe:
                 price_list.append(float(test1[2]))
                 i += 1
 
+            # Checks if the price is higher than 10 (so we assume then it is a kilo price and not a piece price anymore)
+            # Then divides with the quantity given in the recipe in gram or ml if there are any
             for i in range(len(adjustedprices)):
                 try:
                     if price_list[adjustedprices[i][0]] > 10:
-                        price_list[adjustedprices[i][0]] = float(price_list[adjustedprices[i][0]]) / float((1000 / float(adjustedprices[i][1])))
+                        price_list[adjustedprices[i][0]] = float(
+                            price_list[adjustedprices[i][0]]) / float((1000 / float(adjustedprices[i][1])))
                 except ValueError:
                     pass
 
@@ -278,11 +292,12 @@ class apiRecipe:
             while test_fav not in {"yes", "no"}:
                 test_fav = input("Please enter yes or no: ")
             if (test_fav == "yes"):
-                if checkRecipeExist(self.USER_ID,self.Recipe_ID) == True:
+                if checkRecipeExist(self.USER_ID, self.Recipe_ID) == True:
                     print("Recipe already saved as favourite. Check your favourites")
                     pass
                 else:
-                    dbNewFavRecipe(int(self.Recipe_ID), str(self.RECIPE_NAME), self.RECIPE, int(self.USER_ID), str(self.INGREDIENTS), self.CALORIES, self.PRICE)
+                    dbNewFavRecipe(int(self.Recipe_ID), str(self.RECIPE_NAME), self.RECIPE, int(
+                        self.USER_ID), str(self.INGREDIENTS), self.CALORIES, self.PRICE)
                     input("Press enter to go back to the recipe menu")
                     pass
             else:
@@ -293,18 +308,22 @@ class apiRecipe:
                     self.getRecipeByIngredients()
                 if (choice2 == "no"):
                     pass
+
     @staticmethod
     def getRecipeIngedients(Recipe_ID):
-        #api to get recipe ingredients
+        # api to get recipe ingredients
         try:
             response = requests.get("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/"+Recipe_ID+"/ingredientWidget.json",
-                                   headers= {"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com", "X-RapidAPI-Key": "8ad4046d49msha3912eb864b6baep193b5bjsne4b65b911209"}
-                                   )
+                                    headers={"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+                                             "X-RapidAPI-Key": "8ad4046d49msha3912eb864b6baep193b5bjsne4b65b911209"}
+                                    )
             Recipe2 = response.json()
             i = 0
             ingredients1 = list()
             while i < (len(Recipe2['ingredients'])-1):
-                ingredient = str(Recipe2['ingredients'][i]['amount']['metric']['value']) + " " + Recipe2['ingredients'][i]['amount']['metric']['unit'] + " " + Recipe2['ingredients'][i]['name']
+                ingredient = str(Recipe2['ingredients'][i]['amount']['metric']['value']) + " " + \
+                    Recipe2['ingredients'][i]['amount']['metric']['unit'] + \
+                    " " + Recipe2['ingredients'][i]['name']
                 ingredients1.append(ingredient)
                 i += 1
             return str(ingredients1)
@@ -312,16 +331,15 @@ class apiRecipe:
             return ("No ingredients found")
 
     def getRecipeInformation(self):
-        #api to get recipe for the choosen meal
+        # api to get recipe for the choosen meal
         try:
             response = requests.get("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/"+self.Recipe_ID+"/information",
-                                   headers = self.headers
-                                   )
+                                    headers=self.headers
+                                    )
             Recipe2 = response.json()
             return str(Recipe2['instructions'])
         except Exception:
             return "Sorry we couldn't find the recipe"
-
 
 
 if __name__ == '__main__':
