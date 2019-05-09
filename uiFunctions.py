@@ -51,7 +51,7 @@ def uiMenu(menu_elements_list, menu_title = None, sub_title = None, sub_sub_titl
                 print(str(index + 1) + ":\t", end = "") 
                 print(element)
             if quit_option == True:
-                print("q:\tQuit")
+                print("\033[91m{}\033[00m".format("q:\tQuit"))
             print("")
             if user_instruction != None:
                 print(user_instruction)
