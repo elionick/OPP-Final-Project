@@ -43,25 +43,3 @@ class CoopScraper(object):
                 pass
 
         return product_name_list, product_weight_list, product_price_list
-
-
-# # Loop through the products with the respective functions and save the returned lists!
-# products = ["Chips", "Hackfleisch", "Milch", "Butter"]
-#
-# for product in products:
-#     scraper = CoopScraper(product)
-#
-#     source = scraper.loadCoopWebsite()
-#     # Save the three lists
-#     name, weight, price = scraper.extractProductInfo(source)
-#
-#     # Create a csv file with the output added together!
-#     filename = "Coop " + product + ".csv"
-#     headers = "sep=,\nproduct, weight, price\n"
-#     f = open(filename, "w")
-#     f.write(headers)
-#
-#     for i in range(len(name)):
-#         f.write(name[i].replace(",", "-") + "," + weight[i] + "," + price[i] + "\n")
-#
-#     f.close()

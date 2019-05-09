@@ -28,8 +28,4 @@ class shoppinglist():
         time.sleep(2)
 
 if __name__ == "__main__":
-
-    test = shoppinglist(0, 46)
-    test.printShoppingList()
-    test.sendEmail("priestrix@gmail.com")
-    print(test.shoppinglist)
+    pass

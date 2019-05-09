@@ -36,6 +36,4 @@ class workout(workoutDao):
         return workout_list
 
 if __name__ == "__main__":
-    new_workout = workout(35, "13:30", "MON")
-    new_exercise = exercise(new_workout.workoutID, "20km running")
-    new_workout.printExercises()
+    pass

@@ -110,5 +110,4 @@ def checkRecipeExist(USER_ID, Recipe_ID):
 
 
 if __name__ == "__main__":
-    deleteRecipe(1)
-#1088227
+    pass
