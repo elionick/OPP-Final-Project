@@ -21,7 +21,7 @@ class shoppinglist():
 
 
     def sendEmail(self, email):
-        sendEmail.sendEmail(self.type, email, self.shoppinglist)
+        sendEmail.sendEmail(self.type, email, self.shoppingList)
         print("We sent you an email to " + str(email) +
               " with the shopping list!")
         time.sleep(2)
