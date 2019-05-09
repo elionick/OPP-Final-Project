@@ -17,7 +17,8 @@ class CoopScraper(object):
         product_name_list = []
         product_price_list = []
         product_weight_list = []
-
+        
+        # For each product field on the website, we retrieve name, brand, and price
         for product in file_soup.findAll("li", class_="list-page__item"):
 
             try:
