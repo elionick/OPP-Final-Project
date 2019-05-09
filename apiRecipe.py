@@ -121,8 +121,11 @@ class apiRecipe:
 
             for i in range(len(adjustedprices)):
                 if price_list[adjustedprices[i][0]] > 10:
-                    price_list[adjustedprices[i][0]] = float(
-                        price_list[adjustedprices[i][0]]) / float((1000 / float(adjustedprices[i][1])))
+                    try:
+                        price_list[adjustedprices[i][0]] = float(
+                            price_list[adjustedprices[i][0]]) / float((1000 / float(adjustedprices[i][1])))
+                    except ValueError:
+                        pass
 
             self.PRICE = "%.2f" % sum(price_list)
             print("Approximate Price for that recipe: " + str(self.PRICE) + " CHF")
@@ -256,8 +259,11 @@ class apiRecipe:
 
             for i in range(len(adjustedprices)):
                 if price_list[adjustedprices[i][0]] > 10:
-                    price_list[adjustedprices[i][0]] = float(
-                        price_list[adjustedprices[i][0]]) / float((1000 / float(adjustedprices[i][1])))
+                    try:
+                        price_list[adjustedprices[i][0]] = float(
+                            price_list[adjustedprices[i][0]]) / float((1000 / float(adjustedprices[i][1])))
+                    except ValueError:
+                        pass
 
             self.PRICE = "%.2f" % sum(price_list)
             print("Approximate Price for that recipe: " + str(self.PRICE) + " CHF")
@@ -323,7 +329,3 @@ class apiRecipe:
 
 if __name__ == '__main__':
     pass
-    # test1 = apiRecipe(1,"tomato","regular")
-    # test1.getRecipeByMeal()
-    # getRecipeByMeal
-
