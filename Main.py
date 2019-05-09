@@ -227,18 +227,21 @@ while choice not in ["q", "Q"]:
                 active_user.setTodaysCaloricIntake()
                 pass
             if choice == 3:
-                choice = uiMenu(favRecipeMenu, menu_title="Favourite recipes",
-                            user_instruction="What would you like to do?")
-                if choice == 1:
-                    chooseRecipe(active_user.userID)
-                    pass
-                if choice == 2:
-                    deleteRecipe(active_user.userID)
-                    pass
-                if choice == 3:
-                    # Go back to recipe menu
-                    choice = ''
-                    break
+                while choice not in ["q", "Q"]:
+                    choice = uiMenu(favRecipeMenu, menu_title="Favourite recipes",
+                                user_instruction="What would you like to do?")
+                    if choice == 1:
+                        chooseRecipe(active_user.userID)
+                        pass
+                    if choice == 2:
+                        deleteRecipe(active_user.userID)
+                        active_user.setFavRecipes()
+                        pass
+
+                    if choice == 3:
+                        # Go back to recipe menu
+                        choice = ''
+                        break
             if choice == 4:
                 # Go back to main menu
                 choice = ''
@@ -486,6 +489,9 @@ while choice not in ["q", "Q"]:
                        choice = ''
                        break
 
+                    if choice in ["q", "Q"]:
+                        break
+
                     else:
                         #recipe_chosen = active_user.favrecipeshort[choice - 1]
                         #recipe_chosen_index = int(choice)-int(1)
@@ -501,10 +507,9 @@ while choice not in ["q", "Q"]:
                                 # Shopping list
 
                                 new_shoppingList = shoppinglist(recipe_chosen_index, active_user.userID)
-                                shoppinglist = str(new_shoppingList.printShoppingList())
                                 choice = uiMenu(
                                     ["Send shopping list to email", "Go back to shooping lists"],
-                                    menu_title="Shopping List", sub_title=shoppinglist,
+                                    menu_title="Shopping List", sub_title=new_shoppingList.getShoppingListAsString(),
                                     user_instruction="What would you like to do?")
                                 if choice == 1:
                                     choice = ""
@@ -519,7 +524,6 @@ while choice not in ["q", "Q"]:
                                 while choice not in ["q", "Q"]:
                                     choice = ""
                                     new_shoppingList = shoppinglist(recipe_chosen_index, active_user.userID)
-                                    shoppinglist = str(new_shoppingList.printShoppingList())
                                     new_shoppingList.sendEmail(active_user.eMail)
                                     break
 

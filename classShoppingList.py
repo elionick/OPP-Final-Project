@@ -8,17 +8,16 @@ class shoppinglist():
         self.chosen_recipe = chosen_recipe
         self.favrecipe = ""
         self.userID = userID
-        self.shoppinglist = []
         self.type = "shoppinglist"
+        self.setShoppingList()
 
+    def getShoppingListAsString(self):
+        return str(self.shoppingList)
 
-
-    def printShoppingList(self):
+    def setShoppingList(self):
 
         self.favrecipe = getRecipeList(self.userID)
-        list = self.favrecipe[self.chosen_recipe]["INGREDIENTS"].replace("', ", "\n").replace("'", "").replace("[", "").replace("]", "").split("\n")
-        self.shoppinglist = list
-        return(list)
+        self.shoppingList = self.favrecipe[self.chosen_recipe]["INGREDIENTS"].replace("', ", "\n").replace("'", "").replace("[", "").replace("]", "").split("\n")
 
 
     def sendEmail(self, email):
